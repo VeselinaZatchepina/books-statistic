@@ -1,22 +1,22 @@
-package com.developer.cookie.testdbstructure.model;
+package com.developer.cookie.testdbstructure.db.model;
 
 import io.realm.RealmObject;
 
 public class OneMonthDivision extends RealmObject {
     private long id;
-    private String categoryName;
-    private int january = 1;
-    private int february = 2;
-    private int march = 3;
-    private int april = 4;
-    private int may = 5;
-    private int june = 6;
-    private int july = 7;
-    private int august = 8;
-    private int september = 9;
-    private int october = 10;
-    private int november = 11;
-    private int december = 12;
+    private BookCategory category;
+    private int january;
+    private int february;
+    private int march;
+    private int april;
+    private int may;
+    private int june;
+    private int july;
+    private int august;
+    private int september;
+    private int october;
+    private int november;
+    private int december;
     private Year year;
 
     public int getApril() {
@@ -35,12 +35,12 @@ public class OneMonthDivision extends RealmObject {
         this.august = august;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public BookCategory getCategory() {
+        return category;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(BookCategory category) {
+        this.category = category;
     }
 
     public int getDecember() {

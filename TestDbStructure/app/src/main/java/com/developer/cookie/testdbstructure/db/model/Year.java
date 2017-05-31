@@ -1,4 +1,4 @@
-package com.developer.cookie.testdbstructure.model;
+package com.developer.cookie.testdbstructure.db.model;
 
 import io.realm.RealmObject;
 
@@ -7,7 +7,11 @@ public class Year extends RealmObject {
     private int yearNumber;
 
     public Year() {
+    }
 
+    public Year(long id, int yearNumber) {
+        this.id = id;
+        this.yearNumber = yearNumber;
     }
 
     public Year(int yearNumber) {

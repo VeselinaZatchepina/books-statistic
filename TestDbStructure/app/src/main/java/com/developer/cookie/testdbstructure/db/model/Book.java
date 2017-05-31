@@ -1,6 +1,7 @@
-package com.developer.cookie.testdbstructure.model;
+package com.developer.cookie.testdbstructure.db.model;
 
 import io.realm.RealmObject;
+
 
 public class Book extends RealmObject {
     private long id;
@@ -12,6 +13,7 @@ public class Book extends RealmObject {
     private String dateStart;
     private String dateEnd;
     private BookRating rating;
+    private Year year;
 
     public Book() {
 
@@ -19,7 +21,7 @@ public class Book extends RealmObject {
 
     public Book(long id, String authorName, BookCategory bookCategory,
                 String bookName, String dateEnd, String dateStart,
-                int pageCount, BookRating rating, Section section) {
+                int pageCount, BookRating rating, Section section, Year year) {
         this.id = id;
         this.authorName = authorName;
         this.bookCategory = bookCategory;
@@ -29,6 +31,7 @@ public class Book extends RealmObject {
         this.pageCount = pageCount;
         this.rating = rating;
         this.section = section;
+        this.year = year;
     }
 
     public String getAuthorName() {
@@ -101,5 +104,13 @@ public class Book extends RealmObject {
 
     public void setRating(BookRating rating) {
         this.rating = rating;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
     }
 }

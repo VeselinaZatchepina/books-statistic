@@ -1,19 +1,19 @@
-package com.developer.cookie.testdbstructure.model;
+package com.developer.cookie.testdbstructure.db.model;
 
 import io.realm.RealmObject;
 
 public class TwelveMonthDivision extends RealmObject {
     private long id;
-    private String categoryName;
-    private int januaryDecember = 12;
+    private BookCategory category;
+    private int januaryDecember;
     private Year year;
 
-    public String getCategoryName() {
-        return categoryName;
+    public BookCategory getCategory() {
+        return category;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(BookCategory category) {
+        this.category = category;
     }
 
     public long getId() {
