@@ -4,12 +4,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.developer.cookie.testdbstructure.db.RealmRepository;
-import com.developer.cookie.testdbstructure.db.model.Book;
-import com.developer.cookie.testdbstructure.db.model.SixMonthDivision;
-import com.developer.cookie.testdbstructure.db.model.ThreeMonthDivision;
-import com.developer.cookie.testdbstructure.db.model.TwelveMonthDivision;
+import com.developer.cookie.testdbstructure.database.RealmRepository;
+import com.developer.cookie.testdbstructure.database.model.AllBookOneMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.Book;
+import com.developer.cookie.testdbstructure.database.model.TwelveMonthDivision;
 import com.developer.cookie.testdbstructure.utils.Division;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
+import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,49 +44,14 @@ public class MainActivity extends AppCompatActivity {
         mRealmRepository = new RealmRepository();
         mRealmRepository.saveBook();
 
-        RealmResults<Book> books = mRealmRepository.getBookByEndDate("13.12.2017");
+        RealmResults<Book> books = mRealmRepository.getAllBooks();
         for (Book currentBook : books) {
             ArrayList<Integer> bookMonthYearArray = createMonthYearArray(currentBook.getDateStart(), currentBook.getDateEnd());
             checkDivision(bookMonthYearArray, currentBook, mRealmRepository);
         }
 
-        // TODO table with all books
-
-//        final RealmResults<OneMonthDivision> realmResults = mRealm.where(OneMonthDivision.class).findAll();
-//        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
-//        lineChart.setExtraBottomOffset(5f);
-//        lineChart.getAxisLeft().setDrawGridLines(false);
-//        lineChart.getXAxis().setDrawGridLines(false);
-//        lineChart.getXAxis().setLabelCount(5);
-//        lineChart.getXAxis().setGranularity(1f);
-
-//                    IAxisValueFormatter formatter = new IAxisValueFormatter() {
-//                        @Override
-//                        public String getFormattedValue(float value, AxisBase axis) {
-//                            return realmResults.get((int) value).getCategory().getCategoryName();
-//                        }
-//                    };
-//                    lineChart.getXAxis().setValueFormatter(formatter);
-
-//        RealmLineDataSet<OneMonthDivision> lineDataSet = new RealmLineDataSet<OneMonthDivision>(realmResults, "id", "february");
-//        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-//        lineDataSet.setLabel("Result Scores");
-//        lineDataSet.setDrawCircleHole(false);
-//        lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
-//        lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
-//        lineDataSet.setLineWidth(1.8f);
-//        lineDataSet.setCircleRadius(3.6f);
-//
-//        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-//        dataSets.add(lineDataSet);
-//
-//        LineData lineData = new LineData(dataSets);
-//
-//        // set data
-//        lineChart.setData(lineData);
-//        lineChart.invalidate();
-//        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
-
+        createLineChart();
+        createBarChart();
     }
 
     private ArrayList<Integer> createMonthYearArray(String dateStart, String dateEnd) {
@@ -111,102 +86,24 @@ public class MainActivity extends AppCompatActivity {
             realmRepository.saveBookInAllBookOneMonth(book, indexOneMonth);
             realmRepository.saveBookInOneMonthDivision(book, indexOneMonth);
         }
-//        if (isContainsList(array, Division.threeMonthDivisionArrays) != -1) {
-//            Log.v("LOG", "OK3");
-//            ThreeMonthDivision threeMonthDivision;
-//            RealmResults<ThreeMonthDivision> realmResults = realm.where(ThreeMonthDivision.class).equalTo("category.categoryName", book.getBookCategory().getCategoryName()).findAll();
-//            if (!realmResults.isEmpty()) {
-//                threeMonthDivision = realmResults.first();
-//            } else {
-//                threeMonthDivision = realm.createObject(ThreeMonthDivision.class);
-//                threeMonthDivision.setId(0);
-//                threeMonthDivision.setYear(book.getYear());
-//                threeMonthDivision.setCategory(book.getBookCategory());
-//            }
-//            checkThreeMonth(isContainsList(array, Division.threeMonthDivisionArrays), threeMonthDivision);
-//            // for all category
-//            ThreeMonthDivision threeMonthDivisionForAllCategory;
-//            RealmResults<ThreeMonthDivision> allCategoryResults = realm.where(ThreeMonthDivision.class)
-//                    .equalTo("category.categoryName", "AllThreeMonth")
-//                    .equalTo("year.yearNumber", book.getYear().getYearNumber()).findAll();
-//            if (!allCategoryResults.isEmpty()) {
-//                threeMonthDivisionForAllCategory = allCategoryResults.first();
-//            } else {
-//                threeMonthDivisionForAllCategory = realm.createObject(ThreeMonthDivision.class);
-//                threeMonthDivisionForAllCategory.setId(0);
-//                threeMonthDivisionForAllCategory.setYear(book.getYear());
-//                BookCategory bookCategory = realm.createObject(BookCategory.class);
-//                bookCategory.setId(3);
-//                bookCategory.setCategoryName("AllThreeMonth");
-//                bookCategory.setCategoryBookCount(1);
-//                threeMonthDivisionForAllCategory.setCategory(bookCategory); // правильно обновлять book category count и надо ли?
-//            }
-//            checkThreeMonth(isContainsList(array, Division.threeMonthDivisionArrays), threeMonthDivisionForAllCategory);
-//        }
-//        if (isContainsList(array, Division.sixMonthDivisionArrays) != -1) {
-//            Log.v("LOG", "OK6");
-//            SixMonthDivision sixMonthDivision;
-//            RealmResults<SixMonthDivision> realmResults = realm.where(SixMonthDivision.class).equalTo("category.categoryName", book.getBookCategory().getCategoryName()).findAll();
-//            if (!realmResults.isEmpty()) {
-//                sixMonthDivision = realmResults.first();
-//            } else {
-//                sixMonthDivision = realm.createObject(SixMonthDivision.class);
-//                sixMonthDivision.setId(0);
-//                sixMonthDivision.setYear(book.getYear());
-//                sixMonthDivision.setCategory(book.getBookCategory());
-//            }
-//            checkSixMonth(isContainsList(array, Division.sixMonthDivisionArrays), sixMonthDivision);
-//            // for all category
-//            SixMonthDivision sixMonthDivisionForAllCategory;
-//            RealmResults<SixMonthDivision> allCategoryResults = realm.where(SixMonthDivision.class)
-//                    .equalTo("category.categoryName", "AllSixMonth")
-//                    .equalTo("year.yearNumber", book.getYear().getYearNumber()).findAll();
-//            if (!allCategoryResults.isEmpty()) {
-//                sixMonthDivisionForAllCategory = allCategoryResults.first();
-//            } else {
-//                sixMonthDivisionForAllCategory = realm.createObject(SixMonthDivision.class);
-//                sixMonthDivisionForAllCategory.setId(0);
-//                sixMonthDivisionForAllCategory.setYear(book.getYear());
-//                BookCategory bookCategory = realm.createObject(BookCategory.class);
-//                bookCategory.setId(3);
-//                bookCategory.setCategoryName("AllSixMonth");
-//                bookCategory.setCategoryBookCount(1);
-//                sixMonthDivisionForAllCategory.setCategory(bookCategory); // правильно обновлять book category count и надо ли?
-//            }
-//            checkSixMonth(isContainsList(array, Division.sixMonthDivisionArrays), sixMonthDivisionForAllCategory);
-//        }
-//        if (isContainsList(array, Division.twelveMonthDivisionArrays) != -1) {
-//            Log.v("LOG", "OK12");
-//            TwelveMonthDivision twelveMonthDivision;
-//            RealmResults<TwelveMonthDivision> realmResults = realm.where(TwelveMonthDivision.class).equalTo("category.categoryName", book.getBookCategory().getCategoryName()).findAll();
-//            if (!realmResults.isEmpty()) {
-//                twelveMonthDivision = realmResults.first();
-//            } else {
-//                twelveMonthDivision = realm.createObject(TwelveMonthDivision.class);
-//                twelveMonthDivision.setId(0);
-//                twelveMonthDivision.setYear(book.getYear());
-//                twelveMonthDivision.setCategory(book.getBookCategory());
-//            }
-//            checkTwelveMonth(isContainsList(array, Division.twelveMonthDivisionArrays), twelveMonthDivision);
-//            // for all category
-//            TwelveMonthDivision twelveMonthDivisionForAllCategory;
-//            RealmResults<TwelveMonthDivision> allCategoryResults = realm.where(TwelveMonthDivision.class)
-//                    .equalTo("category.categoryName", "AllTwelveMonth")
-//                    .equalTo("year.yearNumber", book.getYear().getYearNumber()).findAll();
-//            if (!allCategoryResults.isEmpty()) {
-//                twelveMonthDivisionForAllCategory = allCategoryResults.first();
-//            } else {
-//                twelveMonthDivisionForAllCategory = realm.createObject(TwelveMonthDivision.class);
-//                twelveMonthDivisionForAllCategory.setId(0);
-//                twelveMonthDivisionForAllCategory.setYear(book.getYear());
-//                BookCategory bookCategory = realm.createObject(BookCategory.class);
-//                bookCategory.setId(3);
-//                bookCategory.setCategoryName("AllTwelveMonth");
-//                bookCategory.setCategoryBookCount(1);
-//                twelveMonthDivisionForAllCategory.setCategory(bookCategory); // правильно обновлять book category count и надо ли?
-//            }
-//            checkTwelveMonth(isContainsList(array, Division.twelveMonthDivisionArrays), twelveMonthDivisionForAllCategory);
-//        }
+        int indexThreeMonth = isContainsList(array, Division.threeMonthDivisionArrays);
+        if (indexThreeMonth != -1) {
+            Log.v("OK", "OK3");
+            realmRepository.saveBookInAllBookThreeMonth(book, indexThreeMonth);
+            realmRepository.saveBookInThreeMonthDivision(book, indexThreeMonth);
+        }
+        int indexSixMonth = isContainsList(array, Division.sixMonthDivisionArrays);
+        if (indexSixMonth != -1) {
+            Log.v("OK", "OK6");
+            realmRepository.saveBookInAllBookSixMonth(book, indexSixMonth);
+            realmRepository.saveBookInSixMonthDivision(book, indexSixMonth);
+        }
+        int indexTwelveMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
+        if (indexTwelveMonth != -1) {
+            Log.v("OK", "OK12");
+            realmRepository.saveBookInAllBookTwelveMonth(book, indexTwelveMonth);
+            realmRepository.saveBookInTwelveMonthDivision(book, indexTwelveMonth);
+        }
     }
 
     private int isContainsList(List<Integer> array, ArrayList<List<Integer>> monthDivision) {
@@ -219,45 +116,42 @@ public class MainActivity extends AppCompatActivity {
         return index;
     }
 
-
-
-    private String checkThreeMonth(int index, ThreeMonthDivision threeMonthDivision) {
-        switch (index) {
-            case 0:
-                threeMonthDivision.setJanuaryMarch(threeMonthDivision.getJanuaryMarch() + 1);
-                break;
-            case 1:
-                threeMonthDivision.setAprilJune(threeMonthDivision.getAprilJune() + 1);
-                break;
-            case 2:
-                threeMonthDivision.setJulySeptember(threeMonthDivision.getJulySeptember() + 1);
-                break;
-            case 3:
-                threeMonthDivision.setOctoberDecember(threeMonthDivision.getOctoberDecember() + 1);
-                break;
-        }
-        return null;
+    private void createLineChart() {
+        final RealmResults<AllBookOneMonthDivision> realmResults = mRealmRepository.getAllBookOneMonth();
+        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
+        lineChart.setExtraBottomOffset(5f);
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getXAxis().setLabelCount(5);
+        lineChart.getXAxis().setGranularity(1f);
+        RealmLineDataSet<AllBookOneMonthDivision> lineDataSet = new RealmLineDataSet<AllBookOneMonthDivision>(realmResults, "month", "allBookCount");
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setLabel("Result Scores");
+        lineDataSet.setDrawCircleHole(false);
+        lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
+        lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        lineDataSet.setLineWidth(1.8f);
+        lineDataSet.setCircleRadius(3.6f);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(lineDataSet);
+        LineData lineData = new LineData(dataSets);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
+        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 
-    private String checkSixMonth(int index, SixMonthDivision sixMonthDivision) {
-        switch (index) {
-            case 0:
-                sixMonthDivision.setJanuaryJune(sixMonthDivision.getJanuaryJune() + 1);
-                break;
-            case 1:
-                sixMonthDivision.setJulyDecember(sixMonthDivision.getJulyDecember() + 1);
-                break;
-        }
-        return null;
-    }
-
-    private String checkTwelveMonth(int index, TwelveMonthDivision twelveMonthDivision) {
-        switch (index) {
-            case 0:
-                twelveMonthDivision.setJanuaryDecember(twelveMonthDivision.getJanuaryDecember() + 1);
-                break;
-        }
-        return null;
+    private void createBarChart() {
+        final RealmResults<TwelveMonthDivision> twelveRealmResults = mRealmRepository.getTwelveMonthDivision();
+        BarChart barChart = (BarChart) findViewById(R.id.barChart);
+        RealmBarDataSet<TwelveMonthDivision> barDataSet = new RealmBarDataSet<TwelveMonthDivision>(twelveRealmResults, "id", "januaryDecember");
+        barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
+        barDataSet.setLabel("Realm BarDataSet");
+        ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
+        barDataSets.add(barDataSet);
+        BarData barData = new BarData(barDataSets);
+        barChart.setData(barData);
+        barChart.setFitBars(true);
+        barChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 
     @Override

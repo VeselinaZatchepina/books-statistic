@@ -1,8 +1,8 @@
-package com.developer.cookie.testdbstructure.db.model;
+package com.developer.cookie.testdbstructure.database.model;
 
 import io.realm.RealmObject;
 
-public class AllBookOneMonthDivision extends RealmObject {
+public class AllBookTwelveMonthDivision extends RealmObject {
     private long id;
     private int month;
     private int allBookCount;

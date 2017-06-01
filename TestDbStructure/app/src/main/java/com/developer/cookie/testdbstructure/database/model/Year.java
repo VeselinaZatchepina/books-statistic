@@ -1,4 +1,4 @@
-package com.developer.cookie.testdbstructure.db.model;
+package com.developer.cookie.testdbstructure.database.model;
 
 import io.realm.RealmObject;
 
