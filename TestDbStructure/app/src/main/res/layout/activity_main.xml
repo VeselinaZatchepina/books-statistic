@@ -11,16 +11,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.developer.cookie.testdbstructure.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"

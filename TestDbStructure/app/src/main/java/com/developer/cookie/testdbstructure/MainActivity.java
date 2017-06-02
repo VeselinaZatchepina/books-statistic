@@ -6,20 +6,30 @@ import android.util.Log;
 
 import com.developer.cookie.testdbstructure.database.RealmRepository;
 import com.developer.cookie.testdbstructure.database.model.AllBookOneMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.AllBookSixMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.AllBookThreeMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.Book;
-import com.developer.cookie.testdbstructure.database.model.TwelveMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
 import com.developer.cookie.testdbstructure.utils.Division;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         createLineChart();
         createBarChart();
+
+        // TODO third chart
     }
 
     private ArrayList<Integer> createMonthYearArray(String dateStart, String dateEnd) {
@@ -80,25 +93,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkDivision(List<Integer> array, Book book, RealmRepository realmRepository) {
-        int indexOneMonth = isContainsList(array, Division.oneMonthDivisionArrays);
+        float indexOneMonth = isContainsList(array, Division.oneMonthDivisionArrays);
         if (indexOneMonth != -1) {
             Log.v("OK", "OK1");
             realmRepository.saveBookInAllBookOneMonth(book, indexOneMonth);
             realmRepository.saveBookInOneMonthDivision(book, indexOneMonth);
         }
-        int indexThreeMonth = isContainsList(array, Division.threeMonthDivisionArrays);
+        float indexThreeMonth = isContainsList(array, Division.threeMonthDivisionArrays);
         if (indexThreeMonth != -1) {
             Log.v("OK", "OK3");
             realmRepository.saveBookInAllBookThreeMonth(book, indexThreeMonth);
             realmRepository.saveBookInThreeMonthDivision(book, indexThreeMonth);
         }
-        int indexSixMonth = isContainsList(array, Division.sixMonthDivisionArrays);
+        float indexSixMonth = isContainsList(array, Division.sixMonthDivisionArrays);
         if (indexSixMonth != -1) {
             Log.v("OK", "OK6");
             realmRepository.saveBookInAllBookSixMonth(book, indexSixMonth);
             realmRepository.saveBookInSixMonthDivision(book, indexSixMonth);
         }
-        int indexTwelveMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
+        float indexTwelveMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
         if (indexTwelveMonth != -1) {
             Log.v("OK", "OK12");
             realmRepository.saveBookInAllBookTwelveMonth(book, indexTwelveMonth);
@@ -106,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private int isContainsList(List<Integer> array, ArrayList<List<Integer>> monthDivision) {
-        int index = -1;
+    private float isContainsList(List<Integer> array, ArrayList<List<Integer>> monthDivision) {
+        float index = -1;
         for (List<Integer> element : monthDivision) {
             if (element.containsAll(array)) {
                 index = monthDivision.indexOf(element);
@@ -119,19 +132,31 @@ public class MainActivity extends AppCompatActivity {
     private void createLineChart() {
         final RealmResults<AllBookOneMonthDivision> realmResults = mRealmRepository.getAllBookOneMonth();
         LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
-        lineChart.setExtraBottomOffset(5f);
+        Description description = lineChart.getDescription();
+        description.setEnabled(false);
+        Legend leg = lineChart.getLegend();
+        leg.setEnabled(false);
+        lineChart.getAxisRight().setValueFormatter(new LineChartValueFormatter());
+        lineChart.getAxisRight().setGranularity(1f);
+        lineChart.getAxisRight().setAxisMinValue(0f);
+        lineChart.getAxisLeft().setValueFormatter(new LineChartValueFormatter());
+        lineChart.getAxisLeft().setGranularity(1f);
+        lineChart.getAxisLeft().setAxisMinValue(0f);
         lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getXAxis().setDrawGridLines(false);
-        lineChart.getXAxis().setLabelCount(5);
         lineChart.getXAxis().setGranularity(1f);
-        RealmLineDataSet<AllBookOneMonthDivision> lineDataSet = new RealmLineDataSet<AllBookOneMonthDivision>(realmResults, "month", "allBookCount");
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setLabel("Result Scores");
-        lineDataSet.setDrawCircleHole(false);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(realmResults.first()));
+        lineChart.getXAxis().setAxisMinValue(0f);
+        lineChart.getXAxis().setDrawGridLines(false);
+
+        RealmLineDataSet<AllBookOneMonthDivision> lineDataSet =
+                new RealmLineDataSet<AllBookOneMonthDivision>(realmResults, "month", "allBookCount");
+        lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
         lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
         lineDataSet.setLineWidth(1.8f);
         lineDataSet.setCircleRadius(3.6f);
+        lineDataSet.setValueFormatter(new InsideLineChartValueFormatter());
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(lineDataSet);
         LineData lineData = new LineData(dataSets);
@@ -141,9 +166,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createBarChart() {
-        final RealmResults<TwelveMonthDivision> twelveRealmResults = mRealmRepository.getTwelveMonthDivision();
+        final RealmResults<SixMonthDivision> twelveRealmResults = mRealmRepository.getSixMonthDivision();
         BarChart barChart = (BarChart) findViewById(R.id.barChart);
-        RealmBarDataSet<TwelveMonthDivision> barDataSet = new RealmBarDataSet<TwelveMonthDivision>(twelveRealmResults, "id", "januaryDecember");
+        barChart.getAxisLeft().setValueFormatter(new XAxisLineChartValueFormatter(twelveRealmResults.first()));
+        RealmBarDataSet<SixMonthDivision> barDataSet =
+                new RealmBarDataSet<SixMonthDivision>(twelveRealmResults, "categoryIndex", "januaryJune");
         barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
         barDataSet.setLabel("Realm BarDataSet");
         ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
@@ -158,5 +185,138 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mRealmRepository.closeDb();
+    }
+
+    public class LineChartValueFormatter implements IAxisValueFormatter {
+
+        public LineChartValueFormatter() {
+
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            return String.valueOf((int) value);
+        }
+    }
+
+    public class InsideLineChartValueFormatter implements IValueFormatter {
+
+        public InsideLineChartValueFormatter() {
+
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return String.valueOf((int) value);
+        }
+    }
+
+    public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
+
+        RealmObject realmObject;
+
+        public XAxisLineChartValueFormatter(RealmObject realmObject) {
+            this.realmObject = realmObject;
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            String currentMonth;
+            if (realmObject instanceof AllBookOneMonthDivision) {
+                currentMonth = checkLabelOneMonth(value);
+            } else if (realmObject instanceof AllBookThreeMonthDivision) {
+                currentMonth = checkLabelThreeMonth(value);
+            } else if (realmObject instanceof AllBookSixMonthDivision) {
+                currentMonth = checkLabelSixMonth(value);
+            } else {
+                currentMonth = checkLabelTwelveMonth(value);
+            }
+            return currentMonth;
+        }
+
+        private String checkLabelOneMonth(float value) {
+            String currentMonth = String.valueOf((int) value);
+            switch ((int) value) {
+                case 0:
+                    currentMonth = "Jan";
+                    break;
+                case 1:
+                    currentMonth = "Feb";
+                    break;
+                case 2:
+                    currentMonth = "Mar";
+                    break;
+                case 3:
+                    currentMonth = "Apr";
+                    break;
+                case 4:
+                    currentMonth = "May";
+                    break;
+                case 5:
+                    currentMonth = "June";
+                    break;
+                case 6:
+                    currentMonth = "July";
+                    break;
+                case 7:
+                    currentMonth = "Aug";
+                    break;
+                case 8:
+                    currentMonth = "Sept";
+                    break;
+                case 9:
+                    currentMonth = "Oct";
+                    break;
+                case 10:
+                    currentMonth = "Nov";
+                    break;
+                case 11:
+                    currentMonth = "Dec";
+                    break;
+            }
+            return currentMonth;
+        }
+
+        private String checkLabelThreeMonth(float value) {
+            String currentMonth = String.valueOf((int) value);
+            switch ((int) value) {
+                case 0:
+                    currentMonth = "Jan-Mar";
+                    break;
+                case 1:
+                    currentMonth = "Apr-June";
+                    break;
+                case 2:
+                    currentMonth = "July-Sept";
+                    break;
+                case 3:
+                    currentMonth = "Oct-Dec";
+                    break;
+            }
+            return currentMonth;
+        }
+
+        private String checkLabelSixMonth(float value) {
+            String currentMonth = String.valueOf((int) value);
+            switch ((int) value) {
+                case 0:
+                    currentMonth = "Jan-June";
+                    break;
+                case 1:
+                    currentMonth = "July-Dec";
+                    break;
+            }
+            return currentMonth;
+        }
+
+        private String checkLabelTwelveMonth(float value) {
+            String currentMonth = String.valueOf((int) value);
+            switch ((int) value) {
+                case 0:
+                    currentMonth = "Jan-Dec";
+                    break;
+            }
+            return currentMonth;
+        }
     }
 }

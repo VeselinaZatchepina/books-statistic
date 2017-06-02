@@ -11,7 +11,6 @@ import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.ThreeMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.TwelveMonthDivision;
 
-import io.realm.AllBookOneMonthDivisionRealmProxy;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -91,7 +90,6 @@ public class RealmRepository {
                 AllBookOneMonthDivision currentMonth = allBookResults.first();
                 currentMonth.setYear(book.getYear());
                 currentMonth.setAllBookCount(currentMonth.getAllBookCount() + 1);
-
             }
         });
     }
@@ -100,7 +98,7 @@ public class RealmRepository {
         AllBookOneMonthDivision oneMonthDivisionForAllCategory;
         RealmResults<AllBookOneMonthDivision> allBookResults = mRealm.where(AllBookOneMonthDivision.class).findAll();
         if (allBookResults.isEmpty()) {
-            for (float i = 0; i < 12; i++) {
+            for (int i = 0; i < 12; i++) {
                 oneMonthDivisionForAllCategory = mRealm.createObject(AllBookOneMonthDivision.class);
                 oneMonthDivisionForAllCategory.setId(getNextKey(oneMonthDivisionForAllCategory, mRealm));
                 oneMonthDivisionForAllCategory.setMonth(i);
@@ -109,7 +107,7 @@ public class RealmRepository {
         isInitAllOneMonth = true;
     }
 
-    public void saveBookInOneMonthDivision(final Book book, final int index) {
+    public void saveBookInOneMonthDivision(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -120,12 +118,13 @@ public class RealmRepository {
                 if (realmResults.isEmpty()) {
                     oneMonthDivision = mRealm.createObject(OneMonthDivision.class);
                     oneMonthDivision.setId(getNextKey(oneMonthDivision, mRealm));
+                    oneMonthDivision.setCategoryIndex(oneMonthDivision.getId());
                     oneMonthDivision.setYear(book.getYear());
                     oneMonthDivision.setCategory(book.getBookCategory());
                 } else {
                     oneMonthDivision = realmResults.first();
                 }
-                checkOneMonth(index, oneMonthDivision);
+                checkOneMonth((int) index, oneMonthDivision);
             }
         });
     }
@@ -171,7 +170,7 @@ public class RealmRepository {
         }
     }
 
-    public void saveBookInAllBookThreeMonth(final Book book, final int index) {
+    public void saveBookInAllBookThreeMonth(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -201,7 +200,7 @@ public class RealmRepository {
         isInitAllThreeMonth = true;
     }
 
-    public void saveBookInThreeMonthDivision(final Book book, final int index) {
+    public void saveBookInThreeMonthDivision(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -212,12 +211,13 @@ public class RealmRepository {
                 if (realmResults.isEmpty()) {
                     threeMonthDivision = mRealm.createObject(ThreeMonthDivision.class);
                     threeMonthDivision.setId(getNextKey(threeMonthDivision, mRealm));
+                    threeMonthDivision.setCategoryIndex(threeMonthDivision.getId());
                     threeMonthDivision.setYear(book.getYear());
                     threeMonthDivision.setCategory(book.getBookCategory());
                 } else {
                     threeMonthDivision = realmResults.first();
                 }
-                checkThreeMonth(index, threeMonthDivision);
+                checkThreeMonth((int) index, threeMonthDivision);
             }
         });
     }
@@ -240,7 +240,7 @@ public class RealmRepository {
         return null;
     }
 
-    public void saveBookInAllBookSixMonth(final Book book, final int index) {
+    public void saveBookInAllBookSixMonth(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -269,7 +269,7 @@ public class RealmRepository {
         isInitAllSixMonth = true;
     }
 
-    public void saveBookInSixMonthDivision(final Book book, final int index) {
+    public void saveBookInSixMonthDivision(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -280,12 +280,13 @@ public class RealmRepository {
                 if (realmResults.isEmpty()) {
                     sixMonthDivision = mRealm.createObject(SixMonthDivision.class);
                     sixMonthDivision.setId(getNextKey(sixMonthDivision, mRealm));
+                    sixMonthDivision.setCategoryIndex(sixMonthDivision.getId());
                     sixMonthDivision.setYear(book.getYear());
                     sixMonthDivision.setCategory(book.getBookCategory());
                 } else {
                     sixMonthDivision = realmResults.first();
                 }
-                checkSixMonth(index, sixMonthDivision);
+                checkSixMonth((int) index, sixMonthDivision);
             }
         });
     }
@@ -302,7 +303,7 @@ public class RealmRepository {
         return null;
     }
 
-    public void saveBookInAllBookTwelveMonth(final Book book, final int index) {
+    public void saveBookInAllBookTwelveMonth(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -329,7 +330,7 @@ public class RealmRepository {
         isInitAllSixMonth = true;
     }
 
-    public void saveBookInTwelveMonthDivision(final Book book, final int index) {
+    public void saveBookInTwelveMonthDivision(final Book book, final float index) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -340,12 +341,13 @@ public class RealmRepository {
                 if (realmResults.isEmpty()) {
                     twelveMonthDivision = mRealm.createObject(TwelveMonthDivision.class);
                     twelveMonthDivision.setId(getNextKey(twelveMonthDivision, mRealm));
+                    twelveMonthDivision.setCategoryIndex(twelveMonthDivision.getId());
                     twelveMonthDivision.setYear(book.getYear());
                     twelveMonthDivision.setCategory(book.getBookCategory());
                 } else {
                     twelveMonthDivision = realmResults.first();
                 }
-                checkTwelveMonth(index, twelveMonthDivision);
+                checkTwelveMonth((int) index, twelveMonthDivision);
             }
         });
     }
@@ -367,8 +369,32 @@ public class RealmRepository {
         return mRealm.where(AllBookOneMonthDivision.class).findAll();
     }
 
+    public RealmResults<AllBookThreeMonthDivision> getAllBookThreeMonth() {
+        return mRealm.where(AllBookThreeMonthDivision.class).findAll();
+    }
+
+    public RealmResults<AllBookSixMonthDivision> getAllBookSixMonth() {
+        return mRealm.where(AllBookSixMonthDivision.class).findAll();
+    }
+
+    public RealmResults<AllBookTwelveMonthDivision> getAllBookTwelveMonth() {
+        return mRealm.where(AllBookTwelveMonthDivision.class).findAll();
+    }
+
     public RealmResults<TwelveMonthDivision> getTwelveMonthDivision() {
         return mRealm.where(TwelveMonthDivision.class).findAll();
+    }
+
+    public RealmResults<OneMonthDivision> getOneMonthDivision() {
+        return mRealm.where(OneMonthDivision.class).findAll();
+    }
+
+    public RealmResults<ThreeMonthDivision> getThreeMonthDivision() {
+        return mRealm.where(ThreeMonthDivision.class).findAll();
+    }
+
+    public RealmResults<SixMonthDivision> getSixMonthDivision() {
+        return mRealm.where(SixMonthDivision.class).findAll();
     }
 
     public void closeDb() {

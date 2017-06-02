@@ -4,15 +4,15 @@ import io.realm.RealmObject;
 
 public class AllBookTwelveMonthDivision extends RealmObject {
     private long id;
-    private int month;
-    private int allBookCount;
+    private float month;
+    private float allBookCount;
     private Year year;
 
-    public int getAllBookCount() {
+    public float getAllBookCount() {
         return allBookCount;
     }
 
-    public void setAllBookCount(int allBookCount) {
+    public void setAllBookCount(float allBookCount) {
         this.allBookCount = allBookCount;
     }
 
@@ -24,11 +24,11 @@ public class AllBookTwelveMonthDivision extends RealmObject {
         this.id = id;
     }
 
-    public int getMonth() {
+    public float getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(float month) {
         this.month = month;
     }
 

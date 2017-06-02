@@ -4,9 +4,10 @@ import io.realm.RealmObject;
 
 public class SixMonthDivision extends RealmObject {
     private long id;
+    private float categoryIndex;
     private BookCategory category;
-    private int januaryJune;
-    private int julyDecember;
+    private float januaryJune;
+    private float julyDecember;
     private Year year;
 
     public BookCategory getCategory() {
@@ -25,20 +26,28 @@ public class SixMonthDivision extends RealmObject {
         this.id = id;
     }
 
-    public int getJanuaryJune() {
+    public float getCategoryIndex() {
+        return categoryIndex;
+    }
+
+    public void setCategoryIndex(float categoryIndex) {
+        this.categoryIndex = categoryIndex;
+    }
+
+    public float getJanuaryJune() {
         return januaryJune;
     }
 
-    public void setJanuaryJune(int januaryJune) {
+    public void setJanuaryJune(float januaryJune) {
         this.januaryJune = januaryJune;
     }
 
-    public int getJulyDecember() {
+    public float getJulyDecember() {
         return julyDecember;
     }
 
-    public void setJulyDecember(int julySDecember) {
-        this.julyDecember = julySDecember;
+    public void setJulyDecember(float julyDecember) {
+        this.julyDecember = julyDecember;
     }
 
     public Year getYear() {
