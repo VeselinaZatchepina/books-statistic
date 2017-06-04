@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.developer.cookie.testdbstructure.database.RealmRepository;
-import com.developer.cookie.testdbstructure.database.model.AllBookOneMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.AllBookMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.Book;
 import com.developer.cookie.testdbstructure.database.model.OneMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
@@ -94,22 +94,22 @@ public class MainActivity extends AppCompatActivity {
     private void checkDivision(List<Integer> array, Book book, RealmRepository realmRepository) {
         float indexOneMonth = isContainsList(array, Division.oneMonthDivisionArrays);
         if (indexOneMonth != -1) {
-            realmRepository.saveBookInAllBookOneMonth(book, indexOneMonth);
+            realmRepository.saveBookInAllBookMonthDivision(book, indexOneMonth, "one");
             realmRepository.saveBookInOneMonthDivision(book, indexOneMonth);
         }
         float indexThreeMonth = isContainsList(array, Division.threeMonthDivisionArrays);
         if (indexThreeMonth != -1) {
-            realmRepository.saveBookInAllBookThreeMonth(book, indexThreeMonth);
+            realmRepository.saveBookInAllBookMonthDivision(book, indexThreeMonth, "three");
             realmRepository.saveBookInThreeMonthDivision(book, indexThreeMonth);
         }
         float indexSixMonth = isContainsList(array, Division.sixMonthDivisionArrays);
         if (indexSixMonth != -1) {
-            realmRepository.saveBookInAllBookSixMonth(book, indexSixMonth);
+            realmRepository.saveBookInAllBookMonthDivision(book, indexSixMonth, "six");
             realmRepository.saveBookInSixMonthDivision(book, indexSixMonth);
         }
         float indexTwelveMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
         if (indexTwelveMonth != -1) {
-            realmRepository.saveBookInAllBookTwelveMonth(book, indexTwelveMonth);
+            realmRepository.saveBookInAllBookMonthDivision(book, indexTwelveMonth, "twelve");
             realmRepository.saveBookInTwelveMonthDivision(book, indexTwelveMonth);
         }
     }
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createLineChart() {
-        final RealmResults<AllBookOneMonthDivision> realmResults = mRealmRepository.getAllBookOneMonth();
+        final RealmResults<AllBookMonthDivision> realmResults = mRealmRepository.getAllBookMonth(0, 4);
         LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
         Description description = lineChart.getDescription();
         description.setEnabled(false);
@@ -140,12 +140,12 @@ public class MainActivity extends AppCompatActivity {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setGranularity(1f);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(realmResults.first()));
+        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter("three"));
         lineChart.getXAxis().setAxisMinValue(0f);
         lineChart.getXAxis().setDrawGridLines(false);
 
-        RealmLineDataSet<AllBookOneMonthDivision> lineDataSet =
-                new RealmLineDataSet<AllBookOneMonthDivision>(realmResults, "month", "allBookCount");
+        RealmLineDataSet<AllBookMonthDivision> lineDataSet =
+                new RealmLineDataSet<AllBookMonthDivision>(realmResults, "month", "allBookCountThreeMonth");
         lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
         lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));

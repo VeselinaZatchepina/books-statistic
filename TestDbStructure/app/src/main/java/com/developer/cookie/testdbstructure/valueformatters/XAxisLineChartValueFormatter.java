@@ -1,8 +1,5 @@
 package com.developer.cookie.testdbstructure.valueformatters;
 
-import com.developer.cookie.testdbstructure.database.model.AllBookOneMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.AllBookSixMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.AllBookThreeMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.OneMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.ThreeMonthDivision;
@@ -14,19 +11,24 @@ import io.realm.RealmObject;
 public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
 
     RealmObject realmObject;
+    String currentDivision = "no value";
 
     public XAxisLineChartValueFormatter(RealmObject realmObject) {
         this.realmObject = realmObject;
     }
 
+    public XAxisLineChartValueFormatter(String currentDivision) {
+        this.currentDivision = currentDivision;
+    }
+
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         String currentMonth;
-        if (realmObject instanceof AllBookOneMonthDivision || realmObject instanceof OneMonthDivision) {
+        if (currentDivision.equals("one") || realmObject instanceof OneMonthDivision) {
             currentMonth = checkLabelOneMonth(value);
-        } else if (realmObject instanceof AllBookThreeMonthDivision || realmObject instanceof ThreeMonthDivision) {
+        } else if (currentDivision.equals("three") || realmObject instanceof ThreeMonthDivision) {
             currentMonth = checkLabelThreeMonth(value);
-        } else if (realmObject instanceof AllBookSixMonthDivision  || realmObject instanceof SixMonthDivision) {
+        } else if (currentDivision.equals("six")  || realmObject instanceof SixMonthDivision) {
             currentMonth = checkLabelSixMonth(value);
         } else {
             currentMonth = checkLabelTwelveMonth(value);
