@@ -36,6 +36,11 @@ public class RealmRepository {
                 createBook(realm, createBookCategory(realm, "IT2"), "10.06.2017", "12.06.2017");
                 createBook(realm, createBookCategory(realm, "IT0"), "10.06.2017", "12.06.2017");
                 createBook(realm, createBookCategory(realm, "IT0"), "10.12.2017", "13.12.2017");
+                createBook(realm, createBookCategory(realm, "IT3"), "10.01.2017", "12.04.2017");
+                createBook(realm, createBookCategory(realm, "IT1"), "10.07.2017", "12.09.2017");
+                createBook(realm, createBookCategory(realm, "IT3"), "10.10.2017", "12.11.2017");
+                createBook(realm, createBookCategory(realm, "IT0"), "10.09.2017", "12.09.2017");
+                createBook(realm, createBookCategory(realm, "IT4"), "10.12.2017", "13.12.2017");
             }
         });
     }
@@ -72,10 +77,6 @@ public class RealmRepository {
             id = 0;
         }
         return id;
-    }
-
-    public RealmResults<Book> getAllBooks() {
-        return mRealm.where(Book.class).findAll();
     }
 
     public void saveBookInAllBookOneMonth(final Book book, final float index) {
@@ -399,6 +400,10 @@ public class RealmRepository {
 
     public RealmResults<OneMonthDivision> getOneMonthDivisionByCategory(String categoryName) {
         return mRealm.where(OneMonthDivision.class).equalTo("category.categoryName", categoryName).findAll();
+    }
+
+    public RealmResults<Book> getAllBooks() {
+        return mRealm.where(Book.class).findAll();
     }
 
     public void closeDb() {
