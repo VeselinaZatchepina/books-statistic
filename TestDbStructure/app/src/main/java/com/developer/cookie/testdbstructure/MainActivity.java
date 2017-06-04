@@ -7,6 +7,7 @@ import android.util.Log;
 import com.developer.cookie.testdbstructure.database.RealmRepository;
 import com.developer.cookie.testdbstructure.database.model.AllBookOneMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.Book;
+import com.developer.cookie.testdbstructure.database.model.OneMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
 import com.developer.cookie.testdbstructure.utils.Division;
 import com.developer.cookie.testdbstructure.valueformatters.FloatToIntInsideChartValueFormatter;
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
@@ -59,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
         createLineChart();
         createBarChart();
+        createCategoryLineChart();
 
-        // TODO third chart
+        // TODO refactor models (implements realmModel)
     }
 
     private ArrayList<Integer> createMonthYearArray(String dateStart, String dateEnd) {
@@ -183,6 +186,62 @@ public class MainActivity extends AppCompatActivity {
         barChart.setData(barData);
         barChart.setFitBars(true);
         barChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+    }
+
+    private void createCategoryLineChart() {
+        RealmResults<OneMonthDivision> realmResults = mRealmRepository.getOneMonthDivisionByCategory("IT0");
+        OneMonthDivision currentBookIT0 = realmResults.first();
+        ArrayList<Float> listOfBookCount = new ArrayList<>();
+        listOfBookCount.add(currentBookIT0.getJanuary());
+        listOfBookCount.add(currentBookIT0.getFebruary());
+        listOfBookCount.add(currentBookIT0.getMarch());
+        listOfBookCount.add(currentBookIT0.getApril());
+        listOfBookCount.add(currentBookIT0.getMay());
+        listOfBookCount.add(currentBookIT0.getJune());
+        listOfBookCount.add(currentBookIT0.getJuly());
+        listOfBookCount.add(currentBookIT0.getAugust());
+        listOfBookCount.add(currentBookIT0.getSeptember());
+        listOfBookCount.add(currentBookIT0.getOctober());
+        listOfBookCount.add(currentBookIT0.getNovember());
+        listOfBookCount.add(currentBookIT0.getDecember());
+
+        List<Entry> entries = new ArrayList<Entry>();
+        for (int i = 0; i < listOfBookCount.size(); i++) {
+            entries.add(new Entry((float) i, listOfBookCount.get(i)));
+        }
+
+        LineChart lineChart = (LineChart) findViewById(R.id.lineChart_category);
+        Description description = lineChart.getDescription();
+        description.setEnabled(false);
+        Legend leg = lineChart.getLegend();
+        leg.setEnabled(false);
+        lineChart.getAxisRight().setValueFormatter(new FloatToIntValueFormatter());
+        lineChart.getAxisRight().setGranularity(1f);
+        lineChart.getAxisRight().setAxisMinValue(0f);
+        lineChart.getAxisLeft().setValueFormatter(new FloatToIntValueFormatter());
+        lineChart.getAxisLeft().setGranularity(1f);
+        lineChart.getAxisLeft().setAxisMinValue(0f);
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getXAxis().setGranularity(1f);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(currentBookIT0));
+        lineChart.getXAxis().setAxisMinValue(0f);
+        lineChart.getXAxis().setDrawGridLines(false);
+
+        LineDataSet dataSet = new LineDataSet(entries, "Label");
+        dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        dataSet.setColor(ColorTemplate.rgb("#FF5722"));
+        dataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        dataSet.setLineWidth(1.8f);
+        dataSet.setCircleRadius(3.6f);
+        dataSet.setValueTextSize(8f);
+        dataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(dataSet);
+        LineData lineData = new LineData(dataSets);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
+        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
 
     @Override

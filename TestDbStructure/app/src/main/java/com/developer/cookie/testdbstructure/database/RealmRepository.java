@@ -397,6 +397,10 @@ public class RealmRepository {
         return mRealm.where(SixMonthDivision.class).findAll();
     }
 
+    public RealmResults<OneMonthDivision> getOneMonthDivisionByCategory(String categoryName) {
+        return mRealm.where(OneMonthDivision.class).equalTo("category.categoryName", categoryName).findAll();
+    }
+
     public void closeDb() {
         mRealm.close();
     }
