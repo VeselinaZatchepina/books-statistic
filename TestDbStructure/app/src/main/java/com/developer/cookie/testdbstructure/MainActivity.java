@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         createBarChart();
         createCategoryLineChart();
 
-        // TODO refactor models
     }
 
     private ArrayList<Integer> createMonthYearArray(String dateStart, String dateEnd) {
@@ -126,32 +125,11 @@ public class MainActivity extends AppCompatActivity {
     private void createLineChart() {
         final RealmResults<AllBookMonthDivision> realmResults = mRealmRepository.getAllBookMonth(0, 4);
         LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
-        Description description = lineChart.getDescription();
-        description.setEnabled(false);
-        Legend leg = lineChart.getLegend();
-        leg.setEnabled(false);
-        lineChart.getAxisRight().setValueFormatter(new FloatToIntValueFormatter());
-        lineChart.getAxisRight().setGranularity(1f);
-        lineChart.getAxisRight().setAxisMinValue(0f);
-        lineChart.getAxisLeft().setValueFormatter(new FloatToIntValueFormatter());
-        lineChart.getAxisLeft().setGranularity(1f);
-        lineChart.getAxisLeft().setAxisMinValue(0f);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getXAxis().setGranularity(1f);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter("three"));
-        lineChart.getXAxis().setAxisMinValue(0f);
-        lineChart.getXAxis().setDrawGridLines(false);
-
+        setLineChartStyle(lineChart);
         RealmLineDataSet<AllBookMonthDivision> lineDataSet =
                 new RealmLineDataSet<AllBookMonthDivision>(realmResults, "month", "allBookCountThreeMonth");
-        lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
-        lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
-        lineDataSet.setLineWidth(1.8f);
-        lineDataSet.setCircleRadius(3.6f);
-        lineDataSet.setValueTextSize(8f);
-        lineDataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
+        setRealmLineDataSetStyle(lineDataSet);
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(lineDataSet);
         LineData lineData = new LineData(dataSets);
@@ -161,24 +139,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createBarChart() {
-        final RealmResults<BookMonthDivision> bookMonthDivision = mRealmRepository.getBookMonthDivision();
+        final RealmResults<BookMonthDivision> bookMonthDivisions = mRealmRepository.getBookMonthDivision();
         BarChart barChart = (BarChart) findViewById(R.id.barChart);
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        barChart.getAxisRight().setGranularity(1f);
-        barChart.getAxisLeft().setGranularity(1f);
-        barChart.getXAxis().setGranularity(1f);
-        Description description = barChart.getDescription();
-        description.setEnabled(false);
-        Legend legend = barChart.getLegend();
-        legend.setEnabled(false);
-        barChart.getAxisLeft().setValueFormatter(new FloatToIntValueFormatter());
-        barChart.getAxisRight().setValueFormatter(new FloatToIntValueFormatter());
-        barChart.getXAxis().setValueFormatter(new XAxisBarChartValueFormatter(bookMonthDivision));
+        setBarChartStyle(barChart, bookMonthDivisions);
         RealmBarDataSet<BookMonthDivision> barDataSet =
-                new RealmBarDataSet<BookMonthDivision>(bookMonthDivision, "categoryIndex", "januaryJune");
-        barDataSet.setValueTextSize(8f);
-        barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
-        barDataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
+                new RealmBarDataSet<BookMonthDivision>(bookMonthDivisions, "categoryIndex", "januaryJune");
+        setRealmBarDataSetStyle(barDataSet);
         ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
         barDataSets.add(barDataSet);
         BarData barData = new BarData(barDataSets);
@@ -190,6 +156,22 @@ public class MainActivity extends AppCompatActivity {
     private void createCategoryLineChart() {
         RealmResults<BookMonthDivision> realmResults = mRealmRepository.getBookMonthDivisionByCategory("IT0");
         BookMonthDivision bookMonthDivision = realmResults.first();
+        ArrayList<Float> listOfBookCount = createBooksCountList(bookMonthDivision);
+        List<Entry> entries = createEntry(listOfBookCount);
+        LineChart lineChart = (LineChart) findViewById(R.id.lineChart_category);
+        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(bookMonthDivision));
+        setLineChartStyle(lineChart);
+        LineDataSet dataSet = new LineDataSet(entries, "Label");
+        setLineDataSetStyle(dataSet);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(dataSet);
+        LineData lineData = new LineData(dataSets);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
+        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+    }
+
+    private ArrayList<Float> createBooksCountList(BookMonthDivision bookMonthDivision) {
         ArrayList<Float> listOfBookCount = new ArrayList<>();
         listOfBookCount.add(bookMonthDivision.getJanuary());
         listOfBookCount.add(bookMonthDivision.getFebruary());
@@ -203,13 +185,18 @@ public class MainActivity extends AppCompatActivity {
         listOfBookCount.add(bookMonthDivision.getOctober());
         listOfBookCount.add(bookMonthDivision.getNovember());
         listOfBookCount.add(bookMonthDivision.getDecember());
+        return listOfBookCount;
+    }
 
+    private List<Entry> createEntry(ArrayList<Float> listOfBookCount) {
         List<Entry> entries = new ArrayList<Entry>();
         for (int i = 0; i < listOfBookCount.size(); i++) {
             entries.add(new Entry((float) i, listOfBookCount.get(i)));
         }
+        return entries;
+    }
 
-        LineChart lineChart = (LineChart) findViewById(R.id.lineChart_category);
+    private void setLineChartStyle(LineChart lineChart) {
         Description description = lineChart.getDescription();
         description.setEnabled(false);
         Legend leg = lineChart.getLegend();
@@ -223,11 +210,21 @@ public class MainActivity extends AppCompatActivity {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setGranularity(1f);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(bookMonthDivision));
         lineChart.getXAxis().setAxisMinValue(0f);
         lineChart.getXAxis().setDrawGridLines(false);
+    }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Label");
+    private void setRealmLineDataSetStyle(RealmLineDataSet<AllBookMonthDivision> lineDataSet) {
+        lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
+        lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        lineDataSet.setLineWidth(1.8f);
+        lineDataSet.setCircleRadius(3.6f);
+        lineDataSet.setValueTextSize(8f);
+        lineDataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
+    }
+
+    private void setLineDataSetStyle(LineDataSet dataSet) {
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         dataSet.setColor(ColorTemplate.rgb("#FF5722"));
         dataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
@@ -235,12 +232,26 @@ public class MainActivity extends AppCompatActivity {
         dataSet.setCircleRadius(3.6f);
         dataSet.setValueTextSize(8f);
         dataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
-        ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(dataSet);
-        LineData lineData = new LineData(dataSets);
-        lineChart.setData(lineData);
-        lineChart.invalidate();
-        lineChart.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+    }
+
+    private void setBarChartStyle(BarChart barChart, RealmResults<BookMonthDivision> bookMonthDivisions) {
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getAxisRight().setGranularity(1f);
+        barChart.getAxisLeft().setGranularity(1f);
+        barChart.getXAxis().setGranularity(1f);
+        Description description = barChart.getDescription();
+        description.setEnabled(false);
+        Legend legend = barChart.getLegend();
+        legend.setEnabled(false);
+        barChart.getAxisLeft().setValueFormatter(new FloatToIntValueFormatter());
+        barChart.getAxisRight().setValueFormatter(new FloatToIntValueFormatter());
+        barChart.getXAxis().setValueFormatter(new XAxisBarChartValueFormatter(bookMonthDivisions));
+    }
+
+    private void setRealmBarDataSetStyle(RealmBarDataSet<BookMonthDivision> barDataSet) {
+        barDataSet.setValueTextSize(8f);
+        barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
+        barDataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
     }
 
     @Override
