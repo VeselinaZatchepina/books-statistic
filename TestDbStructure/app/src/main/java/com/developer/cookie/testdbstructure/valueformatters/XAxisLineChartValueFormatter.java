@@ -1,8 +1,6 @@
 package com.developer.cookie.testdbstructure.valueformatters;
 
-import com.developer.cookie.testdbstructure.database.model.OneMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.ThreeMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.BookMonthDivision;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
@@ -24,11 +22,11 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         String currentMonth;
-        if (currentDivision.equals("one") || realmObject instanceof OneMonthDivision) {
+        if (currentDivision.equals("one") || realmObject instanceof BookMonthDivision) {
             currentMonth = checkLabelOneMonth(value);
-        } else if (currentDivision.equals("three") || realmObject instanceof ThreeMonthDivision) {
+        } else if (currentDivision.equals("three") || realmObject instanceof BookMonthDivision) {
             currentMonth = checkLabelThreeMonth(value);
-        } else if (currentDivision.equals("six")  || realmObject instanceof SixMonthDivision) {
+        } else if (currentDivision.equals("six")  || realmObject instanceof BookMonthDivision) {
             currentMonth = checkLabelSixMonth(value);
         } else {
             currentMonth = checkLabelTwelveMonth(value);

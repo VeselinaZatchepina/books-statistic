@@ -7,8 +7,7 @@ import android.util.Log;
 import com.developer.cookie.testdbstructure.database.RealmRepository;
 import com.developer.cookie.testdbstructure.database.model.AllBookMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.Book;
-import com.developer.cookie.testdbstructure.database.model.OneMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.BookMonthDivision;
 import com.developer.cookie.testdbstructure.utils.Division;
 import com.developer.cookie.testdbstructure.valueformatters.FloatToIntInsideChartValueFormatter;
 import com.developer.cookie.testdbstructure.valueformatters.FloatToIntValueFormatter;
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         createBarChart();
         createCategoryLineChart();
 
-        // TODO refactor models (implements realmModel)
+        // TODO refactor models
     }
 
     private ArrayList<Integer> createMonthYearArray(String dateStart, String dateEnd) {
@@ -95,22 +94,22 @@ public class MainActivity extends AppCompatActivity {
         float indexOneMonth = isContainsList(array, Division.oneMonthDivisionArrays);
         if (indexOneMonth != -1) {
             realmRepository.saveBookInAllBookMonthDivision(book, indexOneMonth, "one");
-            realmRepository.saveBookInOneMonthDivision(book, indexOneMonth);
+            realmRepository.saveBookInMonthDivision(book, indexOneMonth, "one");
         }
         float indexThreeMonth = isContainsList(array, Division.threeMonthDivisionArrays);
         if (indexThreeMonth != -1) {
             realmRepository.saveBookInAllBookMonthDivision(book, indexThreeMonth, "three");
-            realmRepository.saveBookInThreeMonthDivision(book, indexThreeMonth);
+            realmRepository.saveBookInMonthDivision(book, indexThreeMonth, "three");
         }
         float indexSixMonth = isContainsList(array, Division.sixMonthDivisionArrays);
         if (indexSixMonth != -1) {
             realmRepository.saveBookInAllBookMonthDivision(book, indexSixMonth, "six");
-            realmRepository.saveBookInSixMonthDivision(book, indexSixMonth);
+            realmRepository.saveBookInMonthDivision(book, indexSixMonth, "six");
         }
         float indexTwelveMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
         if (indexTwelveMonth != -1) {
             realmRepository.saveBookInAllBookMonthDivision(book, indexTwelveMonth, "twelve");
-            realmRepository.saveBookInTwelveMonthDivision(book, indexTwelveMonth);
+            realmRepository.saveBookInMonthDivision(book, indexTwelveMonth, "twelve");
         }
     }
 
@@ -162,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createBarChart() {
-        final RealmResults<SixMonthDivision> twelveRealmResults = mRealmRepository.getSixMonthDivision();
+        final RealmResults<BookMonthDivision> bookMonthDivision = mRealmRepository.getBookMonthDivision();
         BarChart barChart = (BarChart) findViewById(R.id.barChart);
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getAxisRight().setGranularity(1f);
@@ -174,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
         legend.setEnabled(false);
         barChart.getAxisLeft().setValueFormatter(new FloatToIntValueFormatter());
         barChart.getAxisRight().setValueFormatter(new FloatToIntValueFormatter());
-        barChart.getXAxis().setValueFormatter(new XAxisBarChartValueFormatter(twelveRealmResults));
-        RealmBarDataSet<SixMonthDivision> barDataSet =
-                new RealmBarDataSet<SixMonthDivision>(twelveRealmResults, "categoryIndex", "januaryJune");
+        barChart.getXAxis().setValueFormatter(new XAxisBarChartValueFormatter(bookMonthDivision));
+        RealmBarDataSet<BookMonthDivision> barDataSet =
+                new RealmBarDataSet<BookMonthDivision>(bookMonthDivision, "categoryIndex", "januaryJune");
         barDataSet.setValueTextSize(8f);
         barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
         barDataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
@@ -189,21 +188,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createCategoryLineChart() {
-        RealmResults<OneMonthDivision> realmResults = mRealmRepository.getOneMonthDivisionByCategory("IT0");
-        OneMonthDivision currentBookIT0 = realmResults.first();
+        RealmResults<BookMonthDivision> realmResults = mRealmRepository.getBookMonthDivisionByCategory("IT0");
+        BookMonthDivision bookMonthDivision = realmResults.first();
         ArrayList<Float> listOfBookCount = new ArrayList<>();
-        listOfBookCount.add(currentBookIT0.getJanuary());
-        listOfBookCount.add(currentBookIT0.getFebruary());
-        listOfBookCount.add(currentBookIT0.getMarch());
-        listOfBookCount.add(currentBookIT0.getApril());
-        listOfBookCount.add(currentBookIT0.getMay());
-        listOfBookCount.add(currentBookIT0.getJune());
-        listOfBookCount.add(currentBookIT0.getJuly());
-        listOfBookCount.add(currentBookIT0.getAugust());
-        listOfBookCount.add(currentBookIT0.getSeptember());
-        listOfBookCount.add(currentBookIT0.getOctober());
-        listOfBookCount.add(currentBookIT0.getNovember());
-        listOfBookCount.add(currentBookIT0.getDecember());
+        listOfBookCount.add(bookMonthDivision.getJanuary());
+        listOfBookCount.add(bookMonthDivision.getFebruary());
+        listOfBookCount.add(bookMonthDivision.getMarch());
+        listOfBookCount.add(bookMonthDivision.getApril());
+        listOfBookCount.add(bookMonthDivision.getMay());
+        listOfBookCount.add(bookMonthDivision.getJune());
+        listOfBookCount.add(bookMonthDivision.getJuly());
+        listOfBookCount.add(bookMonthDivision.getAugust());
+        listOfBookCount.add(bookMonthDivision.getSeptember());
+        listOfBookCount.add(bookMonthDivision.getOctober());
+        listOfBookCount.add(bookMonthDivision.getNovember());
+        listOfBookCount.add(bookMonthDivision.getDecember());
 
         List<Entry> entries = new ArrayList<Entry>();
         for (int i = 0; i < listOfBookCount.size(); i++) {
@@ -224,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getXAxis().setGranularity(1f);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(currentBookIT0));
+        lineChart.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(bookMonthDivision));
         lineChart.getXAxis().setAxisMinValue(0f);
         lineChart.getXAxis().setDrawGridLines(false);
 

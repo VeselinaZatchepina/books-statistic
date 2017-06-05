@@ -3,10 +3,7 @@ package com.developer.cookie.testdbstructure.database;
 import com.developer.cookie.testdbstructure.database.model.AllBookMonthDivision;
 import com.developer.cookie.testdbstructure.database.model.Book;
 import com.developer.cookie.testdbstructure.database.model.BookCategory;
-import com.developer.cookie.testdbstructure.database.model.OneMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.SixMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.ThreeMonthDivision;
-import com.developer.cookie.testdbstructure.database.model.TwelveMonthDivision;
+import com.developer.cookie.testdbstructure.database.model.BookMonthDivision;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -15,10 +12,6 @@ import io.realm.RealmResults;
 public class RealmRepository {
 
     private final Realm mRealm;
-    private Boolean isInitAllOneMonth = false;
-    private Boolean isInitAllThreeMonth = false;
-    private Boolean isInitAllSixMonth = false;
-    private Boolean isInitAllTwelveMonth = false;
     private Boolean isInitAllMonth = false;
 
     public RealmRepository() {
@@ -38,7 +31,7 @@ public class RealmRepository {
                 createBook(realm, createBookCategory(realm, "IT1"), "10.07.2017", "12.09.2017");
                 createBook(realm, createBookCategory(realm, "IT3"), "10.10.2017", "12.11.2017");
                 createBook(realm, createBookCategory(realm, "IT0"), "10.09.2017", "12.09.2017");
-                createBook(realm, createBookCategory(realm, "IT4"), "10.12.2017", "13.12.2017");
+                createBook(realm, createBookCategory(realm, "IT0"), "10.12.2017", "13.12.2017");
             }
         });
     }
@@ -119,204 +112,136 @@ public class RealmRepository {
         isInitAllMonth = true;
     }
 
-    public void saveBookInOneMonthDivision(final Book book, final float index) {
+    public void saveBookInMonthDivision(final Book book, final float index, final String monthDivisionType) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                OneMonthDivision oneMonthDivision;
-                RealmResults<OneMonthDivision> realmResults = mRealm.where(OneMonthDivision.class)
+                BookMonthDivision bookMonthDivision;
+                RealmResults<BookMonthDivision> realmResults = mRealm.where(BookMonthDivision.class)
                         .equalTo("category.categoryName", book.getBookCategory().getCategoryName())
                         .findAll();
                 if (realmResults.isEmpty()) {
-                    oneMonthDivision = mRealm.createObject(OneMonthDivision.class);
-                    oneMonthDivision.setId(getNextKey(oneMonthDivision, mRealm));
-                    oneMonthDivision.setCategoryIndex(oneMonthDivision.getId());
-                    oneMonthDivision.setYear(book.getYear());
-                    oneMonthDivision.setCategory(book.getBookCategory());
+                    bookMonthDivision = mRealm.createObject(BookMonthDivision.class);
+                    bookMonthDivision.setId(getNextKey(bookMonthDivision, mRealm));
+                    bookMonthDivision.setCategoryIndex(bookMonthDivision.getId());
+                    bookMonthDivision.setYear(book.getYear());
+                    bookMonthDivision.setCategory(book.getBookCategory());
                 } else {
-                    oneMonthDivision = realmResults.first();
+                    bookMonthDivision = realmResults.first();
                 }
-                checkOneMonth((int) index, oneMonthDivision);
+                checkMonth((int) index, bookMonthDivision, monthDivisionType);
             }
         });
     }
 
-    private void checkOneMonth(int index, OneMonthDivision oneMonthDivisions) {
+    private void checkMonth(int index, BookMonthDivision bookMonthDivision, String monthDivisionType) {
         switch (index) {
             case 0:
-                oneMonthDivisions.setJanuary(oneMonthDivisions.getJanuary() + 1);
+                checkIndexCase0(bookMonthDivision, monthDivisionType);
                 break;
             case 1:
-                oneMonthDivisions.setFebruary(oneMonthDivisions.getFebruary() + 1);
+                checkIndexCase1(bookMonthDivision, monthDivisionType);
                 break;
             case 2:
-                oneMonthDivisions.setMarch(oneMonthDivisions.getMarch() + 1);
+                checkIndexCase2(bookMonthDivision, monthDivisionType);
                 break;
             case 3:
-                oneMonthDivisions.setApril(oneMonthDivisions.getApril() + 1);
+                checkIndexCase3(bookMonthDivision, monthDivisionType);
                 break;
             case 4:
-                oneMonthDivisions.setMay(oneMonthDivisions.getMay() + 1);
+                bookMonthDivision.setMay(bookMonthDivision.getMay() + 1);
                 break;
             case 5:
-                oneMonthDivisions.setJune(oneMonthDivisions.getJune() + 1);
+                bookMonthDivision.setJune(bookMonthDivision.getJune() + 1);
                 break;
             case 6:
-                oneMonthDivisions.setJuly(oneMonthDivisions.getJuly() + 1);
+                bookMonthDivision.setJuly(bookMonthDivision.getJuly() + 1);
                 break;
             case 7:
-                oneMonthDivisions.setAugust(oneMonthDivisions.getAugust() + 1);
+                bookMonthDivision.setAugust(bookMonthDivision.getAugust() + 1);
                 break;
             case 8:
-                oneMonthDivisions.setSeptember(oneMonthDivisions.getSeptember() + 1);
+                bookMonthDivision.setSeptember(bookMonthDivision.getSeptember() + 1);
                 break;
             case 9:
-                oneMonthDivisions.setOctober(oneMonthDivisions.getOctober() + 1);
+                bookMonthDivision.setOctober(bookMonthDivision.getOctober() + 1);
                 break;
             case 10:
-                oneMonthDivisions.setNovember(oneMonthDivisions.getNovember() + 1);
+                bookMonthDivision.setNovember(bookMonthDivision.getNovember() + 1);
                 break;
             case 11:
-                oneMonthDivisions.setDecember(oneMonthDivisions.getDecember() + 1);
+                bookMonthDivision.setDecember(bookMonthDivision.getDecember() + 1);
                 break;
         }
     }
 
-    public void saveBookInThreeMonthDivision(final Book book, final float index) {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                ThreeMonthDivision threeMonthDivision;
-                RealmResults<ThreeMonthDivision> realmResults = mRealm.where(ThreeMonthDivision.class)
-                        .equalTo("category.categoryName", book.getBookCategory().getCategoryName())
-                        .findAll();
-                if (realmResults.isEmpty()) {
-                    threeMonthDivision = mRealm.createObject(ThreeMonthDivision.class);
-                    threeMonthDivision.setId(getNextKey(threeMonthDivision, mRealm));
-                    threeMonthDivision.setCategoryIndex(threeMonthDivision.getId());
-                    threeMonthDivision.setYear(book.getYear());
-                    threeMonthDivision.setCategory(book.getBookCategory());
-                } else {
-                    threeMonthDivision = realmResults.first();
-                }
-                checkThreeMonth((int) index, threeMonthDivision);
-            }
-        });
-    }
-
-    private String checkThreeMonth(int index, ThreeMonthDivision threeMonthDivision) {
-        switch (index) {
-            case 0:
-                threeMonthDivision.setJanuaryMarch(threeMonthDivision.getJanuaryMarch() + 1);
+    private void checkIndexCase0(BookMonthDivision bookMonthDivision, String monthDivisionType) {
+        switch (monthDivisionType) {
+            case "one" :
+                bookMonthDivision.setJanuary(bookMonthDivision.getJanuary() + 1);
                 break;
-            case 1:
-                threeMonthDivision.setAprilJune(threeMonthDivision.getAprilJune() + 1);
+            case "three" :
+                bookMonthDivision.setJanuaryMarch(bookMonthDivision.getJanuaryMarch() + 1);
                 break;
-            case 2:
-                threeMonthDivision.setJulySeptember(threeMonthDivision.getJulySeptember() + 1);
+            case "six" :
+                bookMonthDivision.setJanuaryJune(bookMonthDivision.getJanuaryJune() + 1);
                 break;
-            case 3:
-                threeMonthDivision.setOctoberDecember(threeMonthDivision.getOctoberDecember() + 1);
+            case "twelve" :
+                bookMonthDivision.setJanuaryDecember(bookMonthDivision.getJanuaryDecember() + 1);
                 break;
         }
-        return null;
     }
 
-    public void saveBookInSixMonthDivision(final Book book, final float index) {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                SixMonthDivision sixMonthDivision;
-                RealmResults<SixMonthDivision> realmResults = mRealm.where(SixMonthDivision.class)
-                        .equalTo("category.categoryName", book.getBookCategory().getCategoryName())
-                        .findAll();
-                if (realmResults.isEmpty()) {
-                    sixMonthDivision = mRealm.createObject(SixMonthDivision.class);
-                    sixMonthDivision.setId(getNextKey(sixMonthDivision, mRealm));
-                    sixMonthDivision.setCategoryIndex(sixMonthDivision.getId());
-                    sixMonthDivision.setYear(book.getYear());
-                    sixMonthDivision.setCategory(book.getBookCategory());
-                } else {
-                    sixMonthDivision = realmResults.first();
-                }
-                checkSixMonth((int) index, sixMonthDivision);
-            }
-        });
-    }
-
-    private String checkSixMonth(int index, SixMonthDivision sixMonthDivision) {
-        switch (index) {
-            case 0:
-                sixMonthDivision.setJanuaryJune(sixMonthDivision.getJanuaryJune() + 1);
+    private void checkIndexCase1(BookMonthDivision bookMonthDivision, String monthDivisionType) {
+        switch (monthDivisionType) {
+            case "one" :
+                bookMonthDivision.setFebruary(bookMonthDivision.getFebruary() + 1);
                 break;
-            case 1:
-                sixMonthDivision.setJulyDecember(sixMonthDivision.getJulyDecember() + 1);
+            case "three" :
+                bookMonthDivision.setAprilJune(bookMonthDivision.getAprilJune() + 1);
+                break;
+            case "six" :
+                bookMonthDivision.setJulyDecember(bookMonthDivision.getJulyDecember() + 1);
                 break;
         }
-        return null;
     }
 
-    public void saveBookInTwelveMonthDivision(final Book book, final float index) {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                TwelveMonthDivision twelveMonthDivision;
-                RealmResults<TwelveMonthDivision> realmResults = mRealm.where(TwelveMonthDivision.class)
-                        .equalTo("category.categoryName", book.getBookCategory().getCategoryName())
-                        .findAll();
-                if (realmResults.isEmpty()) {
-                    twelveMonthDivision = mRealm.createObject(TwelveMonthDivision.class);
-                    twelveMonthDivision.setId(getNextKey(twelveMonthDivision, mRealm));
-                    twelveMonthDivision.setCategoryIndex(twelveMonthDivision.getId());
-                    twelveMonthDivision.setYear(book.getYear());
-                    twelveMonthDivision.setCategory(book.getBookCategory());
-                } else {
-                    twelveMonthDivision = realmResults.first();
-                }
-                checkTwelveMonth((int) index, twelveMonthDivision);
-            }
-        });
-    }
-
-    private String checkTwelveMonth(int index, TwelveMonthDivision twelveMonthDivision) {
-        switch (index) {
-            case 0:
-                twelveMonthDivision.setJanuaryDecember(twelveMonthDivision.getJanuaryDecember() + 1);
+    private void checkIndexCase2(BookMonthDivision bookMonthDivision, String monthDivisionType) {
+        switch (monthDivisionType) {
+            case "one" :
+                bookMonthDivision.setMarch(bookMonthDivision.getMarch() + 1);
+                break;
+            case "three" :
+                bookMonthDivision.setJulySeptember(bookMonthDivision.getJulySeptember() + 1);
                 break;
         }
-        return null;
     }
 
-    public RealmResults<Book> getBookByEndDate(String date) {
-        return mRealm.where(Book.class).equalTo("dateEnd", date).findAll();
+    private void checkIndexCase3(BookMonthDivision bookMonthDivision, String monthDivisionType) {
+        switch (monthDivisionType) {
+            case "one" :
+                bookMonthDivision.setApril(bookMonthDivision.getApril() + 1);
+                break;
+            case "three" :
+                bookMonthDivision.setOctoberDecember(bookMonthDivision.getOctoberDecember() + 1);
+                break;
+        }
     }
 
     public RealmResults<AllBookMonthDivision> getAllBookMonth(int begin, int end) {
         return mRealm.where(AllBookMonthDivision.class).between("id", begin, end).findAll();
     }
 
-    public RealmResults<TwelveMonthDivision> getTwelveMonthDivision() {
-        return mRealm.where(TwelveMonthDivision.class).findAll();
-    }
-
-    public RealmResults<OneMonthDivision> getOneMonthDivision() {
-        return mRealm.where(OneMonthDivision.class).findAll();
-    }
-
-    public RealmResults<ThreeMonthDivision> getThreeMonthDivision() {
-        return mRealm.where(ThreeMonthDivision.class).findAll();
-    }
-
-    public RealmResults<SixMonthDivision> getSixMonthDivision() {
-        return mRealm.where(SixMonthDivision.class).findAll();
-    }
-
-    public RealmResults<OneMonthDivision> getOneMonthDivisionByCategory(String categoryName) {
-        return mRealm.where(OneMonthDivision.class).equalTo("category.categoryName", categoryName).findAll();
+    public RealmResults<BookMonthDivision> getBookMonthDivisionByCategory(String category) {
+        return mRealm.where(BookMonthDivision.class).equalTo("category.categoryName", category).findAll();
     }
 
     public RealmResults<Book> getAllBooks() {
         return mRealm.where(Book.class).findAll();
+    }
+
+    public RealmResults<BookMonthDivision> getBookMonthDivision() {
+        return mRealm.where(BookMonthDivision.class).findAll();
     }
 
     public void closeDb() {

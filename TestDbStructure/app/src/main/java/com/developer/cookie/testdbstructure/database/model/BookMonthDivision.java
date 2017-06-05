@@ -1,11 +1,14 @@
 package com.developer.cookie.testdbstructure.database.model;
 
+
 import io.realm.RealmObject;
 
-public class OneMonthDivision extends RealmObject {
+public class BookMonthDivision extends RealmObject {
     private long id;
     private float categoryIndex;
     private BookCategory category;
+    private Year year;
+
     private float january;
     private float february;
     private float march;
@@ -18,7 +21,48 @@ public class OneMonthDivision extends RealmObject {
     private float october;
     private float november;
     private float december;
-    private Year year;
+
+    private float januaryMarch;
+    private float aprilJune;
+    private float julySeptember;
+    private float octoberDecember;
+
+    private float januaryJune;
+    private float julyDecember;
+
+    private float januaryDecember;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public float getCategoryIndex() {
+        return categoryIndex;
+    }
+
+    public void setCategoryIndex(float categoryIndex) {
+        this.categoryIndex = categoryIndex;
+    }
+
+    public BookCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(BookCategory category) {
+        this.category = category;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
 
     public float getJanuary() {
         return january;
@@ -116,35 +160,59 @@ public class OneMonthDivision extends RealmObject {
         this.december = december;
     }
 
-    public BookCategory getCategory() {
-        return category;
+    public float getJanuaryMarch() {
+        return januaryMarch;
     }
 
-    public void setCategory(BookCategory category) {
-        this.category = category;
+    public void setJanuaryMarch(float januaryMarch) {
+        this.januaryMarch = januaryMarch;
     }
 
-    public long getId() {
-        return id;
+    public float getAprilJune() {
+        return aprilJune;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAprilJune(float aprilJune) {
+        this.aprilJune = aprilJune;
     }
 
-    public Year getYear() {
-        return year;
+    public float getJulySeptember() {
+        return julySeptember;
     }
 
-    public void setYear(Year year) {
-        this.year = year;
+    public void setJulySeptember(float julySeptember) {
+        this.julySeptember = julySeptember;
     }
 
-    public float getCategoryIndex() {
-        return categoryIndex;
+    public float getOctoberDecember() {
+        return octoberDecember;
     }
 
-    public void setCategoryIndex(float categoryIndex) {
-        this.categoryIndex = categoryIndex;
+    public void setOctoberDecember(float octoberDecember) {
+        this.octoberDecember = octoberDecember;
+    }
+
+    public float getJanuaryJune() {
+        return januaryJune;
+    }
+
+    public void setJanuaryJune(float januaryJune) {
+        this.januaryJune = januaryJune;
+    }
+
+    public float getJulyDecember() {
+        return julyDecember;
+    }
+
+    public void setJulyDecember(float julyDecember) {
+        this.julyDecember = julyDecember;
+    }
+
+    public float getJanuaryDecember() {
+        return januaryDecember;
+    }
+
+    public void setJanuaryDecember(float januaryDecember) {
+        this.januaryDecember = januaryDecember;
     }
 }
