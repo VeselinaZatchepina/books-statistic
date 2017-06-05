@@ -161,7 +161,7 @@ SEE_BOOK_STATISTICS:
 3. U выбирает из меню раздел statistics - открывается окно со статистикой;
 
 
-DELET_CATEGORY:
+DELETE_CATEGORY:
 
 1. U заходит в app - открывается список категорий книг;
 2. U long click на категории;
