@@ -1,19 +1,13 @@
 package com.developer.cookie.testdbstructure.valueformatters;
 
-import com.developer.cookie.testdbstructure.database.model.BookMonthDivision;
+import com.developer.cookie.testdbstructure.utils.DivisionType;
+import com.developer.cookie.testdbstructure.utils.MonthIndex;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
-import io.realm.RealmObject;
-
 public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
 
-    RealmObject realmObject;
-    String currentDivision = "no value";
-
-    public XAxisLineChartValueFormatter(RealmObject realmObject) {
-        this.realmObject = realmObject;
-    }
+    private String currentDivision;
 
     public XAxisLineChartValueFormatter(String currentDivision) {
         this.currentDivision = currentDivision;
@@ -21,15 +15,20 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        String currentMonth;
-        if (currentDivision.equals("one") || realmObject instanceof BookMonthDivision) {
-            currentMonth = checkLabelOneMonth(value);
-        } else if (currentDivision.equals("three") || realmObject instanceof BookMonthDivision) {
-            currentMonth = checkLabelThreeMonth(value);
-        } else if (currentDivision.equals("six")  || realmObject instanceof BookMonthDivision) {
-            currentMonth = checkLabelSixMonth(value);
-        } else {
-            currentMonth = checkLabelTwelveMonth(value);
+        String currentMonth = String.valueOf((int) value);
+        switch (currentDivision) {
+            case DivisionType.ONE :
+                currentMonth = checkLabelOneMonth(value);
+                break;
+            case DivisionType.THREE :
+                currentMonth = checkLabelThreeMonth(value);
+                break;
+            case DivisionType.SIX :
+                currentMonth = checkLabelSixMonth(value);
+                break;
+            case DivisionType.TWELVE :
+                currentMonth = checkLabelTwelveMonth(value);
+                break;
         }
         return currentMonth;
     }
@@ -37,40 +36,40 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
     private String checkLabelOneMonth(float value) {
         String currentMonth = String.valueOf((int) value);
         switch ((int) value) {
-            case 0:
+            case MonthIndex.ZERO :
                 currentMonth = "Jan";
                 break;
-            case 1:
+            case MonthIndex.ONE :
                 currentMonth = "Feb";
                 break;
-            case 2:
+            case MonthIndex.TWO :
                 currentMonth = "Mar";
                 break;
-            case 3:
+            case MonthIndex.THREE :
                 currentMonth = "Apr";
                 break;
-            case 4:
+            case MonthIndex.FOUR :
                 currentMonth = "May";
                 break;
-            case 5:
+            case MonthIndex.FIVE :
                 currentMonth = "June";
                 break;
-            case 6:
+            case MonthIndex.SIX :
                 currentMonth = "July";
                 break;
-            case 7:
+            case MonthIndex.SEVEN :
                 currentMonth = "Aug";
                 break;
-            case 8:
+            case MonthIndex.EIGHT :
                 currentMonth = "Sept";
                 break;
-            case 9:
+            case MonthIndex.NINE :
                 currentMonth = "Oct";
                 break;
-            case 10:
+            case MonthIndex.TEN :
                 currentMonth = "Nov";
                 break;
-            case 11:
+            case MonthIndex.ELEVEN :
                 currentMonth = "Dec";
                 break;
         }
@@ -80,16 +79,16 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
     private String checkLabelThreeMonth(float value) {
         String currentMonth = String.valueOf((int) value);
         switch ((int) value) {
-            case 0:
+            case MonthIndex.ZERO :
                 currentMonth = "Jan-Mar";
                 break;
-            case 1:
+            case MonthIndex.ONE:
                 currentMonth = "Apr-June";
                 break;
-            case 2:
+            case MonthIndex.TWO :
                 currentMonth = "July-Sept";
                 break;
-            case 3:
+            case MonthIndex.THREE :
                 currentMonth = "Oct-Dec";
                 break;
         }
@@ -99,10 +98,10 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
     private String checkLabelSixMonth(float value) {
         String currentMonth = String.valueOf((int) value);
         switch ((int) value) {
-            case 0:
+            case MonthIndex.ZERO :
                 currentMonth = "Jan-June";
                 break;
-            case 1:
+            case MonthIndex.ONE :
                 currentMonth = "July-Dec";
                 break;
         }
@@ -112,7 +111,7 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
     private String checkLabelTwelveMonth(float value) {
         String currentMonth = String.valueOf((int) value);
         switch ((int) value) {
-            case 0:
+            case MonthIndex.ZERO :
                 currentMonth = "Jan-Dec";
                 break;
         }

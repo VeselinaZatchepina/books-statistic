@@ -6,10 +6,6 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import io.realm.RealmResults;
 
-/**
- * @author Veselina Zatchepina
- */
-
 public class XAxisBarChartValueFormatter implements IAxisValueFormatter {
 
     private RealmResults<BookMonthDivision> realmResults;
