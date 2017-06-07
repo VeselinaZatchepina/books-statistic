@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NavHeader -->
+    <dimen name="nav_header_height">160dp</dimen>
+
+    <!-- Toolbar size -->
+    <dimen name="toolbar_height">223dp</dimen>
+    <dimen name="toolbar_height_normal_portrait">80dp</dimen>
+    <dimen name="toolbar_height_normal_landscape">72dp</dimen>
+    <dimen name="toolbar_text_margin_bottom">24dp</dimen>
+    <dimen name="expanded_title_margin_bottom">24dp</dimen>
+    <dimen name="expanded_title_margin_start">69dp</dimen>
+    <dimen name="toolbar_divider">1dp</dimen>
+
+    <!-- Fab -->
+    <dimen name="fab_margin">16dp</dimen>
+
+</resources>
