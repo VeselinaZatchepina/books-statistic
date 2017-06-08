@@ -23,13 +23,20 @@ import android.view.WindowManager;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * NavigationAbstractActivity helps avoid boilerplate code.
  */
 public abstract class NavigationAbstractActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout mDrawer;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.navigation_view) NavigationView mNavigationView;
+    @BindView(R.id.appbar_layout) AppBarLayout mAppBarLayout;
+    @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         defineInputData(savedInstanceState);
         setContentView(getLayoutResId());
+        ButterKnife.bind(this);
         defineNavigationDrawer();
         defineAppBarLayoutExpandableValue();
         defineFragment();
@@ -49,18 +57,15 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     public abstract int getLayoutResId();
 
     private void defineNavigationDrawer() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     public void defineAppBarLayoutExpandableValue() {
@@ -92,13 +97,11 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     }
 
     private void setAppBarNotExpandable() {
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-        if (appBarLayout != null) {
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+        if (mAppBarLayout != null) {
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
             Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams,
-                    collapsingToolbarLayout, configuration);
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams,
+                    mCollapsingToolbarLayout, configuration);
         }
     }
 
@@ -125,9 +128,8 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

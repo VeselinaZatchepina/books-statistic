@@ -23,7 +23,7 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
-    <!-- CurrentQuotePagerActivity text style
+    <!-- CurrentQuotePagerActivity text style -->
     <style name="TextStyleBlack" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColor">@android:color/black</item>
     </style>
@@ -32,7 +32,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-     Launch style
+     <!-- Launch style
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style> -->

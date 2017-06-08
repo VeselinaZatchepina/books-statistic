@@ -5,4 +5,10 @@
     <string name="title_book_categories">Book categories</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- BookCategory recycler view - empty view -->
+    <string name="title_empty_view">You have no books</string>
+    <string name="title_empty_view_push">Push</string>
+    <string name="title_empty_view_button">button</string>
+
 </resources>
