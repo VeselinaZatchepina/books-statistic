@@ -9,4 +9,5 @@ public interface RealmRepository {
 
     List<BookCategory> getListOfBookCategories();
 
+    void closeDbConnect();
 }

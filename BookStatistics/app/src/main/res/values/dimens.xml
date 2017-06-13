@@ -27,4 +27,12 @@
     <dimen name="root_view_padding_top">86dp</dimen>
     <dimen name="text_view_margin_top">20dp</dimen>
 
+    <!-- Book category recycler view item -->
+    <dimen name="category_vertical_margin">6dp</dimen>
+    <dimen name="category_card_view_height">84dp</dimen>
+    <dimen name="corner_radius">2dp</dimen>
+    <dimen name="card_view_horizontal_margin">16dp</dimen>
+    <dimen name="image_view_horizontal_margin">32dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+
 </resources>

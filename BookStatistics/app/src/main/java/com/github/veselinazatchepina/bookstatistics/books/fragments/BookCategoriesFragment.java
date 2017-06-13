@@ -3,8 +3,11 @@ package com.github.veselinazatchepina.bookstatistics.books.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +17,24 @@ import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
 
 public class BookCategoriesFragment extends Fragment {
 
-    @BindView(R.id.title_current_category) TextView mTitleCurrentCategory;
+    @BindView(R.id.title_current_category)
+    TextView mTitleCurrentCategory;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
     private Unbinder unbinder;
 
-    BooksRealmRepository mBooksRealmRepository;
-    List<BookCategory> mBookCategories;
+    private BooksRealmRepository mBooksRealmRepository;
+    private RealmResults<BookCategory> mBookCategories;
 
     public BookCategoriesFragment() {
 
@@ -54,28 +61,23 @@ public class BookCategoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        setCurrentCategoryTitleIsGone(rootView);
-        defineRecyclerView(rootView);
+        setCurrentCategoryTitleIsGone();
+        defineRecyclerView();
         return rootView;
     }
 
-    private void setCurrentCategoryTitleIsGone(View rootView) {
+    private void setCurrentCategoryTitleIsGone() {
         mTitleCurrentCategory.setVisibility(View.GONE);
     }
 
-    private void defineRecyclerView(View rootView) {
-//        QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(getActivity(), mQuoteCategoryResults, true);
-//        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
+    private void defineRecyclerView() {
+        BookCategoryRecyclerViewAdapter bookCategoryRecyclerViewAdapter = new BookCategoryRecyclerViewAdapter(getActivity(), mBookCategories, true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(bookCategoryRecyclerViewAdapter);
     }
 
-    public static BookCategoriesFragment newInstance(String quoteType) {
-        Bundle args = new Bundle();
-        //args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE, quoteType);
-        BookCategoriesFragment fragment = new BookCategoriesFragment();
-        //fragment.setArguments(args);
-        return fragment;
+    public static BookCategoriesFragment newInstance() {
+        return new BookCategoriesFragment();
     }
 
     @Override
@@ -105,16 +107,16 @@ public class BookCategoriesFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //mQuoteDataRepository.closeDbConnect();
+        mBooksRealmRepository.closeDbConnect();
     }
 
-    /*private class BookCategoryRecyclerViewAdapter extends RealmRecyclerViewAdapter<BookCategory, BookCategoryRecyclerViewAdapter.MyViewHolder> {
+    class BookCategoryRecyclerViewAdapter extends RealmRecyclerViewAdapter<BookCategory, BookCategoryRecyclerViewAdapter.MyViewHolder> {
         private static final int EMPTY_LIST = 0;
         private static final int NOT_EMPTY_LIST = 1;
 
         private OrderedRealmCollection<BookCategory> mData;
 
-        public BookCategoryRecyclerViewAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<BookCategory> data, boolean autoUpdate) {
+        BookCategoryRecyclerViewAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<BookCategory> data, boolean autoUpdate) {
             super(context, data, autoUpdate);
             mData = data;
         }
@@ -128,18 +130,18 @@ public class BookCategoriesFragment extends Fragment {
                     return new MyViewHolder(itemViewEmpty);
                 case NOT_EMPTY_LIST:
                     View itemView = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.quote_categories_recycler_view_item, parent, false);
+                            .inflate(R.layout.books_categories_recycler_view_item, parent, false);
                     return new MyViewHolder(itemView);
             }
             return null;
         }
 
         @Override
-        public void onBindViewHolder(QuoteCategoryRecyclerViewAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(MyViewHolder holder, int position) {
             if (!mData.isEmpty()) {
-                holder.itemQuoteCategory.setText(mData.get(position).getCategoryName());
-                holder.itemQuoteCategory.setAllCaps(true);
-                holder.itemQuoteCount.setText(String.valueOf(mData.get(position).getQuoteCountCurrentCategory()));
+                holder.itemBookCategory.setText(mData.get(position).getCategoryName());
+                holder.itemBookCategory.setAllCaps(true);
+                holder.itemBookCount.setText(String.valueOf(mData.get(position).getCategoryBookCount()));
             }
         }
 
@@ -157,13 +159,17 @@ public class BookCategoriesFragment extends Fragment {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            TextView itemQuoteCategory;
-            TextView itemQuoteCount;
+            //TODO check nullable when data is exists
+            @Nullable
+            @BindView(R.id.book_category_name)
+            TextView itemBookCategory;
+            @Nullable
+            @BindView(R.id.book_count)
+            TextView itemBookCount;
 
             MyViewHolder(View container) {
                 super(container);
-                itemQuoteCategory = (TextView) container.findViewById(R.id.quote_category_name);
-                itemQuoteCount = (TextView) container.findViewById(R.id.quote_count);
+                ButterKnife.bind(this, container);
                 container.setOnClickListener(this);
                 container.setOnLongClickListener(this);
             }
@@ -171,59 +177,58 @@ public class BookCategoriesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!mData.isEmpty()) {
-                    mCallbacks.onCategorySelected(itemQuoteCategory.getText().toString(), mQuoteType);
+                    //mCallbacks.onCategorySelected(itemBookCategory.getText().toString(), mQuoteType);
                 }
             }
 
             @Override
             public boolean onLongClick(View view) {
                 if (!mData.isEmpty()) {
-                    mCategoryForDelete = itemQuoteCategory.getText().toString();
-                    openDeleteQuoteCategoryDialog();
+                    //mCategoryForDelete = itemBookCategory.getText().toString();
+                    //openDeleteQuoteCategoryDialog();
                 }
                 return false;
             }
 
             private void openDeleteQuoteCategoryDialog() {
-                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-                View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
-                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
-                mDialogBuilder.setView(dialogView);
-                mDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton(getString(R.string.dialog_ok_button),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
-                                        showSnackbar();
-                                    }
-                                })
-                        .setNegativeButton(getString(R.string.dialog_cancel_button),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alertDialog = mDialogBuilder.create();
-                alertDialog.show();
+//                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+//                View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
+//                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+//                mDialogBuilder.setView(dialogView);
+//                mDialogBuilder
+//                        .setCancelable(false)
+//                        .setPositiveButton(getString(R.string.dialog_ok_button),
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
+//                                        showSnackbar();
+//                                    }
+//                                })
+//                        .setNegativeButton(getString(R.string.dialog_cancel_button),
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        dialog.cancel();
+//                                    }
+//                                });
+//                AlertDialog alertDialog = mDialogBuilder.create();
+//                alertDialog.show();
             }
 
             private void showSnackbar() {
-                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, getString(R.string.quote_category) +
-                        mCategoryForDelete + getString(R.string.is_deleted), Snackbar.LENGTH_LONG);
-                snackbarIsDeleted.show();
+//                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+//                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, getString(R.string.quote_category) +
+//                        mCategoryForDelete + getString(R.string.is_deleted), Snackbar.LENGTH_LONG);
+//                snackbarIsDeleted.show();
             }
         }
-    }*/
+    }
 
     /*public interface QuoteCategoryCallbacks {
-        *//**//**
-         * Method starts activity with all quotes of current category
-         *
-         * @param currentCategory
-         * @param quoteType
-         *//*
+     * Method starts activity with all quotes of current category
+     *
+     * @param currentCategory
+     * @param quoteType
+     *//*
         void onCategorySelected(String currentCategory, String quoteType);
     }*/
 }

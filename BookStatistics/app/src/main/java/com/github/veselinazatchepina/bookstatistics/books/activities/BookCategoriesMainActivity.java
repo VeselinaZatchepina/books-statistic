@@ -1,11 +1,31 @@
 package com.github.veselinazatchepina.bookstatistics.books.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.NavigationAbstractActivity;
+import com.github.veselinazatchepina.bookstatistics.books.fragments.BookCategoriesFragment;
+
+import butterknife.BindView;
+
+import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
 public class BookCategoriesMainActivity extends NavigationAbstractActivity {
+
+    @BindView(fab)
+    FloatingActionButton mFloatingActionButton;
+    private Fragment mMainFragment;
+    private int mFabImageResourceId = setFabImageResourceId();
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, BookCategoriesMainActivity.class);
+    }
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
@@ -29,26 +49,25 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity {
 
     @Override
     public void defineFragment() {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        mMainFragment = fragmentManager.findFragmentById(R.id.container);
-//        if (mMainFragment == null) {
-//            mMainFragment = QuoteCategoryFragment.newInstance(mQuoteType);
-//            fragmentManager.beginTransaction()
-//                    .add(R.id.container, mMainFragment)
-//                    .commit();
-//        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mMainFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (mMainFragment == null) {
+            mMainFragment = BookCategoriesFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, mMainFragment)
+                    .commit();
+        }
     }
 
     @Override
     public void defineFab() {
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        setFabBackgroundImage(fab, mFabImageResourceId);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                defineActionWhenFabIsPressed();
-//            }
-//        });
+        setFabBackgroundImage(mFloatingActionButton, mFabImageResourceId);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                defineActionWhenFabIsPressed();
+            }
+        });
     }
 
     @Override

@@ -11,4 +11,7 @@
     <string name="title_empty_view_push">Push</string>
     <string name="title_empty_view_button">button</string>
 
+    <!-- Quote category recycler view item -->
+    <string name="image_content_description">Icon of current category</string>
+
 </resources>

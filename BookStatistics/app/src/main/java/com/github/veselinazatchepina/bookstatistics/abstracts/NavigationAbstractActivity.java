@@ -21,7 +21,8 @@ import android.view.Surface;
 import android.view.WindowManager;
 
 import com.github.veselinazatchepina.bookstatistics.R;
-import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
+import com.github.veselinazatchepina.bookstatistics.books.activities.BookCategoriesMainActivity;
+import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExtended;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,11 +33,16 @@ import butterknife.ButterKnife;
 public abstract class NavigationAbstractActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @BindView(R.id.navigation_view) NavigationView mNavigationView;
-    @BindView(R.id.appbar_layout) AppBarLayout mAppBarLayout;
-    @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppBarLayout;
+    @BindView(R.id.collapsing_toolbar_layout)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +106,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         if (mAppBarLayout != null) {
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
             Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams,
+            AppBarLayoutExtended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams,
                     mCollapsingToolbarLayout, configuration);
         }
     }
@@ -141,7 +147,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_book_categories:
-                //intent = BookCategoriesMainActivity.newIntent(this, Types.BOOK_QUOTE);
+                intent = BookCategoriesMainActivity.newIntent(this);
                 break;
         }
         if (intent != null) {

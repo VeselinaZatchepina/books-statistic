@@ -3,9 +3,8 @@ package com.github.veselinazatchepina.bookstatistics.database;
 
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 
-import java.util.List;
-
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class BooksRealmRepository implements RealmRepository {
 
@@ -16,9 +15,12 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
-    public List<BookCategory> getListOfBookCategories() {
+    public RealmResults<BookCategory> getListOfBookCategories() {
         return mRealm.where(BookCategory.class).findAllSortedAsync("id");
     }
 
-
+    @Override
+    public void closeDbConnect() {
+        mRealm.close();
+    }
 }
