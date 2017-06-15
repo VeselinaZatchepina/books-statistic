@@ -35,4 +35,20 @@
     <dimen name="image_view_horizontal_margin">32dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
 
+    <!-- CardView dimensions -->
+    <dimen name="cardview_margin_top_add_book">8dp</dimen>
+    <dimen name="cardview_margin_bottom_add_book">8dp</dimen>
+    <dimen name="cardview_margin_start_add_book">8dp</dimen>
+    <dimen name="cardview_margin_end_add_book">8dp</dimen>
+
+    <!-- AddQuoteFragment -->
+    <dimen name="linear_layout_margin_start_add_book">16dp</dimen>
+    <dimen name="linear_layout_margin_end_add_book">16dp</dimen>
+    <dimen name="linear_layout_margin_top_add_book">16dp</dimen>
+    <dimen name="linear_layout_margin_bottom_add_book">16dp</dimen>
+    <dimen name="text_input_layout_margin_top">16dp</dimen>
+    <dimen name="text_input_layout_margin_bottom">8dp</dimen>
+    <dimen name="divider_add_book">1dp</dimen>
+    <dimen name="divider_add_book_margin_top">8dp</dimen>
+
 </resources>

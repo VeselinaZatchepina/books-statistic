@@ -14,4 +14,14 @@
     <!-- Quote category recycler view item -->
     <string name="image_content_description">Icon of current category</string>
 
+    <!-- AddBookFragment-->
+    <string name="hint_book_name">Book name</string>
+    <string name="hint_book_author">Book author</string>
+    <string name="hint_spinner_rating">Book rating</string>
+    <string name="hint_book_page">Book page</string>
+    <string name="hint_spinner_category">Book category</string>
+    <string name="hint_spinner_type">Book type</string>
+    <string name="hint_date_start">Date start</string>
+    <string name="hint_date_end">Date end</string>
+
 </resources>

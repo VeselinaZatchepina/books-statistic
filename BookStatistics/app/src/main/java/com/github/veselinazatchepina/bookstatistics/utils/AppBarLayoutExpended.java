@@ -13,7 +13,7 @@ import com.github.veselinazatchepina.bookstatistics.R;
 /**
  * Class helps set AppBarLayout not expandable
  */
-public class AppBarLayoutExtended {
+public class AppBarLayoutExpended {
 
     public static void setAppBarLayoutExpended(Context context, AppBarLayout appBarLayout, CoordinatorLayout.LayoutParams layoutParams,
                                                CollapsingToolbarLayout collapsingToolbarLayout, Configuration configuration) {

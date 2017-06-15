@@ -21,8 +21,9 @@ import android.view.Surface;
 import android.view.WindowManager;
 
 import com.github.veselinazatchepina.bookstatistics.R;
+import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActivity;
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookCategoriesMainActivity;
-import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExtended;
+import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,7 +107,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         if (mAppBarLayout != null) {
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
             Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExtended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams,
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams,
                     mCollapsingToolbarLayout, configuration);
         }
     }
@@ -128,8 +129,8 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     }
 
     public void defineActionWhenFabIsPressed() {
-//        Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
-//        startActivity(intent);
+        Intent intent = AddBookActivity.newIntent(this);
+        startActivity(intent);
     }
 
     @Override

@@ -4,8 +4,8 @@
     <color name="card_background">#00A99D</color>
 
     <!-- Toolbar gradient -->
-    <color name="toolbar_start_color">#43000000</color>
-    <color name="toolbar_end_color">#33FFFFFF</color>
+    <color name="toolbar_start_color">#33000000</color>
+    <color name="toolbar_end_color">#43FFFFFF</color>
     <color name="fab_divider">#232738</color>
 
     <color name="colorPrimary">#37474f</color>
