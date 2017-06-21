@@ -1,20 +1,49 @@
 package com.github.veselinazatchepina.bookstatistics.books.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.veselinazatchepina.bookstatistics.R;
+import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
+import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 
 /**
- * AddQuoteFragment is used for input properties of the quote. It used for save and edit quotes.
+ * AddQuoteFragment is used for input properties of the book. It used for save and edit books.
  */
 public class AddBookFragment extends Fragment {
+
+    @BindView(R.id.category_spinner)
+    Spinner mSpinner;
+    private Unbinder unbinder;
+
+    private BooksRealmRepository mBooksRealmRepository;
+    private RealmResults<BookCategory> mBookCategories;
+    private List<String> mAllCategories;
+    private ArrayAdapter<String> mSpinnerAdapter;
+    private String mSelectedValueOfCategory;
+    private String mCurrentCategory;
 
     public AddBookFragment() { }
 
@@ -22,8 +51,8 @@ public class AddBookFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         defineInputData(savedInstanceState);
-        //mQuoteDataRepository = new QuoteDataRepository();
-
+        mBooksRealmRepository = new BooksRealmRepository();
+        mBookCategories = mBooksRealmRepository.getListOfBookCategories();
     }
 
     private void defineInputData(Bundle savedInstanceState) {
@@ -43,63 +72,62 @@ public class AddBookFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
+        mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
+            @Override
+            public void onChange(RealmResults<BookCategory> element) {
+                createBookCategoryListForSpinner(element);
+                setSpinnerOnCurrentPosition();
+            }
+        });
+        setListenerToSpinner();
 
-//        mQuoteCategories.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-//            @Override
-//            public void onChange(RealmResults<QuoteCategory> element) {
-//                createQuoteCategoryListForSpinner(element);
-//                setSpinnerOnCurrentPosition();
-//            }
-//        });
         //fillFieldsWithQuoteEditData(savedInstanceState);
-        //setListenerToSpinner();
+
         return rootView;
     }
 
+    private void createBookCategoryListForSpinner(List<BookCategory> bookCategories) {
+        mAllCategories = new ArrayList<>();
+        if (bookCategories != null && !bookCategories.isEmpty()) {
+            for (BookCategory currentCategory : bookCategories) {
+                if (currentCategory != null) {
+                    String category = currentCategory.getCategoryName();
+                    mAllCategories.add(category.toUpperCase());
+                }
+            }
+            if (isAdded()) {
+                mAllCategories.add(getString(R.string.title_spinner_category_add_category));
+                mAllCategories.add(getString(R.string.title_spinner_category));
+            }
+        } else {
+            if (isAdded()) {
+                mAllCategories.add(getString(R.string.title_spinner_category_add_category));
+                mAllCategories.add(getString(R.string.title_spinner_category));
+            }
+        }
+    }
 
-
-
-
-//    private void createQuoteCategoryListForSpinner(List<QuoteCategory> quoteCategoryList) {
-//        mAllCategories = new ArrayList<>();
-//        if (quoteCategoryList != null && !quoteCategoryList.isEmpty()) {
-//            for (QuoteCategory currentCategory : quoteCategoryList) {
-//                if (currentCategory != null) {
-//                    String category = currentCategory.getCategoryName();
-//                    mAllCategories.add(category.toUpperCase());
-//                }
-//            }
-//            if (isAdded()) {
-//                mAllCategories.add(getString(R.string.spinner_add_category));
-//                mAllCategories.add(getString(R.string.spinner_hint));
-//            }
-//        } else {
-//            if (isAdded()) {
-//                mAllCategories.add(getString(R.string.spinner_add_category));
-//                mAllCategories.add(getString(R.string.spinner_hint));
-//            }
-//        }
-//    }
-
-//    private void setSpinnerOnCurrentPosition() {
-//        if (mSelectedValueOfCategory == null) {
-//            createSpinnerAdapter();
-//            if (mCurrentCategory != null) {
-//                mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
-//            }
-//        } else {
-//            if (!mAllCategories.contains(mSelectedValueOfCategory)) {
-//                mAllCategories.add(0, mSelectedValueOfCategory);
-//            }
-//            createSpinnerAdapter();
-//            createSpinnerAdapter();
-//            if (isAdded()) {
-//                if (!mSelectedValueOfCategory.equals(getString(R.string.spinner_hint))) {
-//                    mSpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
-//                }
-//            }
-//        }
-//    }
+    private void setSpinnerOnCurrentPosition() {
+        if (mSelectedValueOfCategory == null) {
+            createSpinnerAdapter();
+            if (mCurrentCategory != null) {
+                mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
+            }
+        } else {
+            if (!mAllCategories.contains(mSelectedValueOfCategory)) {
+                mAllCategories.add(0, mSelectedValueOfCategory);
+            }
+            // https://ru.stackoverflow.com/questions/660436/
+            createSpinnerAdapter();
+            createSpinnerAdapter();
+            if (isAdded()) {
+                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
+                    mSpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
+                }
+            }
+        }
+    }
 
 //    private void fillFieldsWithQuoteEditData(final Bundle savedInstanceState) {
 //        if (mQuoteIdForEdit != -1) {
@@ -144,7 +172,7 @@ public class AddBookFragment extends Fragment {
 //            }
 //            createSpinnerAdapter();
 //            if (isAdded()) {
-//                if (!mSelectedValueOfCategory.equals(getString(R.string.spinner_hint))) {
+//                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
 //                    mSpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
 //                }
 //            }
@@ -153,77 +181,78 @@ public class AddBookFragment extends Fragment {
 //            mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
 //        }
 //    }
-//
-//    private void setListenerToSpinner() {
-//        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                final String selectedItem = parent.getItemAtPosition(position).toString();
-//                if (selectedItem.equals(getString(R.string.spinner_add_category))) {
-//                    createAddCategoryDialog();
-//                } else {
-//                    mSelectedValueOfCategory = selectedItem;
-//                }
-//            }
-//
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//    }
-//
-//    private void createAddCategoryDialog() {
-//        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-//        View dialogView = layoutInflater.inflate(R.layout.dialog_add_category, null);
-//        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
-//        mDialogBuilder.setView(dialogView);
-//        final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
-//        mDialogBuilder
-//                .setCancelable(false)
-//                .setPositiveButton(getString(R.string.dialog_add_category_ok),
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                String currentUserInput = userInput.getText().toString();
-//                                mAllCategories.add(0, currentUserInput);
-//                                mSpinnerAdapter.clear();
-//                                mSpinnerAdapter.addAll(mAllCategories);
-//                                mSpinner.setSelection(0);
-//                                mSelectedValueOfCategory = currentUserInput;
-//                            }
-//                        })
-//                .setNegativeButton(getString(R.string.dialog_add_category_cancel),
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//        AlertDialog alertDialog = mDialogBuilder.create();
-//        alertDialog.show();
-//    }
-//
-//    private void createSpinnerAdapter() {
-//        if (isAdded()) {
-//            // Set hint for mSpinner
-//            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
-//                @Override
-//                public View getView(int position, View convertView, ViewGroup parent) {
-//                    View v = super.getView(position, convertView, parent);
-//                    if (position == getCount()) {
-//                        ((TextView) v.findViewById(android.R.id.text1)).setText("");
-//                        ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
-//                    }
-//                    return v;
-//                }
-//
-//                @Override
-//                public int getCount() {
-//                    return super.getCount() - 1;
-//                }
-//            };
-//        }
-//        mSpinnerAdapter.addAll(mAllCategories);
-//        mSpinner.setAdapter(mSpinnerAdapter);
-//        mSpinner.setSelection(mSpinnerAdapter.getCount());
-//    }
+
+    private void setListenerToSpinner() {
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final String selectedItem = parent.getItemAtPosition(position).toString();
+                if (selectedItem.equals(getString(R.string.title_spinner_category_add_category))) {
+                    createAddCategoryDialog();
+                } else {
+                    mSelectedValueOfCategory = selectedItem;
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void createAddCategoryDialog() {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View dialogView = layoutInflater.inflate(R.layout.dialog_add_category, null);
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+        mDialogBuilder.setView(dialogView);
+        final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
+        mDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.dialog_add_category_ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String currentUserInput = userInput.getText().toString();
+                                mAllCategories.add(0, currentUserInput);
+                                mSpinnerAdapter.clear();
+                                mSpinnerAdapter.addAll(mAllCategories);
+                                mSpinner.setSelection(0);
+                                mSelectedValueOfCategory = currentUserInput;
+                            }
+                        })
+                .setNegativeButton(getString(R.string.dialog_add_category_cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                setSpinnerOnCurrentPosition();
+                            }
+                        });
+        AlertDialog alertDialog = mDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void createSpinnerAdapter() {
+        if (isAdded()) {
+            // Set hint for mSpinner
+            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View v = super.getView(position, convertView, parent);
+                    if (position == getCount()) {
+                        ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                        ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
+                    }
+                    return v;
+                }
+
+                @Override
+                public int getCount() {
+                    return super.getCount() - 1;
+                }
+            };
+        }
+        mSpinnerAdapter.addAll(mAllCategories);
+        mSpinner.setAdapter(mSpinnerAdapter);
+        mSpinner.setSelection(mSpinnerAdapter.getCount());
+    }
 
     /**
      * Method checks if user choose hint in mSpinner.
@@ -345,6 +374,12 @@ public class AddBookFragment extends Fragment {
 //            mAlertDialog.dismiss();
 //            mAlertDialog = null;
 //        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

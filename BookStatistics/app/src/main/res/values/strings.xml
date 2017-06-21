@@ -23,5 +23,12 @@
     <string name="hint_spinner_type">Book type</string>
     <string name="hint_date_start">Date start</string>
     <string name="hint_date_end">Date end</string>
+    <string name="title_spinner_category_add_category">+ add new category</string>
+    <string name="title_spinner_category">Select quote category</string>
+
+    <!-- Add category dialog -->
+    <string name="dialog_add_category_title">Enter the category name</string>
+    <string name="dialog_add_category_ok">OK</string>
+    <string name="dialog_add_category_cancel">CANCEL</string>
 
 </resources>

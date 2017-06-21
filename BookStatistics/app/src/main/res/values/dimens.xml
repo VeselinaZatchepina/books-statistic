@@ -51,4 +51,7 @@
     <dimen name="divider_add_book">1dp</dimen>
     <dimen name="divider_add_book_margin_top">8dp</dimen>
 
+    <!-- Add category dialog -->
+    <dimen name="add_category_dialog_title_margin">24dp</dimen>
+
 </resources>
