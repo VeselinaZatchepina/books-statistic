@@ -4,6 +4,7 @@ package com.github.veselinazatchepina.bookstatistics.books.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -20,8 +21,10 @@ import com.github.veselinazatchepina.bookstatistics.books.enums.BookRating;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookType;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +37,10 @@ import io.realm.RealmResults;
 /**
  * AddQuoteFragment is used for input properties of the book. It used for save and edit books.
  */
-public class AddBookFragment extends Fragment {
+public class AddBookFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+
+    private static final String DATE_PICKER_START_DATE = "start date";
+    private static final String DATE_PICKER_END_DATE = "end date";
 
     @BindView(R.id.category_spinner)
     Spinner mCategorySpinner;
@@ -42,6 +48,10 @@ public class AddBookFragment extends Fragment {
     Spinner mRatingSpinner;
     @BindView(R.id.type_spinner)
     Spinner mTypeSpinner;
+    @BindView(R.id.date_start_input_layout)
+    TextInputLayout mDateStartInputLayout;
+    @BindView(R.id.date_end_input_layout)
+    TextInputLayout mEndDateInputLayout;
     private Unbinder unbinder;
 
     private BooksRealmRepository mBooksRealmRepository;
@@ -50,6 +60,8 @@ public class AddBookFragment extends Fragment {
     private ArrayAdapter<String> mSpinnerAdapter;
     private String mSelectedValueOfCategory;
     private String mCurrentCategory;
+    private EditText mStartDateEditText;
+    private EditText mEndDateEditText;
 
     public AddBookFragment() { }
 
@@ -88,6 +100,9 @@ public class AddBookFragment extends Fragment {
         defineRatingSpinner();
         defineTypeSpinner();
         setListenerToCategorySpinner();
+
+        defineStartDate();
+        defineEndDate();
 
         //fillFieldsWithQuoteEditData(savedInstanceState);
         return rootView;
@@ -154,6 +169,42 @@ public class AddBookFragment extends Fragment {
         ArrayAdapter<String> typeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
         typeSpinnerAdapter.addAll(BookType.NEW_BOOK, BookType.CURRENT_BOOK, BookType.READ_BOOK);
         mTypeSpinner.setAdapter(typeSpinnerAdapter);
+    }
+
+    private void defineStartDate() {
+        mStartDateEditText = mDateStartInputLayout.getEditText();
+        mStartDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        AddBookFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+                dpd.show(getActivity().getFragmentManager(), DATE_PICKER_START_DATE);
+            }
+        });
+    }
+
+    private void defineEndDate() {
+        mEndDateEditText = mEndDateInputLayout.getEditText();
+        mEndDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        AddBookFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+                dpd.show(getActivity().getFragmentManager(), DATE_PICKER_END_DATE);
+            }
+        });
     }
 
 
@@ -414,5 +465,15 @@ public class AddBookFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mBooksRealmRepository.closeDbConnect();
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        if (view.getTag().equals(DATE_PICKER_START_DATE)) {
+            mStartDateEditText.setText(date);
+        } else {
+            mEndDateEditText.setText(date);
+        }
     }
 }

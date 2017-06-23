@@ -144,7 +144,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_date_start"
-                    android:inputType="date"/>
+                    android:inputType="date"
+                    android:focusable="false"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -159,7 +160,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_date_end"
-                    android:inputType="date"/>
+                    android:inputType="date"
+                    android:focusable="false"/>
 
             </android.support.design.widget.TextInputLayout>
 
