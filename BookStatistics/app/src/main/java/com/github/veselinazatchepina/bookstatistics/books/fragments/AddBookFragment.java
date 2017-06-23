@@ -100,7 +100,6 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         defineRatingSpinner();
         defineTypeSpinner();
         setListenerToCategorySpinner();
-
         defineStartDate();
         defineEndDate();
 
@@ -176,15 +175,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mStartDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        AddBookFragment.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-                dpd.show(getActivity().getFragmentManager(), DATE_PICKER_START_DATE);
+                createDatePickerDialog().show(getActivity().getFragmentManager(), DATE_PICKER_START_DATE);
             }
         });
     }
@@ -194,17 +185,21 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mEndDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        AddBookFragment.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-                dpd.show(getActivity().getFragmentManager(), DATE_PICKER_END_DATE);
+                createDatePickerDialog().show(getActivity().getFragmentManager(), DATE_PICKER_END_DATE);
             }
         });
+    }
+
+    private DatePickerDialog createDatePickerDialog() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                AddBookFragment.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
+        return datePickerDialog;
     }
 
 
