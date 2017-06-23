@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.veselinazatchepina.bookstatistics.R;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookRating;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookType;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 
@@ -35,7 +37,11 @@ import io.realm.RealmResults;
 public class AddBookFragment extends Fragment {
 
     @BindView(R.id.category_spinner)
-    Spinner mSpinner;
+    Spinner mCategorySpinner;
+    @BindView(R.id.rating_spinner)
+    Spinner mRatingSpinner;
+    @BindView(R.id.type_spinner)
+    Spinner mTypeSpinner;
     private Unbinder unbinder;
 
     private BooksRealmRepository mBooksRealmRepository;
@@ -76,15 +82,20 @@ public class AddBookFragment extends Fragment {
         mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
             @Override
             public void onChange(RealmResults<BookCategory> element) {
-                createBookCategoryListForSpinner(element);
-                setSpinnerOnCurrentPosition();
+                defineCategorySpinner(element);
             }
         });
-        setListenerToSpinner();
+        defineRatingSpinner();
+        defineTypeSpinner();
+        setListenerToCategorySpinner();
 
         //fillFieldsWithQuoteEditData(savedInstanceState);
-
         return rootView;
+    }
+
+    private void defineCategorySpinner(RealmResults<BookCategory> element) {
+        createBookCategoryListForSpinner(element);
+        setCategorySpinnerOnCurrentPosition();
     }
 
     private void createBookCategoryListForSpinner(List<BookCategory> bookCategories) {
@@ -108,11 +119,11 @@ public class AddBookFragment extends Fragment {
         }
     }
 
-    private void setSpinnerOnCurrentPosition() {
+    private void setCategorySpinnerOnCurrentPosition() {
         if (mSelectedValueOfCategory == null) {
             createSpinnerAdapter();
             if (mCurrentCategory != null) {
-                mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
+                mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
             }
         } else {
             if (!mAllCategories.contains(mSelectedValueOfCategory)) {
@@ -123,11 +134,28 @@ public class AddBookFragment extends Fragment {
             createSpinnerAdapter();
             if (isAdded()) {
                 if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
-                    mSpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
+                    mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
                 }
             }
         }
     }
+
+    private void defineRatingSpinner() {
+        ArrayAdapter<Integer> ratingSpinnerAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        ratingSpinnerAdapter.addAll(BookRating.FIVE_STARS,
+                BookRating.FOUR_STARS,
+                BookRating.THREE_STARS,
+                BookRating.TWO_STARS,
+                BookRating.ONE_STAR);
+        mRatingSpinner.setAdapter(ratingSpinnerAdapter);
+    }
+
+    private void defineTypeSpinner() {
+        ArrayAdapter<String> typeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        typeSpinnerAdapter.addAll(BookType.NEW_BOOK, BookType.CURRENT_BOOK, BookType.READ_BOOK);
+        mTypeSpinner.setAdapter(typeSpinnerAdapter);
+    }
+
 
 //    private void fillFieldsWithQuoteEditData(final Bundle savedInstanceState) {
 //        if (mQuoteIdForEdit != -1) {
@@ -149,7 +177,7 @@ public class AddBookFragment extends Fragment {
 //        QuoteText quote = element.first();
 //        String currentQuoteCategory = quote.getCategory().getCategoryName();
 //        if (mAllCategories != null && !mAllCategories.isEmpty()) {
-//            mSpinner.setSelection(mSpinnerAdapter.getPosition(currentQuoteCategory.toUpperCase()));
+//            mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(currentQuoteCategory.toUpperCase()));
 //        }
  //   }
 
@@ -173,17 +201,17 @@ public class AddBookFragment extends Fragment {
 //            createSpinnerAdapter();
 //            if (isAdded()) {
 //                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
-//                    mSpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
+//                    mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
 //                }
 //            }
 //        }
 //        if (mCurrentCategory != null) {
-//            mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
+//            mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
 //        }
 //    }
 
-    private void setListenerToSpinner() {
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void setListenerToCategorySpinner() {
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final String selectedItem = parent.getItemAtPosition(position).toString();
                 if (selectedItem.equals(getString(R.string.title_spinner_category_add_category))) {
@@ -214,7 +242,7 @@ public class AddBookFragment extends Fragment {
                                 mAllCategories.add(0, currentUserInput);
                                 mSpinnerAdapter.clear();
                                 mSpinnerAdapter.addAll(mAllCategories);
-                                mSpinner.setSelection(0);
+                                mCategorySpinner.setSelection(0);
                                 mSelectedValueOfCategory = currentUserInput;
                             }
                         })
@@ -222,7 +250,7 @@ public class AddBookFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                                setSpinnerOnCurrentPosition();
+                                setCategorySpinnerOnCurrentPosition();
                             }
                         });
         AlertDialog alertDialog = mDialogBuilder.create();
@@ -231,7 +259,7 @@ public class AddBookFragment extends Fragment {
 
     private void createSpinnerAdapter() {
         if (isAdded()) {
-            // Set hint for mSpinner
+            // Set hint for mCategorySpinner
             mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
@@ -250,12 +278,12 @@ public class AddBookFragment extends Fragment {
             };
         }
         mSpinnerAdapter.addAll(mAllCategories);
-        mSpinner.setAdapter(mSpinnerAdapter);
-        mSpinner.setSelection(mSpinnerAdapter.getCount());
+        mCategorySpinner.setAdapter(mSpinnerAdapter);
+        mCategorySpinner.setSelection(mSpinnerAdapter.getCount());
     }
 
     /**
-     * Method checks if user choose hint in mSpinner.
+     * Method checks if user choose hint in mCategorySpinner.
      *
      * @return true if user choose hint and false else if.
      */
@@ -385,6 +413,6 @@ public class AddBookFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-       // mQuoteDataRepository.closeDbConnect();
+        mBooksRealmRepository.closeDbConnect();
     }
 }
