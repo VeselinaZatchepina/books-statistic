@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/image_view_horizontal_margin"
             android:contentDescription="@string/image_content_description"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@drawable/ic_check_white_24dp" />
 
         <TextView
             android:id="@+id/book_category_name"

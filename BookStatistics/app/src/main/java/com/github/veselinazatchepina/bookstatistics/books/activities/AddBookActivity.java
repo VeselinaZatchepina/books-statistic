@@ -41,15 +41,15 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public void defineActionWhenFabIsPressed() {
-//        AddQuoteFragment addQuoteFragment = ((AddQuoteFragment) currentFragment);
-//        if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint() &&
-//                addQuoteFragment.isNumbersPositive()) {
-//            addQuoteFragment.createMapOfQuoteProperties();
-//            this.finish();
-//        }
-//        if (addQuoteFragment.isSpinnerSelectedItemHint()) {
-//            Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
-//        }
+        AddBookFragment addBookFragment = ((AddBookFragment) currentFragment);
+        //if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint() &&
+              //  addQuoteFragment.isNumbersPositive()) {
+            addBookFragment.createMapOfBookProperties();
+            this.finish();
+       // }
+      //  if (addQuoteFragment.isSpinnerSelectedItemHint()) {
+        //    Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
+        //}
     }
 
     public static Intent newIntent(Context context) {

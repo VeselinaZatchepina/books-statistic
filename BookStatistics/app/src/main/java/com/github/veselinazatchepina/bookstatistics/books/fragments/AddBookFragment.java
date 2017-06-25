@@ -17,14 +17,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.veselinazatchepina.bookstatistics.R;
-import com.github.veselinazatchepina.bookstatistics.books.enums.BookRating;
-import com.github.veselinazatchepina.bookstatistics.books.enums.BookType;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookRatingEnums;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,6 +50,12 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     Spinner mRatingSpinner;
     @BindView(R.id.type_spinner)
     Spinner mTypeSpinner;
+    @BindView(R.id.book_name)
+    EditText mBookName;
+    @BindView(R.id.book_author)
+    EditText mBookAuthor;
+    @BindView(R.id.book_page)
+    EditText mBookPage;
     @BindView(R.id.date_start_input_layout)
     TextInputLayout mDateStartInputLayout;
     @BindView(R.id.date_end_input_layout)
@@ -108,8 +116,11 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     private void defineCategorySpinner(RealmResults<BookCategory> element) {
-        createBookCategoryListForSpinner(element);
-        setCategorySpinnerOnCurrentPosition();
+        if (isAdded()) {
+            createBookCategoryListForSpinner(element);
+            createSpinnerAdapter();
+        }
+        //setCategorySpinnerOnCurrentPosition();
     }
 
     private void createBookCategoryListForSpinner(List<BookCategory> bookCategories) {
@@ -134,39 +145,39 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     private void setCategorySpinnerOnCurrentPosition() {
-        if (mSelectedValueOfCategory == null) {
+        //if (mSelectedValueOfCategory == null) {
             createSpinnerAdapter();
-            if (mCurrentCategory != null) {
-                mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
-            }
-        } else {
-            if (!mAllCategories.contains(mSelectedValueOfCategory)) {
-                mAllCategories.add(0, mSelectedValueOfCategory);
-            }
-            // https://ru.stackoverflow.com/questions/660436/
-            createSpinnerAdapter();
-            createSpinnerAdapter();
-            if (isAdded()) {
-                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
-                    mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
-                }
-            }
-        }
+//            if (mCurrentCategory != null) {
+//                mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
+//            }
+//        } else {
+//            if (!mAllCategories.contains(mSelectedValueOfCategory)) {
+//                mAllCategories.add(0, mSelectedValueOfCategory);
+//            }
+//            // https://ru.stackoverflow.com/questions/660436/
+//            createSpinnerAdapter();
+//            createSpinnerAdapter();
+//            if (isAdded()) {
+//                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
+//                    mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
+//                }
+//            }
+//        }
     }
 
     private void defineRatingSpinner() {
         ArrayAdapter<Integer> ratingSpinnerAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        ratingSpinnerAdapter.addAll(BookRating.FIVE_STARS,
-                BookRating.FOUR_STARS,
-                BookRating.THREE_STARS,
-                BookRating.TWO_STARS,
-                BookRating.ONE_STAR);
+        ratingSpinnerAdapter.addAll(BookRatingEnums.FIVE_STARS,
+                BookRatingEnums.FOUR_STARS,
+                BookRatingEnums.THREE_STARS,
+                BookRatingEnums.TWO_STARS,
+                BookRatingEnums.ONE_STAR);
         mRatingSpinner.setAdapter(ratingSpinnerAdapter);
     }
 
     private void defineTypeSpinner() {
         ArrayAdapter<String> typeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        typeSpinnerAdapter.addAll(BookType.NEW_BOOK, BookType.CURRENT_BOOK, BookType.READ_BOOK);
+        typeSpinnerAdapter.addAll(BookTypeEnums.NEW_BOOK, BookTypeEnums.CURRENT_BOOK, BookTypeEnums.READ_BOOK);
         mTypeSpinner.setAdapter(typeSpinnerAdapter);
     }
 
@@ -375,36 +386,26 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 //    }
 
     /**
-     * Method creates quote properties map for QuoteCreator class and pass map to it.
+     * Method creates book properties map for save in db.
      */
-//    public void createMapOfQuoteProperties() {
-//        Calendar currentCreateDate = Calendar.getInstance();
-//        String currentDate = String.format("%1$td %1$tb %1$tY", currentCreateDate);
-//        HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
-//        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, mCurrentQuoteText);
-//        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, mSelectedValueOfCategory);
-//        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATION_DATE, currentDate);
-//        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, mQuoteType);
-//        final String currentPageNumber;
-//        final String currentYearNumber;
-//        final String currentPublishName;
-//        if (!mQuoteType.equals(Types.MY_QUOTE)) {
-//            currentPageNumber = mPageNumber.getText().toString();
-//            currentYearNumber = mYearNumber.getText().toString();
-//            currentPublishName = mPublishName.getText().toString();
-//            mCurrentBookName = mBookName.getText().toString();
-//            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, emptyTextCheck(mCurrentBookName));
-//            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, mCurrentAuthorName);
-//            mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, emptyTextCheck(currentPageNumber));
-//            mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, emptyTextCheck(currentYearNumber));
-//            mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, emptyTextCheck(currentPublishName));
-//        }
-//        if (mQuoteIdForEdit != -1) {
-//            mQuoteDataRepository.saveChangedQuote(mQuoteIdForEdit, mapOfQuoteProperties);
-//        } else {
-//            mQuoteDataRepository.saveQuote(mapOfQuoteProperties);
-//        }
-//    }
+    public void createMapOfBookProperties() {
+        HashMap<BookPropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_NAME, mBookName.getText().toString());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_AUTHOR, mBookAuthor.getText().toString());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_RATING, mRatingSpinner.getSelectedItem().toString());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_PAGE, mBookPage.getText().toString());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_CATEGORY, mCategorySpinner.getSelectedItem().toString().toLowerCase());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_DATE_START, mStartDateEditText.getText().toString());
+        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_DATE_END, mEndDateEditText.getText().toString());
+
+
+        //if (mQuoteIdForEdit != -1) {
+        //    mQuoteDataRepository.saveChangedQuote(mQuoteIdForEdit, mapOfQuoteProperties);
+       // } else {
+            mBooksRealmRepository.saveQuote(mapOfQuoteProperties);
+        //}
+    }
 
     /**
      * Method checks is current value empty or equals "" and set "-" if it is.
