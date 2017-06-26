@@ -46,14 +46,14 @@ public class BooksRealmRepository implements RealmRepository {
         book.setDateStart(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START));
         book.setDateEnd(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_END));
         book.setBookCategory(checkAndGetCurrentCategory(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_CATEGORY)));
-        book.setSection(createSection(realm, mapOfQuoteProperties));
-        book.setRating(createBookRating(realm, mapOfQuoteProperties));
-        book.setYear(createYear(realm, mapOfQuoteProperties));
+        book.setSection(checkAndGetSection(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_TYPE)));
+        book.setRating(checkAndGetBookRating(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_RATING)));
+        book.setYear(checkAndGetYear(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START)));
     }
 
     private BookCategory checkAndGetCurrentCategory(Realm realm, String valueOfCategory) {
         RealmResults<BookCategory> bookCategories = realm.where(BookCategory.class)
-                .contains("categoryName", valueOfCategory)
+                .equalTo("categoryName", valueOfCategory)
                 .findAll();
         BookCategory bookCategory;
         if (bookCategories == null || bookCategories.isEmpty()) {
@@ -78,27 +78,86 @@ public class BooksRealmRepository implements RealmRepository {
                 bookCategory.getCategoryBookCount() + 1);
     }
 
-    private Section createSection(Realm realm, HashMap<BookPropertiesEnum, String> mapOfQuoteProperties) {
+    private Section checkAndGetSection(Realm realm, String sectionValue) {
+        RealmResults<Section> sections = realm.where(Section.class)
+                .equalTo("sectionName", sectionValue)
+                .findAll();
+        Section section;
+        if (sections == null || sections.isEmpty()) {
+            section = createSection(realm, sectionValue);
+        } else {
+            section = sections.first();
+            changeSectionCount(section);
+        }
+        return section;
+    }
+
+    private Section createSection(Realm realm, String sectionValue) {
         Section section = realm.createObject(Section.class);
         section.setId(getNextKey(section, realm));
-        section.setSectionName(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_TYPE));
+        section.setSectionName(sectionValue);
         section.setSectionBookCount(1);
         return section;
     }
 
-    private BookRating createBookRating(Realm realm, HashMap<BookPropertiesEnum, String> mapOfQuoteProperties) {
+    private void changeSectionCount(Section section) {
+        section.setSectionBookCount(
+                section.getSectionBookCount() + 1);
+    }
+
+    private BookRating checkAndGetBookRating(Realm realm, String ratingValue) {
+        RealmResults<BookRating> bookRatings = realm.where(BookRating.class)
+                .equalTo("starsCount", Integer.valueOf(ratingValue))
+                .findAll();
+        BookRating bookRating;
+        if (bookRatings == null || bookRatings.isEmpty()) {
+            bookRating = createBookRating(realm, ratingValue);
+        } else {
+            bookRating = bookRatings.first();
+            changeBookRatingCount(bookRating);
+        }
+        return bookRating;
+    }
+
+    private BookRating createBookRating(Realm realm, String bookRatingValue) {
         BookRating bookRating = realm.createObject(BookRating.class);
         bookRating.setId(getNextKey(bookRating, realm));
-        bookRating.setStarsCount(Integer.valueOf(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_RATING)));
+        bookRating.setStarsCount(Integer.valueOf(bookRatingValue));
         bookRating.setRatingBookCount(1);
         return bookRating;
     }
 
-    private Year createYear(Realm realm, HashMap<BookPropertiesEnum, String> mapOfQuoteProperties) {
+    private void changeBookRatingCount(BookRating bookRating) {
+        bookRating.setRatingBookCount(
+                bookRating.getRatingBookCount() + 1);
+    }
+
+    private Year checkAndGetYear(Realm realm, String date) {
+        int currentYear = getYearNumber(date);
+        RealmResults<Year> years = realm.where(Year.class)
+                .equalTo("yearNumber", currentYear)
+                .findAll();
+        Year year;
+        if (years == null || years.isEmpty()) {
+            year = createYear(realm, currentYear);
+        } else {
+            year = years.first();
+            changeYearCount(year);
+        }
+        return year;
+    }
+
+    private Year createYear(Realm realm, int yearValue) {
         Year year = realm.createObject(Year.class);
         year.setId(getNextKey(year, realm));
-        year.setYearNumber(getYearNumber(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START)));
+        year.setYearNumber(yearValue);
+        year.setCurrentYearCount(1);
         return year;
+    }
+
+    private void changeYearCount(Year year) {
+        year.setCurrentYearCount(
+                year.getCurrentYearCount() + 1);
     }
 
     private int getYearNumber(String date) {

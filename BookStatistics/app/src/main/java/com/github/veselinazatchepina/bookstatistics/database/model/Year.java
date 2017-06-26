@@ -5,6 +5,7 @@ import io.realm.RealmObject;
 public class Year extends RealmObject {
     private long id;
     private int yearNumber;
+    private int currentYearCount;
 
     public Year() {
     }
@@ -32,5 +33,13 @@ public class Year extends RealmObject {
 
     public void setYearNumber(int yearNumber) {
         this.yearNumber = yearNumber;
+    }
+
+    public int getCurrentYearCount() {
+        return currentYearCount;
+    }
+
+    public void setCurrentYearCount(int currentYearCount) {
+        this.currentYearCount = currentYearCount;
     }
 }
