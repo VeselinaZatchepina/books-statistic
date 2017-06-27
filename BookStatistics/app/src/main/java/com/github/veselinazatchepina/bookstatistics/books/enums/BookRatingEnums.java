@@ -1,7 +1,7 @@
 package com.github.veselinazatchepina.bookstatistics.books.enums;
 
 
-public class BookRatingEnums {
+public final class BookRatingEnums {
     public static final Integer FIVE_STARS = 5;
     public static final Integer FOUR_STARS = 4;
     public static final Integer THREE_STARS = 3;
