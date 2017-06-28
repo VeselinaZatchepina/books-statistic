@@ -16,7 +16,7 @@ import butterknife.BindView;
 
 import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
-public class BookCategoriesMainActivity extends NavigationAbstractActivity {
+public class BookCategoriesMainActivity extends NavigationAbstractActivity implements BookCategoriesFragment.BookCategoryCallbacks {
 
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
@@ -78,5 +78,10 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity {
 //        outState.putString(QUOTE_TYPE_BUNDLE, mTitle);
 //        outState.putLong(CURRENT_ID_BUNDLE, mCurrentId);
 //        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCategorySelected(String currentCategory) {
+        startActivity(BookSectionActivity.newIntent(this));
     }
 }

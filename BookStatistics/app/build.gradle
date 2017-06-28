@@ -42,5 +42,9 @@ dependencies {
     //Material DateTime Picker
     compile 'com.wdullaer:materialdatetimepicker:3.2.2'
 
+    //CoordinatorTabLayout
+    compile 'cn.hugeterry.coordinatortablayout:coordinatortablayout:1.0.6'
+
+
     testCompile 'junit:junit:4.12'
 }

@@ -455,6 +455,11 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
+    public RealmResults<Section> getAllBookSection() {
+        return mRealm.where(Section.class).findAllAsync();
+    }
+
+    @Override
     public void closeDbConnect() {
         mRealm.close();
     }

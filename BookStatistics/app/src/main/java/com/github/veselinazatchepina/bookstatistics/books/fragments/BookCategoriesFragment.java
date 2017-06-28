@@ -35,6 +35,7 @@ public class BookCategoriesFragment extends Fragment {
 
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<BookCategory> mBookCategories;
+    private BookCategoryCallbacks mCallbacks;
 
     public BookCategoriesFragment() {
 
@@ -89,7 +90,7 @@ public class BookCategoriesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mCallbacks = (QuoteCategoryCallbacks) context;
+        mCallbacks = (BookCategoryCallbacks) context;
     }
 
     @Override
@@ -101,7 +102,7 @@ public class BookCategoriesFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        //mCallbacks = null;
+        mCallbacks = null;
     }
 
     @Override
@@ -177,7 +178,7 @@ public class BookCategoriesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!mData.isEmpty()) {
-                    //mCallbacks.onCategorySelected(itemBookCategory.getText().toString(), mQuoteType);
+                    mCallbacks.onCategorySelected(itemBookCategory.getText().toString());
                 }
             }
 
@@ -223,12 +224,11 @@ public class BookCategoriesFragment extends Fragment {
         }
     }
 
-    /*public interface QuoteCategoryCallbacks {
-     * Method starts activity with all quotes of current category
+    public interface BookCategoryCallbacks {
+     /* Method starts activity with all books of current category
      *
      * @param currentCategory
-     * @param quoteType
-     *//*
-        void onCategorySelected(String currentCategory, String quoteType);
-    }*/
+     */
+        void onCategorySelected(String currentCategory);
+    }
 }

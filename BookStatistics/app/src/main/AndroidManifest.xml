@@ -20,6 +20,9 @@
         <activity android:name=".books.activities.AddBookActivity"
                   android:windowSoftInputMode="adjustPan"
                   android:theme="@style/AppTheme"/>
+        <activity android:name=".books.activities.BookSectionActivity"
+                  android:parentActivityName=".books.activities.BookCategoriesMainActivity"
+                  android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
