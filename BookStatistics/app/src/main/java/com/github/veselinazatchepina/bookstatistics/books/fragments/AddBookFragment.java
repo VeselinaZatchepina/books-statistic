@@ -56,6 +56,8 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     EditText mBookAuthor;
     @BindView(R.id.book_page)
     EditText mBookPage;
+    @BindView(R.id.book_page_input_layout)
+    TextInputLayout mBookPageInputLayout;
     @BindView(R.id.date_start_input_layout)
     TextInputLayout mDateStartInputLayout;
     @BindView(R.id.date_end_input_layout)
@@ -339,51 +341,27 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mCategorySpinner.setSelection(mSpinnerAdapter.getCount());
     }
 
-    /**
-     * Method checks if user choose hint in mCategorySpinner.
+    /*
+     * Method checks if user choose hint in category spinner.
      *
      * @return true if user choose hint and false else if.
      */
-//    public boolean isSpinnerSelectedItemHint() {
-//        return mSelectedValueOfCategory.equals(getString(R.string.spinner_hint));
-//    }
+    public boolean isSpinnerSelectedItemHint() {
+        return mSelectedValueOfCategory.equals(getString(R.string.error_category_spinner));
+    }
 
-    /**
-     * Method checks if main EditText is empty or not.
-     *
-     * @return false if EditText not empty and true if else.
-     */
-//    public boolean isEditTextEmpty() {
-//        mCurrentQuoteText = mQuoteText.getText().toString();
-//        if (TextUtils.isEmpty(mCurrentQuoteText)) {
-//            mQuoteTextInputLayout.setError(getString(R.string.quote_text_empty_error));
-//            return true;
-//        }
-//        if (isAdded()) {
-//            if (!mQuoteType.equals(Types.MY_QUOTE)) {
-//                mCurrentAuthorName = mAuthorName.getText().toString();
-//                if (TextUtils.isEmpty(mCurrentAuthorName)) {
-//                    mAuthorNameInputLayout.setError(getString(R.string.author_name_empty_error));
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
+    public boolean isPagePositiveNumber() {
+        return isCurrentNumberPositive(mBookPage, mBookPageInputLayout);
+    }
 
-//    public boolean isNumbersPositive() {
-//        return isCurrentNumberPositive(mPageNumber, mPageNumberInputLayout) &&
-//                isCurrentNumberPositive(mYearNumber, mYearNumberInputLayout);
-//    }
-//
-//    private boolean isCurrentNumberPositive(EditText editText, TextInputLayout textInputLayout) {
-//        String currentValue = editText.getText().toString();
-//        if (!currentValue.isEmpty() && !currentValue.equals(getString(R.string.default_value)) && Integer.valueOf(currentValue) < 0) {
-//            textInputLayout.setError(getString(R.string.page_number_error));
-//            return false;
-//        }
-//        return true;
-//    }
+    private boolean isCurrentNumberPositive(EditText editText, TextInputLayout textInputLayout) {
+        String currentValue = editText.getText().toString();
+        if (!currentValue.isEmpty() && !currentValue.equals(getString(R.string.default_value)) && Integer.valueOf(currentValue) < 0) {
+            textInputLayout.setError(getString(R.string.error_page_number));
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Method creates book properties map for save in db.
@@ -406,19 +384,6 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
             mBooksRealmRepository.saveQuote(mapOfQuoteProperties);
         //}
     }
-
-    /**
-     * Method checks is current value empty or equals "" and set "-" if it is.
-     *
- //    * @param currentValue
-     * @return current value
-     */
-//    private String emptyTextCheck(String currentValue) {
-//        if (currentValue.isEmpty() || currentValue.equals("")) {
-//            currentValue = getString(R.string.default_value);
-//        }
-//        return currentValue;
-//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.SingleFragmentAbstractActivity;
@@ -42,14 +43,13 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     @Override
     public void defineActionWhenFabIsPressed() {
         AddBookFragment addBookFragment = ((AddBookFragment) currentFragment);
-        //if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint() &&
-              //  addQuoteFragment.isNumbersPositive()) {
+        if (!addBookFragment.isSpinnerSelectedItemHint() && addBookFragment.isPagePositiveNumber()) {
             addBookFragment.createMapOfBookProperties();
             this.finish();
-       // }
-      //  if (addQuoteFragment.isSpinnerSelectedItemHint()) {
-        //    Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
-        //}
+        }
+        if (addBookFragment.isSpinnerSelectedItemHint()) {
+            Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
+        }
     }
 
     public static Intent newIntent(Context context) {

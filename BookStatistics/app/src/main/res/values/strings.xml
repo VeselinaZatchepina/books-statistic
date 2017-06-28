@@ -14,6 +14,9 @@
     <!-- Quote category recycler view item -->
     <string name="image_content_description">Icon of current category</string>
 
+    <!-- AddBookActivity-->
+    <string name="toast_choose_category">Choose category</string>
+
     <!-- AddBookFragment-->
     <string name="hint_book_name">Book name</string>
     <string name="hint_book_author">Book author</string>
@@ -24,7 +27,10 @@
     <string name="hint_date_start">Date start</string>
     <string name="hint_date_end">Date end</string>
     <string name="title_spinner_category_add_category">+ add new category</string>
-    <string name="title_spinner_category">Select quote category</string>
+    <string name="title_spinner_category">Select book category</string>
+    <string name="default_value"> - </string>
+    <string name="error_page_number">Page number cannot be negative</string>
+    <string name="error_category_spinner">Select book category</string>
 
     <!-- Add category dialog -->
     <string name="dialog_add_category_title">Enter the category name</string>

@@ -50,23 +50,43 @@ public class BooksRealmRepository implements RealmRepository {
             @Override
             public void execute(Realm realm) {
                 Book currentBook = saveBook(realm, mapOfQuoteProperties);
-                saveBookInTablesForChart(realm, currentBook);
+                String currentStartDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START);
+                String currentEndDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_END);
+                if (isNotNullAndEmpty(currentStartDateValue) && isNotNullAndEmpty(currentEndDateValue)) {
+                    saveBookInTablesForChart(realm, currentBook);
+                }
             }
         });
+    }
+
+    private boolean isNotNullAndEmpty(String valueForCheck) {
+        return valueForCheck != null && !valueForCheck.equals("");
     }
 
     private Book saveBook(Realm realm, HashMap<BookPropertiesEnum, String> mapOfQuoteProperties) {
         Book book = realm.createObject(Book.class);
         book.setId(getNextKey(book, realm));
-        book.setBookName(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_NAME));
-        book.setAuthorName(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_AUTHOR));
-        book.setPageCount(Integer.valueOf(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_PAGE)));
+        String currentBookName = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_NAME);
+        if (isNotNullAndEmpty(currentBookName)) {
+            book.setBookName(currentBookName);
+        }
+        String currentBookAuthor = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_AUTHOR);
+        if (isNotNullAndEmpty(currentBookAuthor)) {
+            book.setAuthorName(currentBookAuthor);
+        }
+        String currentPage = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_PAGE);
+        if (isNotNullAndEmpty(currentPage)) {
+            book.setPageCount(Integer.valueOf(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_PAGE)));
+        }
         book.setDateStart(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START));
         book.setDateEnd(mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_END));
         book.setBookCategory(checkAndGetCurrentCategory(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_CATEGORY)));
         book.setSection(checkAndGetSection(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_TYPE)));
         book.setRating(checkAndGetBookRating(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_RATING)));
-        book.setYear(checkAndGetYear(realm, mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START)));
+        String currentStartDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START);
+        if (isNotNullAndEmpty(currentStartDateValue)) {
+            book.setYear(checkAndGetYear(realm, currentStartDateValue));
+        }
         return book;
     }
 
