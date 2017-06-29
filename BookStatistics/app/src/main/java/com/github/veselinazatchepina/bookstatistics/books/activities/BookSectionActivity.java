@@ -3,13 +3,16 @@ package com.github.veselinazatchepina.bookstatistics.books.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.veselinazatchepina.bookstatistics.R;
@@ -28,6 +31,8 @@ public class BookSectionActivity extends AppCompatActivity {
     ViewPager mSectionViewPager;
     @BindView(R.id.coordinator_tab_layout)
     CoordinatorTabLayout mCoordinatorTabLayout;
+    @BindView(R.id.section_fab)
+    FloatingActionButton mSectionFab;
 
     private Fragment mMainFragment;
     private ArrayList<String> mSectionTypes;
@@ -45,6 +50,7 @@ public class BookSectionActivity extends AppCompatActivity {
         defineInputData();
         defineViewPager();
         defineTabLayout();
+        defineFab();
     }
 
     private void defineInputData() {
@@ -88,5 +94,33 @@ public class BookSectionActivity extends AppCompatActivity {
         mCoordinatorTabLayout.setTitle("Book sections")
                 .setupWithViewPager(mSectionViewPager)
                 .setBackEnable(true);;
+    }
+
+    private void defineFab() {
+        setFabImage();
+        mSectionFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                defineActionWhenFabIsPressed();
+            }
+        });
+    }
+
+    private void setFabImage() {
+        int fabImageResourceId = setFabImageResourceId();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mSectionFab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
+        } else {
+            mSectionFab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
+        }
+    }
+
+    private int setFabImageResourceId() {
+        return R.drawable.ic_add_white_24dp;
+    }
+
+    private void defineActionWhenFabIsPressed() {
+        Intent intent = AddBookActivity.newIntent(this);
+        startActivity(intent);
     }
 }
