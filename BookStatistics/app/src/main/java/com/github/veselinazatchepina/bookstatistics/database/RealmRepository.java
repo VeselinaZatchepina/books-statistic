@@ -19,5 +19,7 @@ public interface RealmRepository {
 
     List<Book> getAllBooksInCurrentSection(String sectionType, String currentCategory);
 
+    List<Book> getBookById(long currentBookId);
+
     void closeDbConnect();
 }

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/add_book_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/cardview_margin_bottom_add_book"
+        android:layout_marginEnd="@dimen/cardview_margin_end_add_book"
+        android:layout_marginStart="@dimen/cardview_margin_start_add_book"
+        android:layout_marginTop="@dimen/cardview_margin_top_add_book"
+        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardCornerRadius="@dimen/corner_radius"
+        card_view:cardElevation="@dimen/card_elevation"
+        card_view:cardUseCompatPadding="true">
+
+        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:columnCount="2"
+                    android:orientation="horizontal"
+                    android:useDefaultMargins="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_name"/>
+
+            <TextView
+                android:id="@+id/current_book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book name text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_author"/>
+
+            <TextView
+                android:id="@+id/current_book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book author text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_category"/>
+
+            <TextView
+                android:id="@+id/current_book_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book category text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_section"/>
+
+            <TextView
+                android:id="@+id/current_book_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book section type text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_pages"/>
+
+            <TextView
+                android:id="@+id/current_book_pages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book pages text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_start_date"/>
+
+            <TextView
+                android:id="@+id/current_book_date_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book date start text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_end_date"/>
+
+            <TextView
+                android:id="@+id/current_book_date_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book date end text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/current_book_rating"/>
+
+            <TextView
+                android:id="@+id/current_book_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                tools:text="Book rating text"/>
+
+        </GridLayout>
+
+    </android.support.v7.widget.CardView>
+
+</ScrollView>

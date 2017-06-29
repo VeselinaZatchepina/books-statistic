@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.hugeterry.coordinatortablayout.CoordinatorTabLayout;
 
-public class BookSectionActivity extends AppCompatActivity {
+public class BookSectionActivity extends AppCompatActivity implements BookSectionFragment.CurrentBookCallbacks {
 
     private static final String BOOK_CATEGORY_INTENT = "book_category_intent";
 
@@ -131,5 +131,10 @@ public class BookSectionActivity extends AppCompatActivity {
     private void defineActionWhenFabIsPressed() {
         Intent intent = AddBookActivity.newIntent(this);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBookSelected(long currentBookId) {
+        startActivity(CurrentBookActivity.newIntent(this, currentBookId));
     }
 }

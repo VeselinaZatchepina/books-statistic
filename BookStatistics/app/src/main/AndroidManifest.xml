@@ -23,6 +23,8 @@
         <activity android:name=".books.activities.BookSectionActivity"
                   android:parentActivityName=".books.activities.BookCategoriesMainActivity"
                   android:theme="@style/AppTheme"/>
+        <activity android:name=".books.activities.CurrentBookActivity"
+                  android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

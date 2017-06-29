@@ -41,4 +41,14 @@
     <string name="go_to_other_section_content_description">Go to other section</string>
     <string name="set_rating_content_description">Set rating</string>
 
+    <!-- CurrentBookFragment -->
+    <string name="current_book_name">Book name:</string>
+    <string name="current_book_author">Book author:</string>
+    <string name="current_book_rating">Book rating:</string>
+    <string name="current_book_pages">Book pages count:</string>
+    <string name="current_book_category">Book category:</string>
+    <string name="current_book_section">Book section type:</string>
+    <string name="current_book_start_date">Start date of reading:</string>
+    <string name="current_book_end_date">End date of reading:</string>
+
 </resources>

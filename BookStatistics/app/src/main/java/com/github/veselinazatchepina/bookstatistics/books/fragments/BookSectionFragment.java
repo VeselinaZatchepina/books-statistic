@@ -41,6 +41,7 @@ public class BookSectionFragment extends Fragment {
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<Book> mBooksInCurrentSection;
     BookSectionRecyclerViewAdapter mBookSectionRecyclerViewAdapter;
+    private CurrentBookCallbacks mCallbacks;
 
     public BookSectionFragment() { }
 
@@ -62,9 +63,6 @@ public class BookSectionFragment extends Fragment {
     }
 
     private void defineInputData(Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE);
-//        } else
         if (getArguments() != null) {
             mCurrentSectionType = getArguments().getString(CURRENT_BOOK_SECTION);
             mCurrentCategory = getArguments().getString(CURRENT_BOOK_CATEGORY);
@@ -95,6 +93,24 @@ public class BookSectionFragment extends Fragment {
         mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksInCurrentSection, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookSectionRecyclerViewAdapter);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (CurrentBookCallbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     class BookSectionRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book, BookSectionRecyclerViewAdapter.MyViewHolder> {
@@ -129,6 +145,7 @@ public class BookSectionFragment extends Fragment {
                 Book currentBook = mData.get(position);
                 holder.bookNameTextView.setText(currentBook.getBookName());
                 holder.bookAuthorTextView.setText(currentBook.getBookName());
+                holder.book = currentBook;
             }
         }
 
@@ -153,6 +170,7 @@ public class BookSectionFragment extends Fragment {
             @Nullable
             @BindView(R.id.book_author_in_section)
             TextView bookAuthorTextView;
+            Book book;
 
             MyViewHolder(View container) {
                 super(container);
@@ -164,7 +182,7 @@ public class BookSectionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!mData.isEmpty()) {
-                    //mCallbacks.onCategorySelected(itemBookCategory.getText().toString());
+                    mCallbacks.onBookSelected(book.getId());
                 }
             }
 
@@ -210,9 +228,11 @@ public class BookSectionFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public interface CurrentBookCallbacks {
+        /* Method starts activity with current books
+        *
+        * @param currentCategory
+        */
+        void onBookSelected(long currentBookId);
     }
 }

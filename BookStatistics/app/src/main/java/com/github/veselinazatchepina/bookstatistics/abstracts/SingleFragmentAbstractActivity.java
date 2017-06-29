@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.bookstatistics.abstracts;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.github.veselinazatchepina.bookstatistics.R;
+import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 import com.github.veselinazatchepina.bookstatistics.utils.ColorationTextChar;
 
@@ -114,7 +116,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     public void defineActionWhenFabIsPressed() {
-//        Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
-//        startActivity(intent);
+        Intent intent = AddBookActivity.newIntent(this);
+        startActivity(intent);
     }
 }

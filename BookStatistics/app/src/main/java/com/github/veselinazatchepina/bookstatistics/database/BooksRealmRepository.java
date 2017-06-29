@@ -465,6 +465,11 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
+    public RealmResults<Book> getBookById(long currentBookId) {
+        return mRealm.where(Book.class).equalTo("id", currentBookId).findAllAsync();
+    }
+
+    @Override
     public void closeDbConnect() {
         mRealm.close();
     }
