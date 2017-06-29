@@ -37,4 +37,8 @@
     <string name="dialog_add_category_ok">OK</string>
     <string name="dialog_add_category_cancel">CANCEL</string>
 
+    <!-- BookSectionFragment -->
+    <string name="go_to_other_section_content_description">Go to other section</string>
+    <string name="set_rating_content_description">Set rating</string>
+
 </resources>

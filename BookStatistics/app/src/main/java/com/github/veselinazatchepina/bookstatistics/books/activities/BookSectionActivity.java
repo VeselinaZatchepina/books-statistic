@@ -27,6 +27,8 @@ import cn.hugeterry.coordinatortablayout.CoordinatorTabLayout;
 
 public class BookSectionActivity extends AppCompatActivity {
 
+    private static final String BOOK_CATEGORY_INTENT = "book_category_intent";
+
     @BindView(R.id.view_pager)
     ViewPager mSectionViewPager;
     @BindView(R.id.coordinator_tab_layout)
@@ -36,9 +38,11 @@ public class BookSectionActivity extends AppCompatActivity {
 
     private Fragment mMainFragment;
     private ArrayList<String> mSectionTypes;
+    private String mCurrentCategory;
 
-    public static Intent newIntent(Context context) {
+    public static Intent newIntent(Context context, String currentCategory) {
         Intent intent = new Intent(context, BookSectionActivity.class);
+        intent.putExtra(BOOK_CATEGORY_INTENT, currentCategory);
         return intent;
     }
 
@@ -54,6 +58,11 @@ public class BookSectionActivity extends AppCompatActivity {
     }
 
     private void defineInputData() {
+        createSectionTypeList();
+        mCurrentCategory = getIntent().getStringExtra(BOOK_CATEGORY_INTENT);
+    }
+
+    private void createSectionTypeList() {
         mSectionTypes = new ArrayList<>();
         mSectionTypes.add(BookTypeEnums.NEW_BOOK);
         mSectionTypes.add(BookTypeEnums.CURRENT_BOOK);
@@ -65,7 +74,7 @@ public class BookSectionActivity extends AppCompatActivity {
         mSectionViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position));
+                mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position), mCurrentCategory);
                 return mMainFragment;
             }
 

@@ -82,6 +82,6 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
 
     @Override
     public void onCategorySelected(String currentCategory) {
-        startActivity(BookSectionActivity.newIntent(this));
+        startActivity(BookSectionActivity.newIntent(this, currentCategory));
     }
 }

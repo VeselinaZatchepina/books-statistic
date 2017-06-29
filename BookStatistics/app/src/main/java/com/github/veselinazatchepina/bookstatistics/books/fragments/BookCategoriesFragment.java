@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.realm.OrderedRealmCollection;
+import io.realm.RealmChangeListener;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 
@@ -36,6 +37,7 @@ public class BookCategoriesFragment extends Fragment {
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<BookCategory> mBookCategories;
     private BookCategoryCallbacks mCallbacks;
+    BookCategoryRecyclerViewAdapter mBookCategoryRecyclerViewAdapter;
 
     public BookCategoriesFragment() {
 
@@ -64,6 +66,12 @@ public class BookCategoriesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
         setCurrentCategoryTitleIsGone();
         defineRecyclerView();
+        mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
+            @Override
+            public void onChange(RealmResults<BookCategory> element) {
+                mBookCategoryRecyclerViewAdapter.mData = element;
+            }
+        });
         return rootView;
     }
 
@@ -72,9 +80,9 @@ public class BookCategoriesFragment extends Fragment {
     }
 
     private void defineRecyclerView() {
-        BookCategoryRecyclerViewAdapter bookCategoryRecyclerViewAdapter = new BookCategoryRecyclerViewAdapter(getActivity(), mBookCategories, true);
+        mBookCategoryRecyclerViewAdapter = new BookCategoryRecyclerViewAdapter(getActivity(), mBookCategories, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(bookCategoryRecyclerViewAdapter);
+        mRecyclerView.setAdapter(mBookCategoryRecyclerViewAdapter);
     }
 
     public static BookCategoriesFragment newInstance() {
