@@ -17,6 +17,7 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     private static final String CURRENT_BOOK_ID_INTENT = "current_book_id_intent";
 
     private Fragment mCurrentFragment;
+    private long mCurrentBookId;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, AddBookActivity.class);
@@ -34,16 +35,13 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
 //        if (saveInstanceState != null) {
 //            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
 //            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
-//        } else {
-//            mQuotesType = getIntent().getStringExtra(QUOTE_TYPE_INTENT);
-//            mCurrentCategory = getIntent().getStringExtra(QUOTE_CATEGORY_INTENT);
-//            mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT, -1);
 //        }
+        mCurrentBookId = getIntent().getLongExtra(CURRENT_BOOK_ID_INTENT, -1);
     }
 
     @Override
     public Fragment createFragment() {
-        mCurrentFragment = AddBookFragment.newInstance();
+        mCurrentFragment = AddBookFragment.newInstance(mCurrentBookId);
         return mCurrentFragment;
     }
 

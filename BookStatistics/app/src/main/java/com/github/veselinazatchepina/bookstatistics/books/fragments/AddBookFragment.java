@@ -21,6 +21,7 @@ import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEn
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookRatingEnums;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
+import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -43,6 +44,8 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     private static final String DATE_PICKER_START_DATE = "start date";
     private static final String DATE_PICKER_END_DATE = "end date";
+    private static final String CURRENT_BOOK_ID = "current_book_id";
+
 
     @BindView(R.id.category_spinner)
     Spinner mCategorySpinner;
@@ -67,13 +70,25 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<BookCategory> mBookCategories;
     private List<String> mAllCategories;
-    private ArrayAdapter<String> mSpinnerAdapter;
+    private ArrayAdapter<String> mCategorySpinnerAdapter;
+    ArrayAdapter<Integer> mRatingSpinnerAdapter;
+    ArrayAdapter<String> mTypeSpinnerAdapter;
     private String mSelectedValueOfCategory;
     private String mCurrentCategory;
     private EditText mStartDateEditText;
     private EditText mEndDateEditText;
+    private long mCurrentBookIdForEdit;
+    private RealmResults<Book> mBookForEdit;
 
     public AddBookFragment() { }
+
+    public static AddBookFragment newInstance(long currentBookId) {
+        Bundle args = new Bundle();
+        args.putLong(CURRENT_BOOK_ID, currentBookId);
+        AddBookFragment fragment = new AddBookFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,19 +96,19 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         defineInputData(savedInstanceState);
         mBooksRealmRepository = new BooksRealmRepository();
         mBookCategories = mBooksRealmRepository.getListOfBookCategories();
+        getBookForEditById();
     }
 
     private void defineInputData(Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE);
-//            mQuoteIdForEdit = savedInstanceState.getLong(QUOTE_ID_BUNDLE);
-//            mCurrentCategory = savedInstanceState.getString(QUOTE_CATEGORY_NEW_INSTANCE);
-//            mSelectedValueOfCategory = savedInstanceState.getString(QUOTE_CATEGORY_VALUE_SAVE_INSTANCE);
-//        } else if (getArguments() != null) {
-//            mQuoteIdForEdit = getArguments().getLong(QUOTE_ID_NEW_INSTANCE, -1);
-//            mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE);
-//            mCurrentCategory = getArguments().getString(QUOTE_CATEGORY_NEW_INSTANCE);
-//        }
+        if (getArguments() != null) {
+            mCurrentBookIdForEdit = getArguments().getLong(CURRENT_BOOK_ID, -1);
+        }
+    }
+
+    private void getBookForEditById() {
+        if (mCurrentBookIdForEdit != -1) {
+            mBookForEdit = mBooksRealmRepository.getBookById(mCurrentBookIdForEdit);
+        }
     }
 
     @Override
@@ -112,8 +127,9 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         setListenerToCategorySpinner();
         defineStartDate();
         defineEndDate();
-
-        //fillFieldsWithQuoteEditData(savedInstanceState);
+        if (mCurrentBookIdForEdit != -1) {
+            fillFieldsWithBookEditData(savedInstanceState);
+        }
         return rootView;
     }
 
@@ -168,19 +184,19 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     private void defineRatingSpinner() {
-        ArrayAdapter<Integer> ratingSpinnerAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        ratingSpinnerAdapter.addAll(BookRatingEnums.FIVE_STARS,
+        mRatingSpinnerAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        mRatingSpinnerAdapter.addAll(BookRatingEnums.FIVE_STARS,
                 BookRatingEnums.FOUR_STARS,
                 BookRatingEnums.THREE_STARS,
                 BookRatingEnums.TWO_STARS,
                 BookRatingEnums.ONE_STAR);
-        mRatingSpinner.setAdapter(ratingSpinnerAdapter);
+        mRatingSpinner.setAdapter(mRatingSpinnerAdapter);
     }
 
     private void defineTypeSpinner() {
-        ArrayAdapter<String> typeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        typeSpinnerAdapter.addAll(BookTypeEnums.NEW_BOOK, BookTypeEnums.CURRENT_BOOK, BookTypeEnums.READ_BOOK);
-        mTypeSpinner.setAdapter(typeSpinnerAdapter);
+        mTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        mTypeSpinnerAdapter.addAll(BookTypeEnums.NEW_BOOK, BookTypeEnums.CURRENT_BOOK, BookTypeEnums.READ_BOOK);
+        mTypeSpinner.setAdapter(mTypeSpinnerAdapter);
     }
 
     private void defineStartDate() {
@@ -215,30 +231,39 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         return datePickerDialog;
     }
 
+    private void fillFieldsWithBookEditData(final Bundle savedInstanceState) {
+        if (mCurrentBookIdForEdit != -1) {
+            mBookForEdit.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
+                @Override
+                public void onChange(RealmResults<Book> element) {
+                    if (element.size() > 0) {
+                        setBookDataToFields(element);
+                    }
+                    //updateFragmentFieldsWhenRotate(savedInstanceState);
+                }
+            });
+        }
+    }
 
-//    private void fillFieldsWithQuoteEditData(final Bundle savedInstanceState) {
-//        if (mQuoteIdForEdit != -1) {
-//            mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
-//                @Override
-//                public void onChange(RealmResults<QuoteText> element) {
-//                    if (element.size() > 0) {
-//                        FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
-//                                mQuoteText, mBookName, mAuthorName, mPageNumber, mPublishName, mYearNumber, mQuoteType);
-//                        setSpinnerSelectionOnCurrentCategory(element);
-//                    }
-//                    updateFragmentFieldsWhenRotate(savedInstanceState);
-//                }
-//            });
-//        }
-//    }
-//
-//    private void setSpinnerSelectionOnCurrentCategory(RealmResults<QuoteText> element) {
-//        QuoteText quote = element.first();
-//        String currentQuoteCategory = quote.getCategory().getCategoryName();
-//        if (mAllCategories != null && !mAllCategories.isEmpty()) {
-//            mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(currentQuoteCategory.toUpperCase()));
-//        }
- //   }
+    private void setBookDataToFields(RealmResults<Book> element) {
+        Book book = element.first();
+        mBookName.setText(book.getBookName());
+        mBookAuthor.setText(book.getAuthorName());
+        mRatingSpinner.setSelection(mRatingSpinnerAdapter.getPosition(book.getRating().getStarsCount()));
+        mBookPage.setText(String.valueOf(book.getPageCount()));
+        setCategorySpinnerSelectionOnCurrentCategory(element);
+        mTypeSpinner.setSelection(mTypeSpinnerAdapter.getPosition(book.getSection().getSectionName()));
+        mDateStartInputLayout.getEditText().setText(book.getDateStart());
+        mEndDateInputLayout.getEditText().setText(book.getDateEnd());
+    }
+
+    private void setCategorySpinnerSelectionOnCurrentCategory(RealmResults<Book> element) {
+        Book book = element.first();
+        String currentBookCategory = book.getBookCategory().getCategoryName();
+        if (mAllCategories != null && !mAllCategories.isEmpty()) {
+            mCategorySpinner.setSelection(mCategorySpinnerAdapter.getPosition(currentBookCategory.toUpperCase()));
+        }
+    }
 
 //    private void updateFragmentFieldsWhenRotate(Bundle savedInstanceState) {
 //        if (savedInstanceState != null) {
@@ -299,8 +324,8 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                             public void onClick(DialogInterface dialog, int id) {
                                 String currentUserInput = userInput.getText().toString();
                                 mAllCategories.add(0, currentUserInput);
-                                mSpinnerAdapter.clear();
-                                mSpinnerAdapter.addAll(mAllCategories);
+                                mCategorySpinnerAdapter.clear();
+                                mCategorySpinnerAdapter.addAll(mAllCategories);
                                 mCategorySpinner.setSelection(0);
                                 mSelectedValueOfCategory = currentUserInput;
                             }
@@ -319,7 +344,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private void createSpinnerAdapter() {
         if (isAdded()) {
             // Set hint for mCategorySpinner
-            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+            mCategorySpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View v = super.getView(position, convertView, parent);
@@ -336,9 +361,9 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                 }
             };
         }
-        mSpinnerAdapter.addAll(mAllCategories);
-        mCategorySpinner.setAdapter(mSpinnerAdapter);
-        mCategorySpinner.setSelection(mSpinnerAdapter.getCount());
+        mCategorySpinnerAdapter.addAll(mAllCategories);
+        mCategorySpinner.setAdapter(mCategorySpinnerAdapter);
+        mCategorySpinner.setSelection(mCategorySpinnerAdapter.getCount());
     }
 
     /*
@@ -378,33 +403,17 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_DATE_END, mEndDateEditText.getText().toString());
 
 
-        //if (mQuoteIdForEdit != -1) {
-        //    mQuoteDataRepository.saveChangedQuote(mQuoteIdForEdit, mapOfQuoteProperties);
-       // } else {
+        if (mCurrentBookIdForEdit != -1) {
+           // mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit, mapOfQuoteProperties);
+        } else {
             mBooksRealmRepository.saveQuote(mapOfQuoteProperties);
-        //}
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putString(QUOTE_TYPE_BUNDLE, mQuoteType);
-//        outState.putLong(QUOTE_ID_BUNDLE, mQuoteIdForEdit);
-//        outState.putString(QUOTE_CATEGORY_NEW_INSTANCE, mCurrentCategory);
-//        outState.putString(QUOTE_TEXT_SAVE_INSTANCE, mQuoteText.getText().toString());
-//        outState.putString(QUOTE_BOOK_NAME_SAVE_INSTANCE, mBookName.getText().toString());
-//        outState.putString(QUOTE_BOOK_AUTHOR_SAVE_INSTANCE, mAuthorName.getText().toString());
-//        outState.putString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE, mPublishName.getText().toString());
-//        outState.putString(QUOTE_YEAR_SAVE_INSTANCE, mYearNumber.getText().toString());
-//        outState.putString(QUOTE_PAGE_SAVE_INSTANCE, mPageNumber.getText().toString());
-//        outState.putString(QUOTE_CATEGORY_VALUE_SAVE_INSTANCE, mSelectedValueOfCategory);
-    }
 
-    public static AddBookFragment newInstance() {
-        //Bundle args = new Bundle();
-        AddBookFragment fragment = new AddBookFragment();
-        //fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
