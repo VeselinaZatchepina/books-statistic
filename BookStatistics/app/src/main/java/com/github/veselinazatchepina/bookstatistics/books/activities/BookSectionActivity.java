@@ -134,7 +134,7 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     }
 
     @Override
-    public void onBookSelected(long currentBookId) {
-        startActivity(CurrentBookActivity.newIntent(this, currentBookId));
+    public void onBookSelected(long currentBookId, String currentSectionType, String currentCategory) {
+        startActivity(CurrentBookActivity.newIntent(this, currentBookId, currentSectionType, currentCategory));
     }
 }

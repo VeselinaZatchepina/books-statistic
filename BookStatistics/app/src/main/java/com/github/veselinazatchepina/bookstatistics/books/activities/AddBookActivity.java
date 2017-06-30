@@ -14,7 +14,19 @@ import com.github.veselinazatchepina.bookstatistics.books.fragments.AddBookFragm
 
 public class AddBookActivity extends SingleFragmentAbstractActivity {
 
+    private static final String CURRENT_BOOK_ID_INTENT = "current_book_id_intent";
+
     private Fragment mCurrentFragment;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, AddBookActivity.class);
+    }
+
+    public static Intent newIntent(Context context, long currentBookId) {
+        Intent intent = new Intent(context, AddBookActivity.class);
+        intent.putExtra(CURRENT_BOOK_ID_INTENT, currentBookId);
+        return intent;
+    }
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
@@ -51,23 +63,6 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
             Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
         }
     }
-
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AddBookActivity.class);
-    }
-//
-//    public static Intent newIntent(Context context, String titleName) {
-//        Intent intent = new Intent(context, AddQuoteActivity.class);
-//        intent.putExtra(QUOTE_TYPE_INTENT, titleName);
-//        return intent;
-//    }
-//
-//    public static Intent newIntent(Context context, String titleName, String currentCategory) {
-//        Intent intent = new Intent(context, AddQuoteActivity.class);
-//        intent.putExtra(QUOTE_TYPE_INTENT, titleName);
-//        intent.putExtra(QUOTE_CATEGORY_INTENT, currentCategory);
-//        return intent;
-//    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

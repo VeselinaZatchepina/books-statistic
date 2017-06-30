@@ -79,7 +79,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
         setTitle(ColorationTextChar.setFirstVowelColor(getTitle().toString(), this));
     }
 
-    private void defineFragment() {
+    public void defineFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
         if (currentFragment == null) {

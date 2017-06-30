@@ -34,8 +34,8 @@ public class BookSectionFragment extends Fragment {
     TextView mTitleCurrentCategory;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-
     private Unbinder unbinder;
+
     private String mCurrentSectionType;
     private String mCurrentCategory;
     private BooksRealmRepository mBooksRealmRepository;
@@ -182,7 +182,7 @@ public class BookSectionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!mData.isEmpty()) {
-                    mCallbacks.onBookSelected(book.getId());
+                    mCallbacks.onBookSelected(book.getId(), mCurrentSectionType, mCurrentCategory);
                 }
             }
 
@@ -233,6 +233,6 @@ public class BookSectionFragment extends Fragment {
         *
         * @param currentCategory
         */
-        void onBookSelected(long currentBookId);
+        void onBookSelected(long currentBookId, String currentSectionType, String currentCategory);
     }
 }
