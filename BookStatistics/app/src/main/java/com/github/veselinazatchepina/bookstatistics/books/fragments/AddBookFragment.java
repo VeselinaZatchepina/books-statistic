@@ -247,14 +247,16 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     private void setBookDataToFields(RealmResults<Book> element) {
         Book book = element.first();
-        mBookName.setText(book.getBookName());
-        mBookAuthor.setText(book.getAuthorName());
-        mRatingSpinner.setSelection(mRatingSpinnerAdapter.getPosition(book.getRating().getStarsCount()));
-        mBookPage.setText(String.valueOf(book.getPageCount()));
-        setCategorySpinnerSelectionOnCurrentCategory(element);
-        mTypeSpinner.setSelection(mTypeSpinnerAdapter.getPosition(book.getSection().getSectionName()));
-        mDateStartInputLayout.getEditText().setText(book.getDateStart());
-        mEndDateInputLayout.getEditText().setText(book.getDateEnd());
+        if (isAdded()) {
+            mBookName.setText(book.getBookName());
+            mBookAuthor.setText(book.getAuthorName());
+            mRatingSpinner.setSelection(mRatingSpinnerAdapter.getPosition(book.getRating().getStarsCount()));
+            mBookPage.setText(String.valueOf(book.getPageCount()));
+            setCategorySpinnerSelectionOnCurrentCategory(element);
+            mTypeSpinner.setSelection(mTypeSpinnerAdapter.getPosition(book.getSection().getSectionName()));
+            mDateStartInputLayout.getEditText().setText(book.getDateStart());
+            mEndDateInputLayout.getEditText().setText(book.getDateEnd());
+        }
     }
 
     private void setCategorySpinnerSelectionOnCurrentCategory(RealmResults<Book> element) {
@@ -392,21 +394,20 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
      * Method creates book properties map for save in db.
      */
     public void createMapOfBookProperties() {
-        HashMap<BookPropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_NAME, mBookName.getText().toString());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_AUTHOR, mBookAuthor.getText().toString());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_RATING, mRatingSpinner.getSelectedItem().toString());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_PAGE, mBookPage.getText().toString());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_CATEGORY, mCategorySpinner.getSelectedItem().toString().toLowerCase());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_DATE_START, mStartDateEditText.getText().toString());
-        mapOfQuoteProperties.put(BookPropertiesEnum.BOOK_DATE_END, mEndDateEditText.getText().toString());
-
+        HashMap<BookPropertiesEnum, String> mapOfBookProperties = new HashMap<>();
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_NAME, mBookName.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_AUTHOR, mBookAuthor.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_RATING, mRatingSpinner.getSelectedItem().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_PAGE, mBookPage.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_CATEGORY, mCategorySpinner.getSelectedItem().toString().toLowerCase());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_START, mStartDateEditText.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_END, mEndDateEditText.getText().toString());
 
         if (mCurrentBookIdForEdit != -1) {
-           // mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit, mapOfQuoteProperties);
+            mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit, mapOfBookProperties);
         } else {
-            mBooksRealmRepository.saveQuote(mapOfQuoteProperties);
+            mBooksRealmRepository.saveQuote(mapOfBookProperties);
         }
     }
 

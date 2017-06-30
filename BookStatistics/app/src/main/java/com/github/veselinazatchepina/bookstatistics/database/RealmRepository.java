@@ -21,5 +21,7 @@ public interface RealmRepository {
 
     List<Book> getBookById(long currentBookId);
 
+    void saveChangedBook(long currentBookId, HashMap<BookPropertiesEnum, String> mapOfBookProperties);
+
     void closeDbConnect();
 }

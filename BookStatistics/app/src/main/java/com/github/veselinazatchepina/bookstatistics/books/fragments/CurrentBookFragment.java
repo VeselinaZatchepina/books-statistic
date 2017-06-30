@@ -81,14 +81,16 @@ public class CurrentBookFragment extends Fragment {
             @Override
             public void onChange(RealmResults<Book> element) {
                 Book currentBook = element.first();
-                mCurrentBookName.setText(currentBook.getBookName());
-                mCurrentBookAuthor.setText(currentBook.getAuthorName());
-                mCurrentBookCategory.setText(currentBook.getBookCategory().getCategoryName());
-                mCurrentBookSection.setText(currentBook.getSection().getSectionName());
-                mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
-                mCurrentBookDateStart.setText(currentBook.getDateStart());
-                mCurrentBookDateEnd.setText(currentBook.getDateEnd());
-                mCurrentBookRating.setText(String.valueOf(currentBook.getRating().getStarsCount()));
+                if (isAdded()) {
+                    mCurrentBookName.setText(currentBook.getBookName());
+                    mCurrentBookAuthor.setText(currentBook.getAuthorName());
+                    mCurrentBookCategory.setText(currentBook.getBookCategory().getCategoryName());
+                    mCurrentBookSection.setText(currentBook.getSection().getSectionName());
+                    mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
+                    mCurrentBookDateStart.setText(currentBook.getDateStart());
+                    mCurrentBookDateEnd.setText(currentBook.getDateEnd());
+                    mCurrentBookRating.setText(String.valueOf(currentBook.getRating().getStarsCount()));
+                }
             }
         });
         return rootView;
