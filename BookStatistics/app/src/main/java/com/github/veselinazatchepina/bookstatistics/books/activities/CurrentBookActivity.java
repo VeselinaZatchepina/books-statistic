@@ -65,6 +65,9 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
     }
 
     private void defineViewPager(final RealmResults<Book> element) {
+        if (element.isEmpty()) {
+            this.finish();
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
