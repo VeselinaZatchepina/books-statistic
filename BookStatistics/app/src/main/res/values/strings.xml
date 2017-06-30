@@ -51,4 +51,19 @@
     <string name="current_book_start_date">Start date of reading:</string>
     <string name="current_book_end_date">End date of reading:</string>
 
+    <!-- Delete category dialog -->
+    <string name="dialog_delete_category_title">Delete current category?</string>
+    <string name="dialog_delete_current_book_title">Delete current book?</string>
+    <string name="dialog_ok_button">DELETE</string>
+    <string name="dialog_cancel_button">CANCEL</string>
+
+    <!-- Snackbar -->
+    <string name="book_is_deleted">Book is deleted!</string>
+    <string name="book_category">"Book category "</string>
+    <string name="is_deleted">" is deleted!"</string>
+
+    <!-- Menu -->
+    <string name="share">Share</string>
+    <string name="delete_title">Delete book</string>
+
 </resources>

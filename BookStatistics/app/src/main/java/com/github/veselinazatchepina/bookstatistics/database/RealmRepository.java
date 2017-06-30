@@ -23,5 +23,9 @@ public interface RealmRepository {
 
     void saveChangedBook(long currentBookId, HashMap<BookPropertiesEnum, String> mapOfBookProperties);
 
+    void deleteAllBooksWithCurrentCategory(String categoryForDelete);
+
+    void deleteBookById(long bookIdForDelete);
+
     void closeDbConnect();
 }

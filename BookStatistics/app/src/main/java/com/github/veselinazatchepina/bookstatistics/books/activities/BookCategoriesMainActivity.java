@@ -33,13 +33,7 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
 //            mMainFragment = getSupportFragmentManager().getFragment(saveInstanceState, MAIN_FRAGMENT_TAG_BUNDLE);
 //            mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
 //            mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE);
-//        } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT) != null) {
-//            mTitle = getIntent().getStringExtra(QUOTE_TYPE_INTENT);
-//        } else {
-//            mTitle = Types.BOOK_QUOTE;
 //        }
-//        setTitle(mTitle);
-//        defineQuoteType();
     }
 
     @Override
@@ -77,7 +71,6 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
 //        }
 //        outState.putString(QUOTE_TYPE_BUNDLE, mTitle);
 //        outState.putLong(CURRENT_ID_BUNDLE, mCurrentId);
-//        super.onSaveInstanceState(outState);
     }
 
     @Override

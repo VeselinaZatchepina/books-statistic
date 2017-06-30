@@ -2,10 +2,14 @@ package com.github.veselinazatchepina.bookstatistics.books.fragments;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +42,7 @@ public class BookCategoriesFragment extends Fragment {
     private RealmResults<BookCategory> mBookCategories;
     private BookCategoryCallbacks mCallbacks;
     BookCategoryRecyclerViewAdapter mBookCategoryRecyclerViewAdapter;
+    private String mCategoryForDelete;
 
     public BookCategoriesFragment() {
 
@@ -168,7 +173,6 @@ public class BookCategoriesFragment extends Fragment {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            //TODO check nullable when data is exists
             @Nullable
             @BindView(R.id.book_category_name)
             TextView itemBookCategory;
@@ -193,50 +197,51 @@ public class BookCategoriesFragment extends Fragment {
             @Override
             public boolean onLongClick(View view) {
                 if (!mData.isEmpty()) {
-                    //mCategoryForDelete = itemBookCategory.getText().toString();
-                    //openDeleteQuoteCategoryDialog();
+                    mCategoryForDelete = itemBookCategory.getText().toString();
+                    openDeleteBookCategoryDialog();
                 }
                 return false;
             }
 
-            private void openDeleteQuoteCategoryDialog() {
-//                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-//                View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
-//                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
-//                mDialogBuilder.setView(dialogView);
-//                mDialogBuilder
-//                        .setCancelable(false)
-//                        .setPositiveButton(getString(R.string.dialog_ok_button),
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
-//                                        showSnackbar();
-//                                    }
-//                                })
-//                        .setNegativeButton(getString(R.string.dialog_cancel_button),
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        dialog.cancel();
-//                                    }
-//                                });
-//                AlertDialog alertDialog = mDialogBuilder.create();
-//                alertDialog.show();
+            private void openDeleteBookCategoryDialog() {
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
+                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+                mDialogBuilder.setView(dialogView);
+                mDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.dialog_ok_button),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        mBooksRealmRepository.deleteAllBooksWithCurrentCategory(mCategoryForDelete);
+                                        showSnackbar();
+                                    }
+                                })
+                        .setNegativeButton(getString(R.string.dialog_cancel_button),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alertDialog = mDialogBuilder.create();
+                alertDialog.show();
             }
 
             private void showSnackbar() {
-//                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-//                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, getString(R.string.quote_category) +
-//                        mCategoryForDelete + getString(R.string.is_deleted), Snackbar.LENGTH_LONG);
-//                snackbarIsDeleted.show();
+                final CoordinatorLayout coordinatorLayout = ButterKnife.findById(getActivity(), R.id.coordinator_layout);
+                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, getString(R.string.book_category) +
+                        mCategoryForDelete + getString(R.string.is_deleted), Snackbar.LENGTH_LONG);
+                snackbarIsDeleted.show();
             }
         }
     }
 
     public interface BookCategoryCallbacks {
-     /* Method starts activity with all books of current category
-     *
-     * @param currentCategory
-     */
+
+        /* Method starts activity with all books of current category
+        *
+        * @param currentCategory
+        */
         void onCategorySelected(String currentCategory);
     }
 }

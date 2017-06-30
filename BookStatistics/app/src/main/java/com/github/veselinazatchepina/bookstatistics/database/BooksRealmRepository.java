@@ -500,12 +500,12 @@ public class BooksRealmRepository implements RealmRepository {
         String valueOfCategory = mapOfBookProperties.get(BookPropertiesEnum.BOOK_CATEGORY).toLowerCase();
         if (!valueOfCategory.equals(book.getBookCategory().getCategoryName())) {
             BookCategory newBookCategory = checkAndGetCurrentCategory(realm, valueOfCategory);
-            updateQuoteCountLastCategory(book);
+            updateBookCountLastCategory(book);
             book.setBookCategory(newBookCategory);
         }
     }
 
-    private void updateQuoteCountLastCategory(Book book) {
+    private void updateBookCountLastCategory(Book book) {
         BookCategory bookCategory = book.getBookCategory();
         bookCategory.setCategoryBookCount(bookCategory.getCategoryBookCount() - 1);
         if (bookCategory.getCategoryBookCount() == 0) {
@@ -564,6 +564,45 @@ public class BooksRealmRepository implements RealmRepository {
         if (year.getCurrentYearCount() == 0) {
             year.deleteFromRealm();
         }
+    }
+
+    @Override
+    public void deleteAllBooksWithCurrentCategory(final String categoryForDelete) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Book> books = realm.where(Book.class)
+                        .equalTo("bookCategory.categoryName", categoryForDelete)
+                        .findAll();
+                for (Book book : books) {
+                    deleteBookFromDb(book);
+                }
+            }
+        });
+    }
+
+    private void deleteBookFromDb(Book book) {
+        updateBookCountLastCategory(book);
+        updateBookCountLastRating(book);
+        updateBookCountLastSection(book);
+        if (book.getYear() != null) {
+            updateBookCountLastYear(book);
+        }
+        book.deleteFromRealm();
+    }
+
+    @Override
+    public void deleteBookById(final long bookIdForDelete) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Book> books = realm.where(Book.class)
+                        .equalTo("id", bookIdForDelete)
+                        .findAll();
+                Book book = books.first();
+                deleteBookFromDb(book);
+            }
+        });
     }
 
     @Override

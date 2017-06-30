@@ -60,4 +60,7 @@
     <dimen name="section_book_name_text_view_margin_bottom">3dp</dimen>
     <dimen name="section_book_author_text_view_margin_top">3dp</dimen>
 
+    <!-- Delete current category dialog -->
+    <dimen name="delete_category_dialog_title_margin">24dp</dimen>
+
 </resources>
