@@ -48,6 +48,10 @@ public class BookCategoriesFragment extends Fragment {
 
     }
 
+    public static BookCategoriesFragment newInstance() {
+        return new BookCategoriesFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,10 +92,6 @@ public class BookCategoriesFragment extends Fragment {
         mBookCategoryRecyclerViewAdapter = new BookCategoryRecyclerViewAdapter(getActivity(), mBookCategories, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookCategoryRecyclerViewAdapter);
-    }
-
-    public static BookCategoriesFragment newInstance() {
-        return new BookCategoriesFragment();
     }
 
     @Override

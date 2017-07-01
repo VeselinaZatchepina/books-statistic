@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/chart_vertical_margin"
+        android:paddingLeft="@dimen/chart_horizontal_margin"
+        android:paddingRight="@dimen/chart_horizontal_margin"
+        android:paddingTop="@dimen/chart_vertical_margin">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart_all_books"
+            android:layout_width="@dimen/chart_width"
+            android:layout_height="@dimen/chart_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/chart_bottom_margin"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart_all_categories"
+            android:layout_width="@dimen/chart_width"
+            android:layout_height="@dimen/chart_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/chart_bottom_margin"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart_books_current_category"
+            android:layout_width="@dimen/chart_width"
+            android:layout_height="@dimen/chart_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/chart_bottom_margin"/>
+
+    </LinearLayout>
+
+</ScrollView>

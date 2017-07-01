@@ -606,6 +606,21 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
+    public RealmResults<AllBookMonthDivision> getAllBookMonth(int begin, int end) {
+        return mRealm.where(AllBookMonthDivision.class).between("id", begin, end).findAllAsync();
+    }
+
+    @Override
+    public RealmResults<BookMonthDivision> getBookMonthDivision() {
+        return mRealm.where(BookMonthDivision.class).findAllAsync();
+    }
+
+    @Override
+    public RealmResults<BookMonthDivision> getBookMonthDivisionByCategory(String category) {
+        return mRealm.where(BookMonthDivision.class).equalTo("category.categoryName", category).findAllAsync();
+    }
+
+    @Override
     public void closeDbConnect() {
         mRealm.close();
     }

@@ -25,6 +25,8 @@
                   android:theme="@style/AppTheme"/>
         <activity android:name=".books.activities.CurrentBookActivity"
                   android:theme="@style/AppTheme"/>
+        <activity android:name=".chart.activities.ChartActivity"
+                  android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

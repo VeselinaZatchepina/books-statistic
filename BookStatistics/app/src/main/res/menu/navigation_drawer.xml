@@ -4,8 +4,13 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_book_categories"
-            android:icon="@android:drawable/ic_menu_send"
+            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
             android:title="@string/title_book_categories" />
+
+        <item
+            android:id="@+id/menu_chart"
+            android:icon="@drawable/ic_show_chart_white_24dp"
+            android:title="@string/title_chart" />
     </group>
 
 </menu>

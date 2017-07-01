@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActivity;
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookCategoriesMainActivity;
+import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 
 import butterknife.BindView;
@@ -149,6 +150,9 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.menu_book_categories:
                 intent = BookCategoriesMainActivity.newIntent(this);
+                break;
+            case R.id.menu_chart:
+                intent = ChartActivity.newIntent(this);
                 break;
         }
         if (intent != null) {

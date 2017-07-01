@@ -63,4 +63,11 @@
     <!-- Delete current category dialog -->
     <dimen name="delete_category_dialog_title_margin">24dp</dimen>
 
+    <!-- Chart Fragment -->
+    <dimen name="chart_horizontal_margin">16dp</dimen>
+    <dimen name="chart_vertical_margin">16dp</dimen>
+    <dimen name="chart_bottom_margin">16dp</dimen>
+    <dimen name="chart_width">350dp</dimen>
+    <dimen name="chart_height">250dp</dimen>
+
 </resources>
