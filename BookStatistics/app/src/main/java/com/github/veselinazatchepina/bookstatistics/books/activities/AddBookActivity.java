@@ -75,8 +75,7 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent upIntent = BookCategoriesMainActivity.newIntent(this);
-                startActivity(upIntent);
+                this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

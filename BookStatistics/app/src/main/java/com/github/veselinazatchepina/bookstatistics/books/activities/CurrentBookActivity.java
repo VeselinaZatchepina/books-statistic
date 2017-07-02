@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.github.veselinazatchepina.bookstatistics.R;
@@ -148,5 +149,15 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
     public void defineActionWhenFabIsPressed() {
         Intent intent = AddBookActivity.newIntent(this, mChooseBookIdForIntent);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
