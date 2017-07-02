@@ -6,7 +6,6 @@ import com.github.veselinazatchepina.bookstatistics.database.model.AllBookMonthD
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivision;
-import com.github.veselinazatchepina.bookstatistics.database.model.Section;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +16,9 @@ public interface RealmRepository {
 
     void saveQuote(HashMap<BookPropertiesEnum, String> mapOfQuoteProperties);
 
-    List<Section> getAllBookSection();
+    List<Book> getAllBooksInCurrentSectionByCategory(String sectionType, String currentCategory);
 
-    List<Book> getAllBooksInCurrentSection(String sectionType, String currentCategory);
+    List<Book> getAllBooksInCurrentSection(String sectionType);
 
     List<Book> getBookById(long currentBookId);
 

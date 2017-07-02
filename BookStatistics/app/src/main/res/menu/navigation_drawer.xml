@@ -11,6 +11,11 @@
             android:id="@+id/menu_chart"
             android:icon="@drawable/ic_show_chart_white_24dp"
             android:title="@string/title_chart" />
+
+        <item
+            android:id="@+id/menu_all_books"
+            android:icon="@drawable/ic_dashboard_white_24dp"
+            android:title="@string/title_all_books" />
     </group>
 
 </menu>

@@ -58,12 +58,24 @@ public class BookSectionFragment extends Fragment {
         return fragment;
     }
 
+    public static BookSectionFragment newInstance(String sectionType) {
+        Bundle args = new Bundle();
+        args.putString(CURRENT_BOOK_SECTION, sectionType);
+        BookSectionFragment fragment = new BookSectionFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         defineInputData(savedInstanceState);
         mBooksRealmRepository = new BooksRealmRepository();
-        mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType, mCurrentCategory);
+        if (mCurrentCategory != null) {
+            mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSectionByCategory(mCurrentSectionType, mCurrentCategory);
+        } else {
+            mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType);
+        }
     }
 
     private void defineInputData(Bundle savedInstanceState) {

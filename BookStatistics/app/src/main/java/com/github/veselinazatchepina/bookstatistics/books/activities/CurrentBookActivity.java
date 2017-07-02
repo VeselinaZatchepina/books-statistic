@@ -132,7 +132,11 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
 
     private void defineBooksForViewPager() {
         BooksRealmRepository booksRealmRepository = new BooksRealmRepository();
-        mBooks = booksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType, mCurrentCategory);
+        if (mCurrentCategory != null) {
+            mBooks = booksRealmRepository.getAllBooksInCurrentSectionByCategory(mCurrentSectionType, mCurrentCategory);
+        } else {
+            mBooks = booksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType);
+        }
     }
 
     @Override

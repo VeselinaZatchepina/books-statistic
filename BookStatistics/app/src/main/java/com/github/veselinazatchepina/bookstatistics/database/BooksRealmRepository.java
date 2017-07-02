@@ -463,13 +463,13 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
-    public RealmResults<Section> getAllBookSection() {
-        return mRealm.where(Section.class).findAllAsync();
+    public RealmResults<Book> getAllBooksInCurrentSectionByCategory(String sectionType, String currentCategory) {
+        return mRealm.where(Book.class).equalTo("section.sectionName", sectionType).equalTo("bookCategory.categoryName", currentCategory).findAllAsync();
     }
 
     @Override
-    public RealmResults<Book> getAllBooksInCurrentSection(String sectionType, String currentCategory) {
-        return mRealm.where(Book.class).equalTo("section.sectionName", sectionType).equalTo("bookCategory.categoryName", currentCategory).findAllAsync();
+    public RealmResults<Book> getAllBooksInCurrentSection(String sectionType) {
+        return mRealm.where(Book.class).equalTo("section.sectionName", sectionType).findAllAsync();
     }
 
     @Override

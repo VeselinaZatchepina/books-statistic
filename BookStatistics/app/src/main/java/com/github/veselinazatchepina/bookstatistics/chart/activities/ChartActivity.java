@@ -38,6 +38,15 @@ public class ChartActivity extends NavigationAbstractActivity {
         return R.layout.activity_navigation_drawer;
     }
 
+    @Override
+    public void defineAppBarLayoutExpandableValue() {
+        setAppBarNotExpandable();
+    }
+
+    @Override
+    public String getScreenOrientation(Context context) {
+        return super.getScreenOrientation(context);
+    }
 
     @Override
     public void defineFragment() {

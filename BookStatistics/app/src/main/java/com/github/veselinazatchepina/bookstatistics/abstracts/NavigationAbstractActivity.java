@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActivity;
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookCategoriesMainActivity;
+import com.github.veselinazatchepina.bookstatistics.books.activities.BookSectionActivity;
 import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 
@@ -104,7 +105,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         }
     }
 
-    private void setAppBarNotExpandable() {
+    public void setAppBarNotExpandable() {
         if (mAppBarLayout != null) {
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
             Configuration configuration = getResources().getConfiguration();
@@ -153,6 +154,9 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
                 break;
             case R.id.menu_chart:
                 intent = ChartActivity.newIntent(this);
+                break;
+            case R.id.menu_all_books:
+                intent = BookSectionActivity.newIntent(this);
                 break;
         }
         if (intent != null) {

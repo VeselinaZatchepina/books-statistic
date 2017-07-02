@@ -40,6 +40,11 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     private ArrayList<String> mSectionTypes;
     private String mCurrentCategory;
 
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, BookSectionActivity.class);
+        return intent;
+    }
+
     public static Intent newIntent(Context context, String currentCategory) {
         Intent intent = new Intent(context, BookSectionActivity.class);
         intent.putExtra(BOOK_CATEGORY_INTENT, currentCategory);
@@ -74,7 +79,11 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         mSectionViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position), mCurrentCategory);
+                if (mCurrentCategory != null) {
+                    mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position), mCurrentCategory);
+                } else {
+                    mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position));
+                }
                 return mMainFragment;
             }
 
