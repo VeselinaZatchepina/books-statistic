@@ -10,6 +10,8 @@ import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivi
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.Realm;
+
 public interface RealmRepository {
 
     List<BookCategory> getListOfBookCategories();
@@ -33,6 +35,8 @@ public interface RealmRepository {
     List<BookMonthDivision> getBookMonthDivision();
 
     List<BookMonthDivision> getBookMonthDivisionByCategory(String category);
+
+    Realm getRealmConnection();
 
     void closeDbConnect();
 }

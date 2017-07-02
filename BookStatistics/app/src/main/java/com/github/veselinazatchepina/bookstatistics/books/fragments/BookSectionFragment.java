@@ -12,12 +12,15 @@ import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.github.veselinazatchepina.bookstatistics.R;
@@ -27,7 +30,9 @@ import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.realm.Case;
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
@@ -103,7 +108,7 @@ public class BookSectionFragment extends Fragment {
         mBooksInCurrentSection.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
             @Override
             public void onChange(RealmResults<Book> element) {
-                mBookSectionRecyclerViewAdapter.mData = element;
+                mBookSectionRecyclerViewAdapter.updateData(element);
             }
         });
         return rootView;
@@ -114,7 +119,7 @@ public class BookSectionFragment extends Fragment {
     }
 
     private void defineRecyclerView() {
-        mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksInCurrentSection, true);
+        mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksRealmRepository.getRealmConnection(), mBooksInCurrentSection, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookSectionRecyclerViewAdapter);
     }
@@ -122,6 +127,21 @@ public class BookSectionFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.book_section, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.search_book);
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mBookSectionRecyclerViewAdapter.filterResults(newText);
+                return true;
+            }
+        });
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -188,15 +208,15 @@ public class BookSectionFragment extends Fragment {
         unbinder.unbind();
     }
 
-    class BookSectionRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book, BookSectionRecyclerViewAdapter.MyViewHolder> {
+    class BookSectionRecyclerViewAdapter extends RealmRecyclerViewAdapter<Book, BookSectionRecyclerViewAdapter.MyViewHolder> implements Filterable {
         private static final int EMPTY_LIST = 0;
         private static final int NOT_EMPTY_LIST = 1;
 
-        private OrderedRealmCollection<Book> mData;
+        Realm mRealm;
 
-        BookSectionRecyclerViewAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Book> data, boolean autoUpdate) {
+        BookSectionRecyclerViewAdapter(@NonNull Context context, Realm realm, @Nullable OrderedRealmCollection<Book> data, boolean autoUpdate) {
             super(context, data, autoUpdate);
-            mData = data;
+            mRealm = realm;
         }
 
         @Override
@@ -216,8 +236,8 @@ public class BookSectionFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            if (!mData.isEmpty()) {
-                Book currentBook = mData.get(position);
+            if (getData() != null && !getData().isEmpty()) {
+                Book currentBook = getData().get(position);
                 holder.bookNameTextView.setText(currentBook.getBookName());
                 holder.bookAuthorTextView.setText(currentBook.getAuthorName());
                 holder.book = currentBook;
@@ -226,20 +246,57 @@ public class BookSectionFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if (mData.isEmpty()) {
+            if (getData() != null && getData().isEmpty()) {
                 return 1;
             }
-            return mData.size();
+            return getData().size();
         }
 
         @Override
         public int getItemViewType(int position) {
-            return mData.isEmpty() ? EMPTY_LIST : NOT_EMPTY_LIST;
+            return getData().isEmpty() ? EMPTY_LIST : NOT_EMPTY_LIST;
         }
 
         public void changeDate() {
-            mData = mBooksInCurrentSection;
+            updateData(mBooksInCurrentSection);
             notifyDataSetChanged();
+        }
+
+        @Override
+        public Filter getFilter() {
+            BookFilter filter = new BookFilter(this);
+            return filter;
+        }
+
+        public void filterResults(String text) {
+            text = text == null ? null : text.toLowerCase().trim();
+            if(text == null || "".equals(text)) {
+                updateData(mRealm.where(Book.class).findAll());
+            } else {
+                updateData(mRealm.where(Book.class)
+                        .contains("bookName", text, Case.INSENSITIVE)
+                        .findAll());
+            }
+        }
+
+        private class BookFilter
+                extends Filter {
+            private final BookSectionRecyclerViewAdapter adapter;
+
+            private BookFilter(BookSectionRecyclerViewAdapter adapter) {
+                super();
+                this.adapter = adapter;
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                return new FilterResults();
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                adapter.filterResults(constraint.toString());
+            }
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -260,14 +317,14 @@ public class BookSectionFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                if (!mData.isEmpty()) {
+                if (getData() != null && !getData().isEmpty()) {
                     mCallbacks.onBookSelected(book.getId(), mCurrentSectionType, mCurrentCategory);
                 }
             }
 
             @Override
             public boolean onLongClick(View view) {
-                if (!mData.isEmpty()) {
+                if (getData() != null && !getData().isEmpty()) {
                     mBookIdForDelete = book.getId();
                     openDeleteBookDialog();
                 }

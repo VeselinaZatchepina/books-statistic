@@ -40,6 +40,11 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
+    public Realm getRealmConnection() {
+        return mRealm;
+    }
+
+    @Override
     public RealmResults<BookCategory> getListOfBookCategories() {
         return mRealm.where(BookCategory.class).findAllSortedAsync("id");
     }
