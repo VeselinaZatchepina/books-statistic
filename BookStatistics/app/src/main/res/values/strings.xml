@@ -67,5 +67,11 @@
     <!-- Menu -->
     <string name="share">Share</string>
     <string name="delete_title">Delete book</string>
+    <string name="filter_book">Filter book</string>
+
+    <!-- Popup menu -->
+    <string name="sort_by_book_name">Book name</string>
+    <string name="sort_by_book_author">Book author</string>
+    <string name="sort_by_rating">Rating</string>
 
 </resources>

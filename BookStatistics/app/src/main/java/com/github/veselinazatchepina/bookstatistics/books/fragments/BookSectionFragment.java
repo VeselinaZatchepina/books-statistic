@@ -8,9 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,6 +31,7 @@ import io.realm.OrderedRealmCollection;
 import io.realm.RealmChangeListener;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class BookSectionFragment extends Fragment {
 
@@ -45,6 +51,7 @@ public class BookSectionFragment extends Fragment {
     BookSectionRecyclerViewAdapter mBookSectionRecyclerViewAdapter;
     private CurrentBookCallbacks mCallbacks;
     private long mBookIdForDelete;
+    private String mSortedBy;
 
     public BookSectionFragment() {
     }
@@ -69,6 +76,7 @@ public class BookSectionFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         defineInputData(savedInstanceState);
         mBooksRealmRepository = new BooksRealmRepository();
         if (mCurrentCategory != null) {
@@ -109,6 +117,57 @@ public class BookSectionFragment extends Fragment {
         mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksInCurrentSection, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookSectionRecyclerViewAdapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.book_section, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.filter_book:
+                ActionMenuItemView view = ButterKnife.findById(getActivity(), R.id.filter_book);
+                showPopup(view);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.filter_by_book_name:
+                        mSortedBy = "bookName";
+                        break;
+                    case R.id.filter_by_book_author:
+                        mSortedBy = "authorName";
+                        break;
+                    case R.id.filter_by_rating:
+                        mSortedBy = "rating.starsCount";
+                        break;
+                }
+                sortAndUpdateRecyclerView(mSortedBy);
+                return true;
+            }
+        });
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_book_section, popup.getMenu());
+        popup.show();
+    }
+
+    private void sortAndUpdateRecyclerView(String mSortedBy) {
+        if (mSortedBy.equals("rating.starsCount")) {
+            mBooksInCurrentSection = mBooksInCurrentSection.sort(mSortedBy, Sort.DESCENDING);
+        } else {
+            mBooksInCurrentSection = mBooksInCurrentSection.sort(mSortedBy, Sort.ASCENDING);
+        }
+        mBookSectionRecyclerViewAdapter.changeDate();
     }
 
     @Override
@@ -160,7 +219,7 @@ public class BookSectionFragment extends Fragment {
             if (!mData.isEmpty()) {
                 Book currentBook = mData.get(position);
                 holder.bookNameTextView.setText(currentBook.getBookName());
-                holder.bookAuthorTextView.setText(currentBook.getBookName());
+                holder.bookAuthorTextView.setText(currentBook.getAuthorName());
                 holder.book = currentBook;
             }
         }
@@ -176,6 +235,11 @@ public class BookSectionFragment extends Fragment {
         @Override
         public int getItemViewType(int position) {
             return mData.isEmpty() ? EMPTY_LIST : NOT_EMPTY_LIST;
+        }
+
+        public void changeDate() {
+            mData = mBooksInCurrentSection;
+            notifyDataSetChanged();
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
