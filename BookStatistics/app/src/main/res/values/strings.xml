@@ -7,6 +7,9 @@
     <string name="title_all_books">All books</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_group">Other</string>
+    <string name="settings">Settings</string>
+    <string name="write_to_developer">Write to developer</string>
 
     <!-- BookCategory recycler view - empty view -->
     <string name="title_empty_view">You have no books</string>

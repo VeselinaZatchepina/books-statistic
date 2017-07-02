@@ -37,6 +37,12 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <!-- Navigation drawer style -->
+    <style name="TextAppearanceForNav">
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
      <!-- Launch style
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
