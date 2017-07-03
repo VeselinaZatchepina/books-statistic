@@ -544,6 +544,16 @@ public class BooksRealmRepository implements RealmRepository {
         }
     }
 
+    public void updateBookRatingInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Book book = realm.where(Book.class).equalTo("id", currentBookIdForEdit).findAll().first();
+                updateBookRating(realm, book, mapOfBookProperties);
+            }
+        });
+    }
+
     private void updateBookCountLastRating(Book book) {
         BookRating bookRating = book.getRating();
         bookRating.setRatingBookCount(bookRating.getRatingBookCount() - 1);

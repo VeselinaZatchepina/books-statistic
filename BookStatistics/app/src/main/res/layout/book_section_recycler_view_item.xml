@@ -49,14 +49,14 @@
                       android:layout_margin="@dimen/section_card_view_horizontal_margin">
 
             <ImageView
-                android:id="@+id/go_to_other_section_image"
+                android:id="@+id/set_rating_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_grade_black_24dp"
                 android:contentDescription="@string/go_to_other_section_content_description"/>
 
             <ImageView
-                android:id="@+id/set_rating_image"
+                android:id="@+id/go_to_other_section_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_swap_horiz_black_24dp"

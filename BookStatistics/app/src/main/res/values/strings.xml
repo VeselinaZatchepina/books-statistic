@@ -78,4 +78,8 @@
     <string name="sort_by_book_author">Book author</string>
     <string name="sort_by_rating">Rating</string>
 
+    <!-- Change rating dialog -->
+    <string name="title_change_rating">Change rating</string>
+    <string name="dialog_change_rating_ok_button">OK</string>
+
 </resources>

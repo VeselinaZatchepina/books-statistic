@@ -70,4 +70,7 @@
     <dimen name="chart_width">350dp</dimen>
     <dimen name="chart_height">250dp</dimen>
 
+    <!-- Change rating dialog -->
+    <dimen name="dialog_rating_spinner_margin">80dp</dimen>
+
 </resources>

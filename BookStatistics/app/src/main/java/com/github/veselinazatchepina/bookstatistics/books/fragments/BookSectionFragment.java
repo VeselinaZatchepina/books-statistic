@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.veselinazatchepina.bookstatistics.R;
@@ -42,6 +43,7 @@ public class BookSectionFragment extends Fragment {
 
     private static final String CURRENT_BOOK_SECTION = "current_book_section";
     private static final String CURRENT_BOOK_CATEGORY = "current_book_category";
+    private static final String TAG_CHANGE_RATING_DIALOG = "tag_change_rating_dialog";
 
     @BindView(R.id.title_current_category)
     TextView mTitleCurrentCategory;
@@ -241,7 +243,28 @@ public class BookSectionFragment extends Fragment {
                 holder.bookNameTextView.setText(currentBook.getBookName());
                 holder.bookAuthorTextView.setText(currentBook.getAuthorName());
                 holder.book = currentBook;
+                setListenerToChangeSectionImageView(holder);
+                setListenerToChangeRating(holder);
             }
+        }
+
+        private void setListenerToChangeSectionImageView(MyViewHolder holder) {
+            holder.goToOtherSectionImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Toast.makeText(getActivity(), "Go to", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        private void setListenerToChangeRating(final MyViewHolder holder) {
+            holder.ratingImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ChangeRatingDialogFragment changeRatingDialogFragment = ChangeRatingDialogFragment.newInstance(holder.book.getId());
+                    changeRatingDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_CHANGE_RATING_DIALOG);
+                }
+            });
         }
 
         @Override
@@ -306,6 +329,12 @@ public class BookSectionFragment extends Fragment {
             @Nullable
             @BindView(R.id.book_author_in_section)
             TextView bookAuthorTextView;
+            @Nullable
+            @BindView(R.id.go_to_other_section_image)
+            ImageView goToOtherSectionImageView;
+            @Nullable
+            @BindView(R.id.set_rating_image)
+            ImageView ratingImageView;
             Book book;
 
             MyViewHolder(View container) {
