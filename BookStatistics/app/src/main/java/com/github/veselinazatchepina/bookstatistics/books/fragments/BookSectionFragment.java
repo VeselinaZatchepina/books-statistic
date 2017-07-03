@@ -44,6 +44,7 @@ public class BookSectionFragment extends Fragment {
     private static final String CURRENT_BOOK_SECTION = "current_book_section";
     private static final String CURRENT_BOOK_CATEGORY = "current_book_category";
     private static final String TAG_CHANGE_RATING_DIALOG = "tag_change_rating_dialog";
+    private static final String TAG_CHANGE_SECTION_DIALOG = "tag_change_section_dialog";
 
     @BindView(R.id.title_current_category)
     TextView mTitleCurrentCategory;
@@ -248,11 +249,12 @@ public class BookSectionFragment extends Fragment {
             }
         }
 
-        private void setListenerToChangeSectionImageView(MyViewHolder holder) {
+        private void setListenerToChangeSectionImageView(final MyViewHolder holder) {
             holder.goToOtherSectionImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Toast.makeText(getActivity(), "Go to", Toast.LENGTH_SHORT).show();
+                    ChangeSectionDialogFragment changeSectionDialogFragment = ChangeSectionDialogFragment.newInstance(holder.book.getId());
+                    changeSectionDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_CHANGE_SECTION_DIALOG);
                 }
             });
         }

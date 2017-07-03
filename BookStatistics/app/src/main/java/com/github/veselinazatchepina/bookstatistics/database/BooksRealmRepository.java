@@ -527,6 +527,17 @@ public class BooksRealmRepository implements RealmRepository {
         }
     }
 
+    @Override
+    public void updateBookSectionInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Book book = realm.where(Book.class).equalTo("id", currentBookIdForEdit).findAll().first();
+                updateBookSection(realm, book, mapOfBookProperties);
+            }
+        });
+    }
+
     private void updateBookCountLastSection(Book book) {
         Section section = book.getSection();
         section.setSectionBookCount(section.getSectionBookCount() - 1);
@@ -544,6 +555,7 @@ public class BooksRealmRepository implements RealmRepository {
         }
     }
 
+    @Override
     public void updateBookRatingInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties) {
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override

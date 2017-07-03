@@ -38,5 +38,9 @@ public interface RealmRepository {
 
     Realm getRealmConnection();
 
+    void updateBookSectionInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties);
+
+    void updateBookRatingInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties);
+
     void closeDbConnect();
 }

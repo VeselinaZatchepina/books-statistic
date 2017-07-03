@@ -82,4 +82,8 @@
     <string name="title_change_rating">Change rating</string>
     <string name="dialog_change_rating_ok_button">OK</string>
 
+    <!-- Change section dialog -->
+    <string name="title_change_section">Change section</string>
+    <string name="dialog_change_section_ok_button">OK</string>
+
 </resources>
