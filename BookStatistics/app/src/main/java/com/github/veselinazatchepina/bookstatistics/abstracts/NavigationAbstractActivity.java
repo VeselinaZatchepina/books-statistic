@@ -166,6 +166,9 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
             case R.id.menu_all_books:
                 intent = BookSectionActivity.newIntent(this);
                 break;
+            case R.id.settings:
+                //intent = SettingsActivity.newIntent(this);
+                break;
         }
         if (intent != null) {
             startActivity(intent);

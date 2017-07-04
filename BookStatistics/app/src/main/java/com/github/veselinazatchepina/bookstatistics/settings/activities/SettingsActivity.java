@@ -1,31 +1,26 @@
-package com.github.veselinazatchepina.bookstatistics.chart.activities;
-
+package com.github.veselinazatchepina.bookstatistics.settings.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.NavigationAbstractActivity;
-import com.github.veselinazatchepina.bookstatistics.chart.fragments.ChartFragment;
 
 import butterknife.BindView;
 
 import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
-public class ChartActivity extends NavigationAbstractActivity {
+
+public class SettingsActivity extends NavigationAbstractActivity {
 
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
 
-    private Fragment mMainFragment;
-
     public static Intent newIntent(Context context) {
-        return new Intent(context, ChartActivity.class);
+        return new Intent(context, SettingsActivity.class);
     }
 
     @Override
@@ -45,14 +40,7 @@ public class ChartActivity extends NavigationAbstractActivity {
 
     @Override
     public void defineFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mMainFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (mMainFragment == null) {
-            mMainFragment = ChartFragment.newInstance();
-            fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, mMainFragment)
-                    .commit();
-        }
+
     }
 
     @Override
