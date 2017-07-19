@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="toolbar_height">223dp</dimen>
+    <dimen name="expanded_title_margin_bottom">24dp</dimen>
+    <dimen name="expanded_title_margin_start">69dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="toolbar_height_normal_portrait">80dp</dimen>
+    <dimen name="toolbar_height_normal_landscape">72dp</dimen>
+
+    <!-- Theme preference -->
+    <dimen name="theme_pref_padding_bottom">16dp</dimen>
+    <dimen name="theme_pref_padding_left">6dp</dimen>
+    <dimen name="theme_pref_padding_right">6dp</dimen>
+    <dimen name="theme_pref_padding_top">6dp</dimen>
+    <dimen name="theme_pref_image_width">80dp</dimen>
+    <dimen name="theme_pref_image_height">80dp</dimen>
+    <dimen name="theme_pref_image_margin_end">30dp</dimen>
+    <dimen name="theme_pref_image_padding">1dp</dimen>
+
+    <!-- Theme item -->
+    <dimen name="theme_item_padding">10dp</dimen>
+    <dimen name="theme_item_image_width">200dp</dimen>
+    <dimen name="theme_item_image_height">200dp</dimen>
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/theme_pref_padding_bottom"
+                android:paddingEnd="@dimen/theme_pref_padding_left"
+                android:paddingStart="@dimen/theme_pref_padding_right"
+                android:paddingTop="@dimen/theme_pref_padding_top">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@android:id/title"
+        android:layout_below="@android:id/title"
+        android:text="@string/default_summary"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <ImageView
+        android:id="@+id/iconSelected"
+        android:layout_width="@dimen/theme_pref_image_width"
+        android:layout_height="@dimen/theme_pref_image_height"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/theme_pref_image_margin_end"
+        android:background="@android:color/black"
+        android:padding="@dimen/theme_pref_image_padding"
+        android:contentDescription="@string/theme_image_description"/>
+
+</RelativeLayout>
