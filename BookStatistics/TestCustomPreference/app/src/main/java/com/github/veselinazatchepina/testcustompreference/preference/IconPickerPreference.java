@@ -23,125 +23,52 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IconPickerPreference extends ListPreference {
-
-    private class CustomListPreferenceAdapter extends ArrayAdapter<IconItem> {
-
-        private Context context;
-        private List<IconItem> icons;
-        private int resource;
-
-        public CustomListPreferenceAdapter(Context context, int resource,
-                                           List<IconItem> objects) {
-            super(context, resource, objects);
-            this.context = context;
-            this.resource = resource;
-            this.icons = objects;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-            ViewHolder holder;
-
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(resource, parent, false);
-
-                holder = new ViewHolder();
-                holder.iconName = (TextView) convertView
-                        .findViewById(R.id.iconName);
-                holder.iconImage = (ImageView) convertView
-                        .findViewById(R.id.iconImage);
-                holder.radioButton = (RadioButton) convertView
-                        .findViewById(R.id.iconRadio);
-                holder.position = position;
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.iconName.setText(icons.get(position).name);
-
-            int identifier = context.getResources().getIdentifier(
-                    icons.get(position).file, "drawable",
-                    context.getPackageName());
-            holder.iconImage.setImageResource(identifier);
-
-            holder.radioButton.setChecked(icons.get(position).isChecked);
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    ViewHolder holder = (ViewHolder) v.getTag();
-                    for (int i = 0; i < icons.size(); i++) {
-                        if (i == position)
-                            icons.get(i).isChecked = true;
-                        else
-                            icons.get(i).isChecked = false;
-                    }
-                    getDialog().dismiss();
-                }
-            });
-
-            return convertView;
-        }
-
-    }
-
-    private static class IconItem {
-
-        private String file;
-        private boolean isChecked;
-        private String name;
-
-        public IconItem(CharSequence name, CharSequence file, boolean isChecked) {
-            this(name.toString(), file.toString(), isChecked);
-        }
-
-        public IconItem(String name, String file, boolean isChecked) {
-            this.name = name;
-            this.file = file;
-            this.isChecked = isChecked;
-        }
-
-    }
-
-    private static class ViewHolder {
-        protected ImageView iconImage;
-        protected TextView iconName;
-        protected int position;
-        protected RadioButton radioButton;
-    }
-
     private Context context;
-    private ImageView icon;
-
-    private CharSequence[] iconFile;
-    private CharSequence[] iconName;
-    private List<IconItem> icons;
+    private ImageView themeImageView;
+    private CharSequence[] themeImageFileCharArray;
+    private CharSequence[] themeImageNameCharArray;
+    private List<ThemeItem> ThemeIcons;
     private SharedPreferences preferences;
     private Resources resources;
-    private String selectedIconFile, defaultIconFile;
-    private TextView summary;
+    private String selectedImageFileName, defaultImageFileName;
+    private TextView summaryTextView;
 
     public IconPickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
         resources = context.getResources();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        getCustomAttributes(attrs);
+    }
 
+    private void getCustomAttributes(AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.attrs_icon, 0, 0);
-
         try {
-            defaultIconFile = a.getString(R.styleable.attrs_icon_iconFile);
+            defaultImageFileName = a.getString(R.styleable.attrs_icon_iconFile);
         } finally {
+            //The recycle() causes the allocated memory to be returned to the available pool immediately
+            // and will not stay until garbage collection
             a.recycle();
         }
+    }
+
+    @Override
+    protected void onBindView(View view) {
+        super.onBindView(view);
+        selectedImageFileName = preferences.getString(
+                resources.getString(R.string.custom_theme_key), defaultImageFileName);
+        themeImageView = (ImageView) view.findViewById(R.id.iconSelected);
+        updateIcon();
+        summaryTextView = (TextView) view.findViewById(R.id.summary);
+        summaryTextView.setText(getEntry(selectedImageFileName));
+    }
+
+    private void updateIcon() {
+        int identifier = resources.getIdentifier(selectedImageFileName, "drawable",
+                context.getPackageName());
+        themeImageView.setImageResource(identifier);
+        themeImageView.setTag(selectedImageFileName);
     }
 
     private String getEntry(String value) {
@@ -152,88 +79,166 @@ public class IconPickerPreference extends ListPreference {
     }
 
     @Override
-    protected void onBindView(View view) {
-        super.onBindView(view);
+    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+        defineDialogButton(builder);
+        getEntriesAndEntryValuesOfPreference();
+        String selectedIcon = preferences.getString(
+                resources.getString(R.string.custom_theme_key),
+                resources.getString(R.string.theme_default));
+        createListOfAllThemes(selectedIcon);
+        defineAdapter(builder);
+    }
 
-        selectedIconFile = preferences.getString(
-                resources.getString(R.string.custom_theme_key), defaultIconFile);
+    private void defineDialogButton(AlertDialog.Builder builder) {
+        builder.setNegativeButton("Cancel", null);
+        builder.setPositiveButton(null, null);
+    }
 
-        icon = (ImageView) view.findViewById(R.id.iconSelected);
-        updateIcon();
+    private void getEntriesAndEntryValuesOfPreference() {
+        themeImageNameCharArray = getEntries();
+        themeImageFileCharArray = getEntryValues();
+        if (themeImageNameCharArray == null || themeImageFileCharArray == null
+                || themeImageNameCharArray.length != themeImageFileCharArray.length) {
+            throw new IllegalStateException(
+                    "ListPreference requires an entries array "
+                            + "and an entryValues array which are both the same length");
+        }
+    }
 
-        summary = (TextView) view.findViewById(R.id.summary);
-        summary.setText(getEntry(selectedIconFile));
+    private void createListOfAllThemes(String selectedIcon) {
+        ThemeIcons = new ArrayList<ThemeItem>();
+        for (int i = 0; i < themeImageNameCharArray.length; i++) {
+            boolean isSelected = selectedIcon.equals(themeImageFileCharArray[i]);
+            ThemeItem item = new ThemeItem(themeImageNameCharArray[i], themeImageFileCharArray[i], isSelected);
+            ThemeIcons.add(item);
+        }
+    }
 
+    private void defineAdapter(AlertDialog.Builder builder) {
+        CustomListPreferenceAdapter customListPreferenceAdapter = new CustomListPreferenceAdapter(
+                context, R.layout.theme_item, ThemeIcons);
+        builder.setAdapter(customListPreferenceAdapter, null);
     }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
-
-        if (icons != null) {
-            for (int i = 0; i < iconName.length; i++) {
-                IconItem item = icons.get(i);
+        if (ThemeIcons != null) {
+            for (int i = 0; i < themeImageNameCharArray.length; i++) {
+                ThemeItem item = ThemeIcons.get(i);
                 if (item.isChecked) {
-
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(
-                            resources.getString(R.string.custom_theme_key),
-                            item.file);
-                    editor.apply();
-
-                    selectedIconFile = item.file;
-                    updateIcon();
-
-                    summary.setText(item.name);
-
+                    saveChangedDataInPreference(item);
+                    updateViews(item);
                     break;
                 }
             }
         }
-
     }
 
-    @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-
-        builder.setNegativeButton("Cancel", null);
-        builder.setPositiveButton(null, null);
-
-        iconName = getEntries();
-        iconFile = getEntryValues();
-
-        if (iconName == null || iconFile == null
-                || iconName.length != iconFile.length) {
-            throw new IllegalStateException(
-                    "ListPreference requires an entries array "
-                            + "and an entryValues array which are both the same length");
-        }
-
-        String selectedIcon = preferences.getString(
+    private void saveChangedDataInPreference(ThemeItem item) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(
                 resources.getString(R.string.custom_theme_key),
-                resources.getString(R.string.theme_default));
+                item.file);
+        editor.apply();
+    }
 
-        icons = new ArrayList<IconItem>();
+    private void updateViews(ThemeItem item) {
+        selectedImageFileName = item.file;
+        updateIcon();
+        summaryTextView.setText(item.name);
+    }
 
-        for (int i = 0; i < iconName.length; i++) {
-            boolean isSelected = selectedIcon.equals(iconFile[i]) ? true : false;
-            IconItem item = new IconItem(iconName[i], iconFile[i], isSelected);
-            icons.add(item);
+
+    /**
+     * Adapter for inflate themeImageView item
+     */
+    private class CustomListPreferenceAdapter extends ArrayAdapter<ThemeItem> {
+        private Context context;
+        private List<ThemeItem> themeItems;
+        private int resource;
+
+        public CustomListPreferenceAdapter(Context context, int resource,
+                                           List<ThemeItem> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.resource = resource;
+            this.themeItems = objects;
         }
 
-        CustomListPreferenceAdapter customListPreferenceAdapter = new CustomListPreferenceAdapter(
-                context, R.layout.theme_item, icons);
-        builder.setAdapter(customListPreferenceAdapter, null);
-
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inflateConvertView(convertView, parent, resource);
+                holder = new ViewHolder();
+                holder.themeName = (TextView) convertView
+                        .findViewById(R.id.iconName);
+                holder.themeImage = (ImageView) convertView
+                        .findViewById(R.id.iconImage);
+                holder.radioButton = (RadioButton) convertView
+                        .findViewById(R.id.iconRadio);
+                holder.position = position;
+                //Tags are essentially an extra piece of information that can be associated with a view
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            defineDialogViews(holder, themeItems, position);
+            setListenerToConvertView(convertView, themeItems, position);
+            return convertView;
+        }
     }
 
-    private void updateIcon() {
-        int identifier = resources.getIdentifier(selectedIconFile, "drawable",
+    private View inflateConvertView(View convertView, ViewGroup parent, int resource) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(resource, parent, false);
+        return convertView;
+    }
+
+    private void defineDialogViews(ViewHolder holder, List<ThemeItem> themeItems, int position) {
+        holder.themeName.setText(themeItems.get(position).name);
+        int identifier = context.getResources().getIdentifier(
+                themeItems.get(position).file, "drawable",
                 context.getPackageName());
-
-        icon.setImageResource(identifier);
-        icon.setTag(selectedIconFile);
+        holder.themeImage.setImageResource(identifier);
+        holder.radioButton.setChecked(themeItems.get(position).isChecked);
     }
 
+    private void setListenerToConvertView(View convertView, final List<ThemeItem> themeItems, final int position) {
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < themeItems.size(); i++) {
+                    themeItems.get(i).isChecked = (i == position);
+                }
+                getDialog().dismiss();
+            }
+        });
+    }
+
+    private static class ThemeItem {
+        private String file;
+        private boolean isChecked;
+        private String name;
+
+        public ThemeItem(CharSequence name, CharSequence file, boolean isChecked) {
+            this(name.toString(), file.toString(), isChecked);
+        }
+
+        public ThemeItem(String name, String file, boolean isChecked) {
+            this.name = name;
+            this.file = file;
+            this.isChecked = isChecked;
+        }
+    }
+
+    private static class ViewHolder {
+        protected ImageView themeImage;
+        protected TextView themeName;
+        protected int position;
+        protected RadioButton radioButton;
+    }
 }
 
