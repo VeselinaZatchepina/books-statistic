@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class IconPickerPreference extends ListPreference {
+public class ThemePreference extends ListPreference {
     private Context context;
     private ImageView themeImageView;
     private CharSequence[] themeImageFileCharArray;
@@ -33,7 +33,7 @@ public class IconPickerPreference extends ListPreference {
     private String selectedImageFileName, defaultImageFileName;
     private TextView summaryTextView;
 
-    public IconPickerPreference(Context context, AttributeSet attrs) {
+    public ThemePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         resources = context.getResources();

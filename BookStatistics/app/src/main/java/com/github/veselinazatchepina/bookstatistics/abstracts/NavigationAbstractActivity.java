@@ -30,7 +30,8 @@ import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActi
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookCategoriesMainActivity;
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookSectionActivity;
 import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivity;
-import com.github.veselinazatchepina.bookstatistics.preference.activities.PreferencesActivity;
+import com.github.veselinazatchepina.bookstatistics.preference.activities.ThemePreferencesActivity;
+import com.github.veselinazatchepina.bookstatistics.preference.activities.WriteToDeveloperActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 import com.github.veselinazatchepina.bookstatistics.utils.ThemeUtils;
 
@@ -187,8 +188,10 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
                 intent = BookSectionActivity.newIntent(this);
                 break;
             case R.id.settings:
-                intent = PreferencesActivity.newIntent(this);
+                intent = ThemePreferencesActivity.newIntent(this);
                 break;
+            case R.id.write_to_developer:
+                intent = WriteToDeveloperActivity.newIntent(this);
         }
         if (intent != null) {
             startActivity(intent);

@@ -1,26 +1,31 @@
-package com.github.veselinazatchepina.bookstatistics.settings.activities;
+package com.github.veselinazatchepina.bookstatistics.preference.activities;
+
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.NavigationAbstractActivity;
+import com.github.veselinazatchepina.bookstatistics.preference.fragments.WriteToDeveloperFragment;
 
 import butterknife.BindView;
 
 import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
-
-public class SettingsActivity extends NavigationAbstractActivity {
+public class WriteToDeveloperActivity extends NavigationAbstractActivity {
 
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
+    private Fragment mMainFragment;
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, SettingsActivity.class);
+        Intent intent = new Intent(context, WriteToDeveloperActivity.class);
+        return intent;
     }
 
     @Override
@@ -34,13 +39,15 @@ public class SettingsActivity extends NavigationAbstractActivity {
     }
 
     @Override
-    public void defineAppBarLayoutExpandableValue() {
-        setAppBarNotExpandable();
-    }
-
-    @Override
     public void defineFragment() {
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mMainFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (mMainFragment == null) {
+            mMainFragment = WriteToDeveloperFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, mMainFragment)
+                    .commit();
+        }
     }
 
     @Override

@@ -27,7 +27,7 @@
         <activity android:name=".chart.activities.ChartActivity"
                   android:theme="@style/AppTheme"/>
         <activity
-            android:name=".preference.activities.PreferencesActivity"
+            android:name=".preference.activities.ThemePreferencesActivity"
             android:parentActivityName=".books.activities.BookCategoriesMainActivity"/>
     </application>
 

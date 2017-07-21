@@ -3,7 +3,7 @@
                   xmlns:custom="http://schemas.android.com/apk/res/com.github.veselinazatchepina.bookstatistics">
 
     <PreferenceCategory android:title="Theme Picker">
-        <com.github.veselinazatchepina.bookstatistics.preference.IconPickerPreference
+        <com.github.veselinazatchepina.bookstatistics.preference.ThemePreference
             android:entries="@array/iconName"
             android:entryValues="@array/iconFile"
             android:key="@string/custom_theme_key"
