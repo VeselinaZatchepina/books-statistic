@@ -2,13 +2,14 @@
 <resources>
     <!-- BookCategoriesFragment colors -->
     <color name="card_background">#00A99D</color>
+    <color name="book_accent_background">@android:color/darker_gray</color>
 
     <!-- Toolbar gradient -->
     <color name="toolbar_start_color">#33000000</color>
     <color name="toolbar_end_color">#43FFFFFF</color>
-    <color name="fab_divider">#232738</color>
+    <color name="fab_divider">#D1CECE</color>
 
     <color name="colorPrimary">#37474f</color>
     <color name="colorPrimaryDark">#102027</color>
-    <color name="colorAccent">#d32f2f</color>
+    <color name="colorAccent">#000000</color>
 </resources>

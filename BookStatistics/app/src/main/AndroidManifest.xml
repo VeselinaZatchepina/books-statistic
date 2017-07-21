@@ -26,6 +26,9 @@
                   android:theme="@style/AppTheme"/>
         <activity android:name=".chart.activities.ChartActivity"
                   android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".preference.activities.PreferencesActivity"
+            android:parentActivityName=".books.activities.BookCategoriesMainActivity"/>
     </application>
 
 </manifest>

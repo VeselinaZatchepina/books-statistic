@@ -5,7 +5,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -34,7 +33,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
     <!-- Navigation drawer style -->
@@ -47,6 +46,19 @@
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style> -->
+
+    <!-- Custom theme -->
+    <style name="AppTheme1" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background1</item>
+    </style>
+
+    <style name="AppTheme2" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background2</item>
+    </style>
+
+    <style name="AppTheme3" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background3</item>
+    </style>
 
 
 

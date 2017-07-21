@@ -86,4 +86,26 @@
     <string name="title_change_section">Change section</string>
     <string name="dialog_change_section_ok_button">OK</string>
 
+    <!-- Preference -->
+    <string name="theme_default">ic_first</string>
+    <string name="custom_theme_key">customThemeKey</string>
+    <string name="theme_label">Choose theme</string>
+    <string name="default_summary">Select an icon</string>
+    <string-array name="iconName">
+        <item>First theme</item>
+        <item>Second theme</item>
+        <item>Third theme</item>
+    </string-array>
+    <string-array name="iconFile">
+        <item>ic_first</item>
+        <item>ic_second</item>
+        <item>ic_third</item>
+    </string-array>
+
+    <!-- Theme preference -->
+    <string name="theme_image_description">Theme picture</string>
+
+    <!-- Theme item -->
+    <string name="theme_item_image_description">Theme picture for choose</string>
+
 </resources>

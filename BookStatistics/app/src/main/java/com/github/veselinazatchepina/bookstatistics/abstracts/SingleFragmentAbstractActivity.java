@@ -2,9 +2,11 @@ package com.github.veselinazatchepina.bookstatistics.abstracts;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,6 +22,7 @@ import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
 import com.github.veselinazatchepina.bookstatistics.utils.ColorationTextChar;
+import com.github.veselinazatchepina.bookstatistics.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,9 +45,15 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     public FloatingActionButton fab;
     public int fabImageResourceId;
 
+    SharedPreferences prefs;
+    SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    String themeName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        definePreferenceListener();
+        ThemeUtils.onActivityCreateSetTheme(this);
         defineInputData(savedInstanceState);
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
@@ -53,6 +62,16 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
         setNewTitleStyle();
         defineFragment();
         defineFab();
+    }
+
+    private void definePreferenceListener() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                themeName = prefs.getString(key, null);
+                ThemeUtils.changeToTheme(SingleFragmentAbstractActivity.this, themeName);
+            }
+        };
     }
 
     public void defineInputData(Bundle saveInstanceState) { }
@@ -118,5 +137,17 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     public void defineActionWhenFabIsPressed() {
         Intent intent = AddBookActivity.newIntent(this);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
     }
 }

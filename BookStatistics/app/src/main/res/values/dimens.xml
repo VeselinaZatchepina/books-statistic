@@ -73,4 +73,19 @@
     <!-- Change rating dialog -->
     <dimen name="dialog_rating_spinner_margin">80dp</dimen>
 
+    <!-- Theme preference -->
+    <dimen name="theme_pref_padding_bottom">16dp</dimen>
+    <dimen name="theme_pref_padding_left">6dp</dimen>
+    <dimen name="theme_pref_padding_right">6dp</dimen>
+    <dimen name="theme_pref_padding_top">6dp</dimen>
+    <dimen name="theme_pref_image_width">80dp</dimen>
+    <dimen name="theme_pref_image_height">80dp</dimen>
+    <dimen name="theme_pref_image_margin_end">30dp</dimen>
+    <dimen name="theme_pref_image_padding">1dp</dimen>
+
+    <!-- Theme item -->
+    <dimen name="theme_item_padding">10dp</dimen>
+    <dimen name="theme_item_image_width">200dp</dimen>
+    <dimen name="theme_item_image_height">200dp</dimen>
+
 </resources>

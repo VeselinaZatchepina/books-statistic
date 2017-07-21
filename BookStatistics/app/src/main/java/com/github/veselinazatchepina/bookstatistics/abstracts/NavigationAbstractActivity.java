@@ -2,9 +2,11 @@ package com.github.veselinazatchepina.bookstatistics.abstracts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -28,7 +30,9 @@ import com.github.veselinazatchepina.bookstatistics.books.activities.AddBookActi
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookCategoriesMainActivity;
 import com.github.veselinazatchepina.bookstatistics.books.activities.BookSectionActivity;
 import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivity;
+import com.github.veselinazatchepina.bookstatistics.preference.activities.PreferencesActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
+import com.github.veselinazatchepina.bookstatistics.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,10 +54,16 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
+    SharedPreferences prefs;
+    SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    String value;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        definePreferenceListener();
+        ThemeUtils.onActivityCreateSetTheme(this);
         defineInputData(savedInstanceState);
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
@@ -61,6 +71,16 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         defineAppBarLayoutExpandableValue();
         defineFragment();
         defineFab();
+    }
+
+    private void definePreferenceListener() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                value = prefs.getString(key, null);
+                ThemeUtils.changeToTheme(NavigationAbstractActivity.this, value);
+            }
+        };
     }
 
     public abstract void defineInputData(Bundle savedInstanceState);
@@ -167,12 +187,24 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
                 intent = BookSectionActivity.newIntent(this);
                 break;
             case R.id.settings:
-                //intent = SettingsActivity.newIntent(this);
+                intent = PreferencesActivity.newIntent(this);
                 break;
         }
         if (intent != null) {
             startActivity(intent);
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
     }
 }
