@@ -29,6 +29,9 @@
         <activity
             android:name=".preference.activities.ThemePreferencesActivity"
             android:parentActivityName=".books.activities.BookCategoriesMainActivity"/>
+        <activity
+            android:name=".preference.activities.WriteToDeveloperActivity"
+            android:parentActivityName=".books.activities.BookCategoriesMainActivity"/>
     </application>
 
 </manifest>

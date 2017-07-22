@@ -34,6 +34,11 @@ public class WriteToDeveloperActivity extends NavigationAbstractActivity {
     }
 
     @Override
+    public void defineAppBarLayoutExpandableValue() {
+        setAppBarNotExpandable();
+    }
+
+    @Override
     public int getLayoutResId() {
         return R.layout.activity_navigation_drawer;
     }

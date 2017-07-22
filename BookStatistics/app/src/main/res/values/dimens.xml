@@ -88,4 +88,8 @@
     <dimen name="theme_item_image_width">200dp</dimen>
     <dimen name="theme_item_image_height">200dp</dimen>
 
+    <!-- WriteToDeveloperFragment -->
+    <dimen name="edit_text_for_developer_height">200dp</dimen>
+    <dimen name="edit_text_margin_bottom">16dp</dimen>
+
 </resources>

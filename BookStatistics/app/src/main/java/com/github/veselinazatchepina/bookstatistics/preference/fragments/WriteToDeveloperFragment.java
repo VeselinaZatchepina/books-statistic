@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.veselinazatchepina.bookstatistics.R;
+
 public class WriteToDeveloperFragment extends Fragment {
 
     public WriteToDeveloperFragment() {
@@ -25,6 +27,7 @@ public class WriteToDeveloperFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = inflater.inflate(R.layout.fragment_write_to_developer, container, false);
+        return rootView;
     }
 }

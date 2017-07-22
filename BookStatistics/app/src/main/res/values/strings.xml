@@ -108,4 +108,8 @@
     <!-- Theme item -->
     <string name="theme_item_image_description">Theme picture for choose</string>
 
+    <!-- WriteToDeveloperFragment -->
+    <string name="write_to_developer_button_text">SEND</string>
+    <string name="write_to_developer_text_hint">Place your text here</string>
+
 </resources>
