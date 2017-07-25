@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ThemePreference extends ListPreference {
     private Context context;
     private ImageView themeImageView;
@@ -58,9 +61,9 @@ public class ThemePreference extends ListPreference {
         super.onBindView(view);
         selectedImageFileName = preferences.getString(
                 resources.getString(R.string.custom_theme_key), defaultImageFileName);
-        themeImageView = (ImageView) view.findViewById(R.id.iconSelected);
+        themeImageView = ButterKnife.findById(view, R.id.iconSelected);
         updateIcon();
-        summaryTextView = (TextView) view.findViewById(R.id.summary);
+        summaryTextView = ButterKnife.findById(view, R.id.summary);
         summaryTextView.setText(getEntry(selectedImageFileName));
     }
 
@@ -171,13 +174,7 @@ public class ThemePreference extends ListPreference {
             ViewHolder holder;
             if (convertView == null) {
                 convertView = inflateConvertView(convertView, parent, resource);
-                holder = new ViewHolder();
-                holder.themeName = (TextView) convertView
-                        .findViewById(R.id.iconName);
-                holder.themeImage = (ImageView) convertView
-                        .findViewById(R.id.iconImage);
-                holder.radioButton = (RadioButton) convertView
-                        .findViewById(R.id.iconRadio);
+                holder = new ViewHolder(convertView);
                 holder.position = position;
                 //Tags are essentially an extra piece of information that can be associated with a view
                 convertView.setTag(holder);
@@ -234,11 +231,18 @@ public class ThemePreference extends ListPreference {
         }
     }
 
-    private static class ViewHolder {
-        protected ImageView themeImage;
-        protected TextView themeName;
-        protected int position;
-        protected RadioButton radioButton;
+    public static class ViewHolder {
+        int position;
+        @BindView(R.id.iconImage)
+        ImageView themeImage;
+        @BindView(R.id.iconName)
+        TextView themeName;
+        @BindView(R.id.iconRadio)
+        RadioButton radioButton;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }
 
