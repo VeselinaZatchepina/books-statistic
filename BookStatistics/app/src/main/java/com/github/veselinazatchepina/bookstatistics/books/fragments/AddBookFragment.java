@@ -33,6 +33,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import icepick.Icepick;
+import icepick.State;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
@@ -69,18 +71,37 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<BookCategory> mBookCategories;
-    private List<String> mAllCategories;
+    @State
+    ArrayList<String> mAllCategories;
     private ArrayAdapter<String> mCategorySpinnerAdapter;
     ArrayAdapter<Integer> mRatingSpinnerAdapter;
     ArrayAdapter<String> mTypeSpinnerAdapter;
     private String mSelectedValueOfCategory;
-    private String mCurrentCategory;
     private EditText mStartDateEditText;
     private EditText mEndDateEditText;
     private long mCurrentBookIdForEdit;
     private RealmResults<Book> mBookForEdit;
 
-    public AddBookFragment() { }
+    @State
+    String bookNameSaveInstance;
+    @State
+    String bookAuthorSaveInstance;
+    @State
+    int ratingSaveInstance;
+    @State
+    int bookPageSaveInstance;
+    @State
+    int bookCategorySaveInstance;
+    @State
+    int bookTypeSaveInstance;
+    @State
+    String startDateSaveInstance;
+    @State
+    String endDateSaveInstance;
+
+
+    public AddBookFragment() {
+    }
 
     public static AddBookFragment newInstance(long currentBookId) {
         Bundle args = new Bundle();
@@ -93,13 +114,13 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        defineInputData(savedInstanceState);
+        defineInputData();
         mBooksRealmRepository = new BooksRealmRepository();
         mBookCategories = mBooksRealmRepository.getListOfBookCategories();
         getBookForEditById();
     }
 
-    private void defineInputData(Bundle savedInstanceState) {
+    private void defineInputData() {
         if (getArguments() != null) {
             mCurrentBookIdForEdit = getArguments().getLong(CURRENT_BOOK_ID, -1);
         }
@@ -114,12 +135,13 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
+        Icepick.restoreInstanceState(this, savedInstanceState);
         final View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
             @Override
             public void onChange(RealmResults<BookCategory> element) {
-                defineCategorySpinner(element);
+                defineCategorySpinner(element, savedInstanceState);
             }
         });
         defineRatingSpinner();
@@ -133,12 +155,30 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         return rootView;
     }
 
-    private void defineCategorySpinner(RealmResults<BookCategory> element) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        bookNameSaveInstance = mBookName.getText().toString();
+        bookAuthorSaveInstance = mBookAuthor.getText().toString();
+        ratingSaveInstance = mRatingSpinner.getSelectedItemPosition();
+        if (!mBookPage.getText().toString().equals("")) {
+            bookPageSaveInstance = Integer.valueOf(mBookPage.getText().toString());
+        }
+        bookCategorySaveInstance = mCategorySpinner.getSelectedItemPosition();
+        bookTypeSaveInstance = mTypeSpinner.getSelectedItemPosition();
+        startDateSaveInstance = mStartDateEditText.getText().toString();
+        endDateSaveInstance = mEndDateEditText.getText().toString();
+        Icepick.saveInstanceState(this, outState);
+    }
+
+    private void defineCategorySpinner(RealmResults<BookCategory> element, Bundle savedInstanceState) {
         if (isAdded()) {
-            createBookCategoryListForSpinner(element);
+            if (savedInstanceState == null) {
+                createBookCategoryListForSpinner(element);
+            }
             createSpinnerAdapter();
         }
-        //setCategorySpinnerOnCurrentPosition();
+        setCategorySpinnerOnCurrentPosition(savedInstanceState);
     }
 
     private void createBookCategoryListForSpinner(List<BookCategory> bookCategories) {
@@ -162,25 +202,11 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         }
     }
 
-    private void setCategorySpinnerOnCurrentPosition() {
-        //if (mSelectedValueOfCategory == null) {
+    private void setCategorySpinnerOnCurrentPosition(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
             createSpinnerAdapter();
-//            if (mCurrentCategory != null) {
-//                mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
-//            }
-//        } else {
-//            if (!mAllCategories.contains(mSelectedValueOfCategory)) {
-//                mAllCategories.add(0, mSelectedValueOfCategory);
-//            }
-//            // https://ru.stackoverflow.com/questions/660436/
-//            createSpinnerAdapter();
-//            createSpinnerAdapter();
-//            if (isAdded()) {
-//                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
-//                    mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
-//                }
-//            }
-//        }
+            mCategorySpinner.setSelection(bookCategorySaveInstance);
+        }
     }
 
     private void defineRatingSpinner() {
@@ -237,9 +263,12 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                 @Override
                 public void onChange(RealmResults<Book> element) {
                     if (element.size() > 0) {
-                        setBookDataToFields(element);
+                        if (savedInstanceState != null) {
+                            setBookDataToFieldsFromBundle();
+                        } else {
+                            setBookDataToFields(element);
+                        }
                     }
-                    //updateFragmentFieldsWhenRotate(savedInstanceState);
                 }
             });
         }
@@ -259,6 +288,20 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         }
     }
 
+    private void setBookDataToFieldsFromBundle() {
+        if (isAdded()) {
+            mBookName.setText(bookNameSaveInstance);
+            mBookAuthor.setText(bookAuthorSaveInstance);
+            mRatingSpinner.setSelection(ratingSaveInstance);
+            mBookPage.setText(String.valueOf(bookPageSaveInstance));
+            mCategorySpinner.setSelection(bookCategorySaveInstance);
+            mTypeSpinner.setSelection(bookTypeSaveInstance);
+            mDateStartInputLayout.getEditText().setText(startDateSaveInstance);
+            mEndDateInputLayout.getEditText().setText(endDateSaveInstance);
+        }
+    }
+
+
     private void setCategorySpinnerSelectionOnCurrentCategory(RealmResults<Book> element) {
         Book book = element.first();
         String currentBookCategory = book.getBookCategory().getCategoryName();
@@ -266,35 +309,6 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
             mCategorySpinner.setSelection(mCategorySpinnerAdapter.getPosition(currentBookCategory.toUpperCase()));
         }
     }
-
-//    private void updateFragmentFieldsWhenRotate(Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            mQuoteText.setText(savedInstanceState.getString(QUOTE_TEXT_SAVE_INSTANCE));
-//            mBookName.setText(savedInstanceState.getString(QUOTE_BOOK_NAME_SAVE_INSTANCE));
-//            mAuthorName.setText(savedInstanceState.getString(QUOTE_BOOK_AUTHOR_SAVE_INSTANCE));
-//            mPageNumber.setText(savedInstanceState.getString(QUOTE_PAGE_SAVE_INSTANCE));
-//            mYearNumber.setText(savedInstanceState.getString(QUOTE_YEAR_SAVE_INSTANCE));
-//            mPublishName.setText(savedInstanceState.getString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE));
-//            updateSpinnerSelection();
-//        }
-//    }
-
-//    private void updateSpinnerSelection() {
-//        if (mSelectedValueOfCategory != null) {
-//            if (!mAllCategories.contains(mSelectedValueOfCategory)) {
-//                mAllCategories.add(0, mSelectedValueOfCategory);
-//            }
-//            createSpinnerAdapter();
-//            if (isAdded()) {
-//                if (!mSelectedValueOfCategory.equals(getString(R.string.title_spinner_category))) {
-//                    mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mSelectedValueOfCategory));
-//                }
-//            }
-//        }
-//        if (mCurrentCategory != null) {
-//            mCategorySpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
-//        }
-//    }
 
     private void setListenerToCategorySpinner() {
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -336,7 +350,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-                                setCategorySpinnerOnCurrentPosition();
+                                createSpinnerAdapter();
                             }
                         });
         AlertDialog alertDialog = mDialogBuilder.create();
@@ -412,12 +426,6 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 //        if (mAlertDialog != null && mAlertDialog.isShowing()) {
@@ -440,7 +448,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        String date = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
         if (view.getTag().equals(DATE_PICKER_START_DATE)) {
             mStartDateEditText.setText(date);
         } else {

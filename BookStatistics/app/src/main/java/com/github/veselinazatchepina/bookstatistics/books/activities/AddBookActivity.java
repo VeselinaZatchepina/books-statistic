@@ -32,10 +32,6 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     @Override
     public void defineInputData(Bundle saveInstanceState) {
         super.defineInputData(saveInstanceState);
-//        if (saveInstanceState != null) {
-//            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
-//            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
-//        }
         mCurrentBookId = getIntent().getLongExtra(CURRENT_BOOK_ID_INTENT, -1);
     }
 
@@ -60,15 +56,6 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
         if (addBookFragment.isSpinnerSelectedItemHint()) {
             Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        if (mCurrentFragment.isAdded()) {
-//            getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
-//        }
-//        outState.putString(QUOTE_TYPE_BUNDLE, mQuotesType);
     }
 
     @Override

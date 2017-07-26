@@ -65,15 +65,6 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-//        if (mMainFragment.isAdded()) {
-//            getSupportFragmentManager().putFragment(outState, MAIN_FRAGMENT_TAG_BUNDLE, mMainFragment);
-//        }
-//        outState.putString(QUOTE_TYPE_BUNDLE, mTitle);
-//        outState.putLong(CURRENT_ID_BUNDLE, mCurrentId);
-    }
-
-    @Override
     public void onCategorySelected(String currentCategory) {
         startActivity(BookSectionActivity.newIntent(this, currentCategory));
     }
