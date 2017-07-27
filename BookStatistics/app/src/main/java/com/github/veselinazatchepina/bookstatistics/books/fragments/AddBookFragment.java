@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookRatingEnums;
@@ -23,6 +24,7 @@ import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
+import com.squareup.leakcanary.RefWatcher;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
@@ -81,6 +83,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private EditText mEndDateEditText;
     private long mCurrentBookIdForEdit;
     private RealmResults<Book> mBookForEdit;
+    AlertDialog mAlertDialog;
 
     @State
     String bookNameSaveInstance;
@@ -353,8 +356,8 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                                 createSpinnerAdapter();
                             }
                         });
-        AlertDialog alertDialog = mDialogBuilder.create();
-        alertDialog.show();
+        mAlertDialog = mDialogBuilder.create();
+        mAlertDialog.show();
     }
 
     private void createSpinnerAdapter() {
@@ -428,10 +431,10 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onPause() {
         super.onPause();
-//        if (mAlertDialog != null && mAlertDialog.isShowing()) {
-//            mAlertDialog.dismiss();
-//            mAlertDialog = null;
-//        }
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
     }
 
     @Override
@@ -444,6 +447,8 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     public void onDestroy() {
         super.onDestroy();
         mBooksRealmRepository.closeDbConnect();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Override

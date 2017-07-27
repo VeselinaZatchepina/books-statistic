@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.NavigationAbstractActivity;
 import com.github.veselinazatchepina.bookstatistics.preference.fragments.ThemePreferencesFragment;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 
@@ -61,5 +63,12 @@ public class ThemePreferencesActivity extends NavigationAbstractActivity {
                     .add(R.id.fragment_container, currentFragment)
                     .commit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

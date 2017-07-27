@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.BookSectionFragment;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -156,5 +158,12 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     @Override
     public void onBookSelected(long currentBookId, String currentSectionType, String currentCategory) {
         startActivity(CurrentBookActivity.newIntent(this, currentBookId, currentSectionType, currentCategory));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

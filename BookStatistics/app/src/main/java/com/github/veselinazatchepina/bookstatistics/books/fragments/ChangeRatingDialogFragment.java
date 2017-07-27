@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookRatingEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.HashMap;
 
@@ -111,5 +113,12 @@ public class ChangeRatingDialogFragment extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

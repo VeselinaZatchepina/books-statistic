@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.NavigationAbstractActivity;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.BookCategoriesFragment;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 
@@ -67,5 +69,12 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
     @Override
     public void onCategorySelected(String currentCategory) {
         startActivity(BookSectionActivity.newIntent(this, currentCategory));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.DivisionType;
 import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.FloatToIntInsideChartValueFormatter;
@@ -31,6 +32,7 @@ import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.XAxisL
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.AllBookMonthDivision;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivision;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -250,5 +252,7 @@ public class ChartFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mBooksRealmRepository.closeDbConnect();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

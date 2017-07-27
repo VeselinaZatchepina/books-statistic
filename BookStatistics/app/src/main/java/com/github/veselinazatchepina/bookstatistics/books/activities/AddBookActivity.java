@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.SingleFragmentAbstractActivity;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.AddBookFragment;
+import com.squareup.leakcanary.RefWatcher;
 
 
 public class AddBookActivity extends SingleFragmentAbstractActivity {
@@ -66,5 +68,12 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.NavigationAbstractActivity;
 import com.github.veselinazatchepina.bookstatistics.chart.fragments.ChartFragment;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 
@@ -58,5 +60,12 @@ public class ChartActivity extends NavigationAbstractActivity {
     @Override
     public void defineFab() {
         mFloatingActionButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }

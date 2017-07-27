@@ -17,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,6 +124,8 @@ public class BookCategoriesFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mBooksRealmRepository.closeDbConnect();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     class BookCategoryRecyclerViewAdapter extends RealmRecyclerViewAdapter<BookCategory, BookCategoryRecyclerViewAdapter.MyViewHolder> {

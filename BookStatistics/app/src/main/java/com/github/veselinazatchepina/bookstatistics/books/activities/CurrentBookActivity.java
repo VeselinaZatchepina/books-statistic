@@ -11,11 +11,13 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.abstracts.SingleFragmentAbstractActivity;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.CurrentBookFragment;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 import io.realm.RealmChangeListener;
@@ -159,5 +161,12 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
 }
