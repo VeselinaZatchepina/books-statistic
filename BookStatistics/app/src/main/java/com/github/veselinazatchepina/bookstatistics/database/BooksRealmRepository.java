@@ -41,11 +41,6 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
-    public Realm getRealmConnection() {
-        return mRealm;
-    }
-
-    @Override
     public RealmResults<BookCategory> getListOfBookCategories() {
         return mRealm.where(BookCategory.class).findAllSortedAsync("id");
     }
@@ -483,7 +478,7 @@ public class BooksRealmRepository implements RealmRepository {
         return mRealm.where(Book.class).equalTo("id", currentBookId).findAllAsync();
     }
 
-    //@Override
+    @Override
     public RealmResults<Book> getBookBySectionAndBookName(String sectionType, String bookName) {
         return mRealm.where(Book.class)
                 .contains("bookName", bookName, Case.INSENSITIVE)

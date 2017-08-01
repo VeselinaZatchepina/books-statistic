@@ -10,8 +10,6 @@ import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivi
 import java.util.HashMap;
 import java.util.List;
 
-import io.realm.Realm;
-
 public interface RealmRepository {
 
     List<BookCategory> getListOfBookCategories();
@@ -30,13 +28,13 @@ public interface RealmRepository {
 
     void deleteBookById(long bookIdForDelete);
 
+    List<Book> getBookBySectionAndBookName(String sectionType, String bookName);
+
     List<AllBookMonthDivision> getAllBookMonth(int begin, int end);
 
     List<BookMonthDivision> getBookMonthDivision();
 
     List<BookMonthDivision> getBookMonthDivisionByCategory(String category);
-
-    Realm getRealmConnection();
 
     void updateBookSectionInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties);
 
