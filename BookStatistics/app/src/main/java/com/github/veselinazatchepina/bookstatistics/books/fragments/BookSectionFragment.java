@@ -133,11 +133,7 @@ public class BookSectionFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mSearchView != null) {
-            mSearchView.setOnQueryTextListener(null);
-        }
-        mSearchView = null;
-
+        clearSearchView();
         inflater.inflate(R.menu.book_section, menu);
         mSearchMenuItem = menu.findItem(R.id.search_book);
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
@@ -153,8 +149,14 @@ public class BookSectionFragment extends Fragment {
                 return true;
             }
         });
-
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void clearSearchView() {
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener(null);
+        }
+        mSearchView = null;
     }
 
     @Override
@@ -212,19 +214,8 @@ public class BookSectionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-        if (mSearchView != null) {
-            mSearchView.setOnQueryTextListener(null);
-        }
-        mSearchView = null;
+        clearSearchView();
     }
-
-//    @Override
-//    public void onDestroyOptionsMenu() {
-//        super.onDestroyOptionsMenu();
-//        mSearchView.setOnQueryTextListener(null);
-//        mSearchView = null;
-//        mSearchMenuItem = null;
-//    }
 
     @Override
     public void onDestroyView() {
