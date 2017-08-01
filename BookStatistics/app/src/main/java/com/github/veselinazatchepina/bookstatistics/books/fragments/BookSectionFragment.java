@@ -33,9 +33,7 @@ import com.squareup.leakcanary.RefWatcher;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.realm.Case;
 import io.realm.OrderedRealmCollection;
-import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
@@ -62,6 +60,8 @@ public class BookSectionFragment extends Fragment {
     private CurrentBookCallbacks mCallbacks;
     private long mBookIdForDelete;
     private String mSortedBy;
+    private SearchView mSearchView;
+    private MenuItem mSearchMenuItem;
 
     public BookSectionFragment() {
     }
@@ -113,7 +113,9 @@ public class BookSectionFragment extends Fragment {
         mBooksInCurrentSection.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
             @Override
             public void onChange(RealmResults<Book> element) {
-                mBookSectionRecyclerViewAdapter.updateData(element);
+                if (mBookSectionRecyclerViewAdapter != null) {
+                    mBookSectionRecyclerViewAdapter.updateData(element);
+                }
             }
         });
         return rootView;
@@ -124,17 +126,22 @@ public class BookSectionFragment extends Fragment {
     }
 
     private void defineRecyclerView() {
-        mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksRealmRepository.getRealmConnection(), mBooksInCurrentSection, true);
+        mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksInCurrentSection, true, mCurrentSectionType);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookSectionRecyclerViewAdapter);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener(null);
+        }
+        mSearchView = null;
+
         inflater.inflate(R.menu.book_section, menu);
-        MenuItem searchMenuItem = menu.findItem(R.id.search_book);
-        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchMenuItem = menu.findItem(R.id.search_book);
+        mSearchView = (SearchView) mSearchMenuItem.getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -205,7 +212,19 @@ public class BookSectionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener(null);
+        }
+        mSearchView = null;
     }
+
+//    @Override
+//    public void onDestroyOptionsMenu() {
+//        super.onDestroyOptionsMenu();
+//        mSearchView.setOnQueryTextListener(null);
+//        mSearchView = null;
+//        mSearchMenuItem = null;
+//    }
 
     @Override
     public void onDestroyView() {
@@ -224,11 +243,11 @@ public class BookSectionFragment extends Fragment {
         private static final int EMPTY_LIST = 0;
         private static final int NOT_EMPTY_LIST = 1;
 
-        Realm mRealm;
+        String currentSectionType;
 
-        BookSectionRecyclerViewAdapter(@NonNull Context context, Realm realm, @Nullable OrderedRealmCollection<Book> data, boolean autoUpdate) {
+        BookSectionRecyclerViewAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Book> data, boolean autoUpdate, String currentSectionType) {
             super(context, data, autoUpdate);
-            mRealm = realm;
+            this.currentSectionType = currentSectionType;
         }
 
         @Override
@@ -305,11 +324,9 @@ public class BookSectionFragment extends Fragment {
         public void filterResults(String text) {
             text = text == null ? null : text.toLowerCase().trim();
             if(text == null || "".equals(text)) {
-                updateData(mRealm.where(Book.class).findAll());
+                updateData(mBooksRealmRepository.getAllBooksInCurrentSection(currentSectionType));
             } else {
-                updateData(mRealm.where(Book.class)
-                        .contains("bookName", text, Case.INSENSITIVE)
-                        .findAll());
+                updateData(mBooksRealmRepository.getBookBySectionAndBookName(currentSectionType, text));
             }
         }
 

@@ -39,7 +39,6 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     @BindView(R.id.section_fab)
     FloatingActionButton mSectionFab;
 
-    private Fragment mMainFragment;
     private ArrayList<String> mSectionTypes;
     private String mCurrentCategory;
 
@@ -82,12 +81,13 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         mSectionViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
+                Fragment mainFragment;
                 if (mCurrentCategory != null) {
-                    mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position), mCurrentCategory);
+                    mainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position), mCurrentCategory);
                 } else {
-                    mMainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position));
+                    mainFragment = BookSectionFragment.newInstance(mSectionTypes.get(position));
                 }
-                return mMainFragment;
+                return mainFragment;
             }
 
             @Override

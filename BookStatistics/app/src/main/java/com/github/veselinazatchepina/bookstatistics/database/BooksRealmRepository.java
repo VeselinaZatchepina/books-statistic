@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -480,6 +481,14 @@ public class BooksRealmRepository implements RealmRepository {
     @Override
     public RealmResults<Book> getBookById(long currentBookId) {
         return mRealm.where(Book.class).equalTo("id", currentBookId).findAllAsync();
+    }
+
+    //@Override
+    public RealmResults<Book> getBookBySectionAndBookName(String sectionType, String bookName) {
+        return mRealm.where(Book.class)
+                .contains("bookName", bookName, Case.INSENSITIVE)
+                .equalTo("section.sectionName", sectionType)
+                .findAll();
     }
 
     @Override
