@@ -652,6 +652,11 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
+    public RealmResults<Year> getAllYears() {
+        return mRealm.where(Year.class).findAll();
+    }
+
+    @Override
     public void closeDbConnect() {
         mRealm.close();
     }

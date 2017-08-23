@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -31,7 +33,9 @@ import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.XAxisB
 import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.XAxisLineChartValueFormatter;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.AllBookMonthDivision;
+import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivision;
+import com.github.veselinazatchepina.bookstatistics.database.model.Year;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -52,6 +56,20 @@ public class ChartFragment extends Fragment {
     BarChart mBarChartAllCategories;
     @BindView(R.id.lineChart_books_current_category)
     LineChart mLineChartBooksCurrentCategory;
+    @BindView(R.id.year_spinner_all_books)
+    Spinner mYearSpinnerAllBooks;
+    @BindView(R.id.month_division_spinner_all_books)
+    Spinner mMonthDivisionSpinnerAllBooks;
+    @BindView(R.id.year_spinner_all_categories)
+    Spinner mYearSpinnerAllCategories;
+    @BindView(R.id.month_division_spinner_all_categories)
+    Spinner mMonthDivisionSpinnerAllCategories;
+    @BindView(R.id.year_spinner_current_category)
+    Spinner mYearSpinnerCurrentCategory;
+    @BindView(R.id.category_spinner)
+    Spinner mCategorySpinner;
+    @BindView(R.id.month_division_spinner_current_category)
+    Spinner mMonthDivisionSpinnerCurrentCategory;
     private Unbinder unbinder;
 
     View mRootView;
@@ -59,6 +77,12 @@ public class ChartFragment extends Fragment {
     private RealmResults<AllBookMonthDivision> mAllBooksMonthDivision;
     private RealmResults<BookMonthDivision> mBookMonthDivisions;
     private RealmResults<BookMonthDivision> mBookMonthDivisionsByCategory;
+    private RealmResults<Year> mAllYears;
+    private RealmResults<BookCategory> mAllBookCategories;
+
+    ArrayAdapter<Integer> mYearSpinnerAdapter;
+    ArrayAdapter<String> mMonthDivisionSpinnerAdapter;
+    ArrayAdapter<String> mCategorySpinnerAdapter;
 
     public ChartFragment() {
     }
@@ -72,6 +96,8 @@ public class ChartFragment extends Fragment {
         super.onCreate(savedInstanceState);
         defineInputData(savedInstanceState);
         mBooksRealmRepository = new BooksRealmRepository();
+        mAllYears = mBooksRealmRepository.getAllYears();
+        mAllBookCategories = mBooksRealmRepository.getListOfBookCategories();
         mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonth(0, 4);
         mBookMonthDivisions = mBooksRealmRepository.getBookMonthDivision();
         mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory("aaa");
@@ -111,6 +137,9 @@ public class ChartFragment extends Fragment {
                 }
             }
         });
+        defineYearSpinners();
+        defineMonthDivisionSpinners();
+        defineCategorySpinner();
         return mRootView;
     }
 
@@ -240,6 +269,35 @@ public class ChartFragment extends Fragment {
         dataSet.setCircleRadius(3.6f);
         dataSet.setValueTextSize(8f);
         dataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
+    }
+
+    private void defineYearSpinners() {
+        mYearSpinnerAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        for (Year year: mAllYears) {
+            mYearSpinnerAdapter.add(year.getYearNumber());
+        }
+        mYearSpinnerAllBooks.setAdapter(mYearSpinnerAdapter);
+        mYearSpinnerAllCategories.setAdapter(mYearSpinnerAdapter);
+        mYearSpinnerCurrentCategory.setAdapter(mYearSpinnerAdapter);
+    }
+
+    private void defineMonthDivisionSpinners() {
+        mMonthDivisionSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        mMonthDivisionSpinnerAdapter.addAll(DivisionType.ONE,
+                DivisionType.THREE,
+                DivisionType.SIX,
+                DivisionType.TWELVE);
+        mMonthDivisionSpinnerAllBooks.setAdapter(mMonthDivisionSpinnerAdapter);
+        mMonthDivisionSpinnerAllCategories.setAdapter(mMonthDivisionSpinnerAdapter);
+        mMonthDivisionSpinnerCurrentCategory.setAdapter(mMonthDivisionSpinnerAdapter);
+    }
+
+    private void defineCategorySpinner() {
+        mCategorySpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        for (BookCategory bookCategory: mAllBookCategories) {
+            mCategorySpinnerAdapter.add(bookCategory.getCategoryName());
+        }
+        mCategorySpinner.setAdapter(mCategorySpinnerAdapter);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.github.veselinazatchepina.bookstatistics.database.model.AllBookMonthD
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivision;
+import com.github.veselinazatchepina.bookstatistics.database.model.Year;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,4 +42,6 @@ public interface RealmRepository {
     void updateBookRatingInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties);
 
     void closeDbConnect();
+
+    List<Year> getAllYears();
 }

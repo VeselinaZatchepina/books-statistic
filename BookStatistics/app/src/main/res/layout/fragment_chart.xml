@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/activity_main"
@@ -14,12 +15,30 @@
         android:paddingRight="@dimen/chart_horizontal_margin"
         android:paddingTop="@dimen/chart_vertical_margin">
 
+        <Spinner
+            android:id="@+id/year_spinner_all_books"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart_all_books"
             android:layout_width="@dimen/chart_width"
             android:layout_height="@dimen/chart_height"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/chart_bottom_margin"/>
+
+        <Spinner
+            android:id="@+id/month_division_spinner_all_books"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/year_spinner_all_categories"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart_all_categories"
@@ -28,12 +47,43 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/chart_bottom_margin"/>
 
+        <Spinner
+            android:id="@+id/month_division_spinner_all_categories"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/year_spinner_current_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="64dp"/>
+
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart_books_current_category"
             android:layout_width="@dimen/chart_width"
             android:layout_height="@dimen/chart_height"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/chart_bottom_margin"/>
+
+        <Spinner
+            android:id="@+id/month_division_spinner_current_category"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
