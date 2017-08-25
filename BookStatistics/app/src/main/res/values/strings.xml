@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookStatistics</string>
+    <string name="app_name">Boost</string>
 
     <!-- Navigation Drawer -->
     <string name="title_book_categories">Book categories</string>

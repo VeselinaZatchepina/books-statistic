@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -26,7 +27,9 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
+import com.github.veselinazatchepina.bookstatistics.books.enums.AllMonth;
 import com.github.veselinazatchepina.bookstatistics.books.enums.DivisionType;
+import com.github.veselinazatchepina.bookstatistics.books.enums.MonthIndex;
 import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.FloatToIntInsideChartValueFormatter;
 import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.FloatToIntValueFormatter;
 import com.github.veselinazatchepina.bookstatistics.chart.valueformatters.XAxisBarChartValueFormatter;
@@ -63,7 +66,7 @@ public class ChartFragment extends Fragment {
     @BindView(R.id.year_spinner_all_categories)
     Spinner mYearSpinnerAllCategories;
     @BindView(R.id.month_division_spinner_all_categories)
-    Spinner mMonthDivisionSpinnerAllCategories;
+    Spinner mMonthTypeSpinnerAllCategories;
     @BindView(R.id.year_spinner_current_category)
     Spinner mYearSpinnerCurrentCategory;
     @BindView(R.id.category_spinner)
@@ -83,6 +86,12 @@ public class ChartFragment extends Fragment {
     ArrayAdapter<Integer> mYearSpinnerAdapter;
     ArrayAdapter<String> mMonthDivisionSpinnerAdapter;
     ArrayAdapter<String> mCategorySpinnerAdapter;
+    ArrayAdapter<String> mMonthTypeSpinnerAdapter;
+
+    String mDivisionTypeAllBooks = DivisionType.THREE;
+    String mCategoryNameCurrentCategory = DivisionType.THREE;
+    String mDivisionTypeCurrentCategory = DivisionType.THREE;
+    String mMonthTypeAllCategories = AllMonth.JANUARY_JUNE;
 
     public ChartFragment() {
     }
@@ -98,9 +107,8 @@ public class ChartFragment extends Fragment {
         mBooksRealmRepository = new BooksRealmRepository();
         mAllYears = mBooksRealmRepository.getAllYears();
         mAllBookCategories = mBooksRealmRepository.getListOfBookCategories();
-        mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonth(0, 4);
         mBookMonthDivisions = mBooksRealmRepository.getBookMonthDivision();
-        mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory("aaa");
+        mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory);
     }
 
     private void defineInputData(Bundle savedInstanceState) {
@@ -113,41 +121,25 @@ public class ChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_chart, container, false);
         unbinder = ButterKnife.bind(this, mRootView);
-        mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
-            @Override
-            public void onChange(RealmResults<AllBookMonthDivision> element) {
-                if (isAdded() && !element.isEmpty()) {
-                    createLineChart(element);
-                }
-            }
-        });
-        mBookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
-            @Override
-            public void onChange(RealmResults<BookMonthDivision> element) {
-                if (isAdded() && !element.isEmpty()) {
-                    createBarChart(element);
-                }
-            }
-        });
-        mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
-            @Override
-            public void onChange(RealmResults<BookMonthDivision> element) {
-                if (isAdded() && !element.isEmpty()) {
-                    createCategoryLineChart(element);
-                }
-            }
-        });
         defineYearSpinners();
         defineMonthDivisionSpinners();
         defineCategorySpinner();
+        defineMonthTypeSpinner();
+        setListenerToYearSpinnerAllBooks();
+        setListenerToMonthDivisionSpinnerAllBooks();
+        setListenerToMonthTypeSpinnerAllCategories();
+        setListenerToYearSpinnerAllCategories();
+        setListenerToYearSpinnerCurrentCategory();
+        setListenerToMonthDivisionSpinnerCurrentCategory();
+        setListenerToCategorySpinnerCurrentCategory();
         return mRootView;
     }
 
     private void createLineChart(RealmResults<AllBookMonthDivision> allBooksMonthDivision) {
-        mLineChartAllBooks.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(DivisionType.THREE));
+        mLineChartAllBooks.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(mDivisionTypeAllBooks));
         setLineChartStyle(mLineChartAllBooks);
         RealmLineDataSet<AllBookMonthDivision> lineDataSet =
-                new RealmLineDataSet<AllBookMonthDivision>(allBooksMonthDivision, "month", "allBookCountThreeMonth");
+                new RealmLineDataSet<AllBookMonthDivision>(allBooksMonthDivision, "month", getColumnDivisionTypeName());
         setRealmLineDataSetStyle(lineDataSet);
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(lineDataSet);
@@ -155,6 +147,25 @@ public class ChartFragment extends Fragment {
         mLineChartAllBooks.setData(lineData);
         mLineChartAllBooks.invalidate();
         mLineChartAllBooks.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+    }
+
+    private String getColumnDivisionTypeName() {
+        String columnName = "allBookCountThreeMonth";
+        switch (mDivisionTypeAllBooks) {
+            case DivisionType.ONE:
+                columnName = "allBookCountOneMonth";
+                break;
+            case DivisionType.THREE:
+                columnName = "allBookCountThreeMonth";
+                break;
+            case DivisionType.SIX:
+                columnName = "allBookCountSixMonth";
+                break;
+            case DivisionType.TWELVE:
+                columnName = "allBookCountTwelve";
+                break;
+        }
+        return columnName;
     }
 
     private void setLineChartStyle(LineChart lineChart) {
@@ -188,7 +199,7 @@ public class ChartFragment extends Fragment {
     private void createBarChart(RealmResults<BookMonthDivision> bookMonthDivisions) {
         setBarChartStyle(mBarChartAllCategories, bookMonthDivisions);
         RealmBarDataSet<BookMonthDivision> barDataSet =
-                new RealmBarDataSet<BookMonthDivision>(bookMonthDivisions, "categoryIndex", "januaryJune");
+                new RealmBarDataSet<BookMonthDivision>(bookMonthDivisions, "categoryIndex", mMonthTypeAllCategories);
         setRealmBarDataSetStyle(barDataSet);
         ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
         barDataSets.add(barDataSet);
@@ -224,7 +235,7 @@ public class ChartFragment extends Fragment {
         BookMonthDivision bookMonthDivision = bookMonthDivisionsByCategory.first();
         ArrayList<Float> listOfBookCount = createBooksCountList(bookMonthDivision);
         List<Entry> entries = createEntry(listOfBookCount);
-        mLineChartBooksCurrentCategory.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(DivisionType.ONE));
+        mLineChartBooksCurrentCategory.getXAxis().setValueFormatter(new XAxisLineChartValueFormatter(mDivisionTypeCurrentCategory));
         setLineChartStyle(mLineChartBooksCurrentCategory);
         LineDataSet dataSet = new LineDataSet(entries, "Label");
         setLineDataSetStyle(dataSet);
@@ -238,18 +249,35 @@ public class ChartFragment extends Fragment {
 
     private ArrayList<Float> createBooksCountList(BookMonthDivision bookMonthDivision) {
         ArrayList<Float> listOfBookCount = new ArrayList<>();
-        listOfBookCount.add(bookMonthDivision.getJanuary());
-        listOfBookCount.add(bookMonthDivision.getFebruary());
-        listOfBookCount.add(bookMonthDivision.getMarch());
-        listOfBookCount.add(bookMonthDivision.getApril());
-        listOfBookCount.add(bookMonthDivision.getMay());
-        listOfBookCount.add(bookMonthDivision.getJune());
-        listOfBookCount.add(bookMonthDivision.getJuly());
-        listOfBookCount.add(bookMonthDivision.getAugust());
-        listOfBookCount.add(bookMonthDivision.getSeptember());
-        listOfBookCount.add(bookMonthDivision.getOctober());
-        listOfBookCount.add(bookMonthDivision.getNovember());
-        listOfBookCount.add(bookMonthDivision.getDecember());
+        switch (mDivisionTypeCurrentCategory) {
+            case DivisionType.ONE:
+                listOfBookCount.add(bookMonthDivision.getJanuary());
+                listOfBookCount.add(bookMonthDivision.getFebruary());
+                listOfBookCount.add(bookMonthDivision.getMarch());
+                listOfBookCount.add(bookMonthDivision.getApril());
+                listOfBookCount.add(bookMonthDivision.getMay());
+                listOfBookCount.add(bookMonthDivision.getJune());
+                listOfBookCount.add(bookMonthDivision.getJuly());
+                listOfBookCount.add(bookMonthDivision.getAugust());
+                listOfBookCount.add(bookMonthDivision.getSeptember());
+                listOfBookCount.add(bookMonthDivision.getOctober());
+                listOfBookCount.add(bookMonthDivision.getNovember());
+                listOfBookCount.add(bookMonthDivision.getDecember());
+                break;
+            case DivisionType.THREE:
+                listOfBookCount.add(bookMonthDivision.getJanuaryMarch());
+                listOfBookCount.add(bookMonthDivision.getAprilJune());
+                listOfBookCount.add(bookMonthDivision.getJulySeptember());
+                listOfBookCount.add(bookMonthDivision.getOctoberDecember());
+                break;
+            case DivisionType.SIX:
+                listOfBookCount.add(bookMonthDivision.getJanuaryJune());
+                listOfBookCount.add(bookMonthDivision.getJulyDecember());
+                break;
+            case DivisionType.TWELVE:
+                listOfBookCount.add(bookMonthDivision.getJanuaryDecember());
+                break;
+        }
         return listOfBookCount;
     }
 
@@ -288,8 +316,13 @@ public class ChartFragment extends Fragment {
                 DivisionType.SIX,
                 DivisionType.TWELVE);
         mMonthDivisionSpinnerAllBooks.setAdapter(mMonthDivisionSpinnerAdapter);
-        mMonthDivisionSpinnerAllCategories.setAdapter(mMonthDivisionSpinnerAdapter);
         mMonthDivisionSpinnerCurrentCategory.setAdapter(mMonthDivisionSpinnerAdapter);
+    }
+
+    private void defineMonthTypeSpinner() {
+        mMonthTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        mMonthTypeSpinnerAdapter.addAll(AllMonth.listOfAllMonth);
+        mMonthTypeSpinnerAllCategories.setAdapter(mMonthTypeSpinnerAdapter);
     }
 
     private void defineCategorySpinner() {
@@ -299,6 +332,144 @@ public class ChartFragment extends Fragment {
         }
         mCategorySpinner.setAdapter(mCategorySpinnerAdapter);
     }
+
+    private void setListenerToYearSpinnerAllBooks() {
+        mYearSpinnerAllBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToYearSpinnerAllCategories() {
+        mYearSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               //mDivisionTypeAllCategories = parent.getItemAtPosition(position).toString();
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToYearSpinnerCurrentCategory() {
+        mYearSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                 //mDivisionTypeCurrentCategory = parent.getItemAtPosition(position).toString();
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToMonthDivisionSpinnerAllBooks() {
+        mMonthDivisionSpinnerAllBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
+                mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonth(MonthIndex.ZERO, getEndIndexForAllBookMonthDivision());
+                mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<AllBookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createLineChart(element);
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private int getEndIndexForAllBookMonthDivision() {
+        int endIndex = 0;
+        switch (mDivisionTypeAllBooks) {
+            case DivisionType.ONE:
+                endIndex = 11;
+                break;
+            case DivisionType.THREE:
+                endIndex = 4;
+                break;
+            case DivisionType.SIX:
+                endIndex = 2;
+                break;
+        }
+        return endIndex;
+    }
+
+
+    private void setListenerToMonthTypeSpinnerAllCategories() {
+        mMonthTypeSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mMonthTypeAllCategories = parent.getItemAtPosition(position).toString();
+                mBookMonthDivisions = mBooksRealmRepository.getBookMonthDivision();
+                mBookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createBarChart(element);
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToMonthDivisionSpinnerCurrentCategory() {
+        mMonthDivisionSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDivisionTypeCurrentCategory = parent.getItemAtPosition(position).toString();
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory);
+                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createCategoryLineChart(element);
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToCategorySpinnerCurrentCategory() {
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCategoryNameCurrentCategory = parent.getItemAtPosition(position).toString();
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory);
+                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createCategoryLineChart(element);
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onDestroyView() {
