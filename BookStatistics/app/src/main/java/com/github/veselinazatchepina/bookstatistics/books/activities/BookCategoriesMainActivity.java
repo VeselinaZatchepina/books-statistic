@@ -31,11 +31,7 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
-//        if (saveInstanceState != null) {
-//            mMainFragment = getSupportFragmentManager().getFragment(saveInstanceState, MAIN_FRAGMENT_TAG_BUNDLE);
-//            mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
-//            mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE);
-//        }
+
     }
 
     @Override

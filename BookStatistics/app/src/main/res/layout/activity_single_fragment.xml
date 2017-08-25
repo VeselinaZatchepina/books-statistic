@@ -36,14 +36,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <View
-        android:id="@+id/toolbar_divider_light"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_divider"
-        android:background="@color/fab_divider"
-        app:layout_anchor="@id/appbar_layout"
-        app:layout_anchorGravity="bottom" />
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

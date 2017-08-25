@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- BookCategoriesFragment colors -->
-    <color name="card_background">#D1CECE</color>
+    <color name="card_background">#339064</color>
     <color name="book_accent_background">@android:color/darker_gray</color>
 
     <!-- Toolbar gradient -->
@@ -11,5 +11,5 @@
 
     <color name="colorPrimary">#37474f</color>
     <color name="colorPrimaryDark">#102027</color>
-    <color name="colorAccent">#000000</color>
+    <color name="colorAccent">#c1272d</color>
 </resources>
