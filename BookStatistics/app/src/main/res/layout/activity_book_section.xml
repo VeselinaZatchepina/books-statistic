@@ -1,22 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.hugeterry.coordinatortablayout.CoordinatorTabLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                        android:id="@+id/coordinator_tab_layout"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:id="@+id/coordinator_layout"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/toolbar_gradient"
+        android:fitsSystemWindows="true"
+        app:theme="@style/TransparentToolbar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:tabIndicatorColor="@color/card_background"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                                       android:id="@+id/view_pager"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/section_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin" />
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_create_white_24dp"/>
 
-</cn.hugeterry.coordinatortablayout.CoordinatorTabLayout>
+
+</android.support.design.widget.CoordinatorLayout>

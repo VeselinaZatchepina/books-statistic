@@ -9,7 +9,10 @@
     <color name="toolbar_end_color">#43FFFFFF</color>
     <color name="fab_divider">#D1CECE</color>
 
-    <color name="colorPrimary">#37474f</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#102027</color>
     <color name="colorAccent">#c1272d</color>
+
+    <!-- BookSectionActivity -->
+    <color name="coordinator_tab_layout">#83FFFFFF</color>
 </resources>

@@ -7,11 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +29,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.hugeterry.coordinatortablayout.CoordinatorTabLayout;
 
 public class BookSectionActivity extends AppCompatActivity implements BookSectionFragment.CurrentBookCallbacks {
 
@@ -34,10 +36,12 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
 
     @BindView(R.id.view_pager)
     ViewPager mSectionViewPager;
-    @BindView(R.id.coordinator_tab_layout)
-    CoordinatorTabLayout mCoordinatorTabLayout;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
     @BindView(R.id.section_fab)
     FloatingActionButton mSectionFab;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private ArrayList<String> mSectionTypes;
     private String mCurrentCategory;
@@ -59,6 +63,10 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         setContentView(R.layout.activity_book_section);
         ButterKnife.bind(this);
         defineInputData();
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        mTabLayout.setupWithViewPager(mSectionViewPager);
         defineViewPager();
         defineTabLayout();
         defineFab();
@@ -112,9 +120,23 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     }
 
     private void defineTabLayout() {
-        mCoordinatorTabLayout.setTitle("Book sections")
-                .setupWithViewPager(mSectionViewPager)
-                .setBackEnable(true);;
+        int[] imageArray = new int[]{
+                R.drawable.toolbar_gradient,
+                R.drawable.toolbar_gradient,
+                R.drawable.toolbar_gradient,
+        };
+
+        int[] colorArray = new int[]{
+                R.color.coordinator_tab_layout,
+                R.color.coordinator_tab_layout,
+                R.color.coordinator_tab_layout,
+        };
+
+//        mCoordinatorTabLayout.setTitle("Book sections")
+//                .setImageArray(imageArray, colorArray)
+//                .setupWithViewPager(mSectionViewPager)
+//                .setBackEnable(true)
+//                .setBackground(getResources().getDrawable(R.drawable.background1));
     }
 
     private void defineFab() {
