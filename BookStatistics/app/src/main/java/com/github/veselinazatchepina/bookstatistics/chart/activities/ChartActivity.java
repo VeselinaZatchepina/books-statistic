@@ -21,18 +21,28 @@ import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
 public class ChartActivity extends NavigationAbstractActivity {
 
+    private static final String CHART_ACTIVITY_TITLE = "chart_activity_title";
+
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
 
     private Fragment mMainFragment;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, ChartActivity.class);
+    public static Intent newIntent(Context context, String title) {
+        Intent intent = new Intent(context, ChartActivity.class);
+        intent.putExtra(CHART_ACTIVITY_TITLE, title);
+        return intent;
     }
 
     @Override
     public void defineInputData(Bundle savedInstanceState) {
+        setTitleToActivity();
+    }
 
+    private void setTitleToActivity() {
+        if (getIntent().getStringExtra(CHART_ACTIVITY_TITLE) != null) {
+            setTitle(getIntent().getStringExtra(CHART_ACTIVITY_TITLE));
+        }
     }
 
     @Override

@@ -20,17 +20,26 @@ import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
 public class ThemePreferencesActivity extends NavigationAbstractActivity {
 
+    private static final String BOOK_SETTINGS_TITLE = "book_settings_title";
+
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
 
-    public static Intent newIntent(Context context) {
+    public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, ThemePreferencesActivity.class);
+        intent.putExtra(BOOK_SETTINGS_TITLE, title);
         return intent;
     }
 
     @Override
     public void defineInputData(Bundle savedInstanceState) {
+        setTitleToActivity();
+    }
 
+    private void setTitleToActivity() {
+        if (getIntent().getStringExtra(BOOK_SETTINGS_TITLE) != null) {
+            setTitle(getIntent().getStringExtra(BOOK_SETTINGS_TITLE));
+        }
     }
 
     @Override

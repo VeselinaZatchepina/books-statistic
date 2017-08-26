@@ -33,6 +33,7 @@ import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivi
 import com.github.veselinazatchepina.bookstatistics.preference.activities.ThemePreferencesActivity;
 import com.github.veselinazatchepina.bookstatistics.preference.activities.WriteToDeveloperActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.AppBarLayoutExpended;
+import com.github.veselinazatchepina.bookstatistics.utils.ColorationTextChar;
 import com.github.veselinazatchepina.bookstatistics.utils.ThemeUtils;
 
 import butterknife.BindView;
@@ -68,6 +69,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         defineInputData(savedInstanceState);
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
+        setTitle(ColorationTextChar.setFirstVowelColor(getTitle().toString(), this));
         defineNavigationDrawer();
         defineAppBarLayoutExpandableValue();
         defineFragment();
@@ -160,7 +162,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     }
 
     public void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this);
+        Intent intent = AddBookActivity.newIntent(this, "Add book");
         startActivity(intent);
     }
 
@@ -179,19 +181,19 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_book_categories:
-                intent = BookCategoriesMainActivity.newIntent(this);
+                intent = BookCategoriesMainActivity.newIntent(this, "Book categories");
                 break;
             case R.id.menu_chart:
-                intent = ChartActivity.newIntent(this);
+                intent = ChartActivity.newIntent(this, "Charts");
                 break;
             case R.id.menu_all_books:
-                intent = BookSectionActivity.newIntent(this);
+                intent = BookSectionActivity.newIntent(this, "All books");
                 break;
             case R.id.settings:
-                intent = ThemePreferencesActivity.newIntent(this);
+                intent = ThemePreferencesActivity.newIntent(this, "Settings");
                 break;
             case R.id.write_to_developer:
-                intent = WriteToDeveloperActivity.newIntent(this);
+                intent = WriteToDeveloperActivity.newIntent(this, "Write to developer");
         }
         if (intent != null) {
             startActivity(intent);

@@ -17,17 +17,21 @@ import com.squareup.leakcanary.RefWatcher;
 public class AddBookActivity extends SingleFragmentAbstractActivity {
 
     private static final String CURRENT_BOOK_ID_INTENT = "current_book_id_intent";
+    private static final String CURRENT_BOOK_TITLE = "current_book_title";
 
     private Fragment mCurrentFragment;
     private long mCurrentBookId;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AddBookActivity.class);
+    public static Intent newIntent(Context context, String title) {
+        Intent intent = new Intent(context, AddBookActivity.class);
+        intent.putExtra(CURRENT_BOOK_TITLE, title);
+        return intent;
     }
 
-    public static Intent newIntent(Context context, long currentBookId) {
+    public static Intent newIntent(Context context, long currentBookId, String title) {
         Intent intent = new Intent(context, AddBookActivity.class);
         intent.putExtra(CURRENT_BOOK_ID_INTENT, currentBookId);
+        intent.putExtra(CURRENT_BOOK_TITLE, title);
         return intent;
     }
 
@@ -35,6 +39,13 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     public void defineInputData(Bundle saveInstanceState) {
         super.defineInputData(saveInstanceState);
         mCurrentBookId = getIntent().getLongExtra(CURRENT_BOOK_ID_INTENT, -1);
+        setTitleToActivity();
+    }
+
+    private void setTitleToActivity() {
+        if (getIntent().getStringExtra(CURRENT_BOOK_TITLE) != null) {
+            setTitle(getIntent().getStringExtra(CURRENT_BOOK_TITLE));
+        }
     }
 
     @Override

@@ -40,6 +40,7 @@
     <dimen name="cardview_margin_bottom_add_book">8dp</dimen>
     <dimen name="cardview_margin_start_add_book">8dp</dimen>
     <dimen name="cardview_margin_end_add_book">8dp</dimen>
+    <dimen name="cardview_min_height">90dp</dimen>
 
     <!-- AddQuoteFragment -->
     <dimen name="linear_layout_margin_start_add_book">16dp</dimen>
@@ -57,8 +58,11 @@
     <!-- BookSectionFragment -->
     <dimen name="section_vertical_margin">6dp</dimen>
     <dimen name="section_card_view_horizontal_margin">6dp</dimen>
+    <dimen name="section_card_view_horizontal_margin_grade_swap">3dp</dimen>
     <dimen name="section_book_name_text_view_margin_bottom">3dp</dimen>
     <dimen name="section_book_author_text_view_margin_top">3dp</dimen>
+    <dimen name="section_book_grade_margin_bottom">14dp</dimen>
+    <dimen name="section_book_autor_text_size">14sp</dimen>
 
     <!-- Delete current category dialog -->
     <dimen name="delete_category_dialog_title_margin">24dp</dimen>

@@ -55,6 +55,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
         definePreferenceListener();
         ThemeUtils.onActivityCreateSetTheme(this);
         defineInputData(savedInstanceState);
+        setTitle(ColorationTextChar.setFirstVowelColor(getTitle().toString(), this));
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
         defineToolbar();
@@ -135,7 +136,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     public void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this);
+        Intent intent = AddBookActivity.newIntent(this, "Add book");
         startActivity(intent);
     }
 

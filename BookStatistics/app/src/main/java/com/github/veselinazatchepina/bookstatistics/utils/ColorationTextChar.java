@@ -20,8 +20,10 @@ public class ColorationTextChar {
         if (!text.isEmpty() || !text.equals("")) {
             int index = getFirstVowelIndex(text);
             newText = new SpannableString(text);
-            newText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.book_accent_background)),
-                    index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (index != -1) {
+                newText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.book_accent_background)),
+                        index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
             return newText;
         }
         return newText;

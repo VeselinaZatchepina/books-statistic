@@ -21,18 +21,27 @@ import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
 public class WriteToDeveloperActivity extends NavigationAbstractActivity {
 
+    private static final String WRITE_TO_DEVELOPER_TITLE = "write_to_developer_title";
+
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
     private Fragment mMainFragment;
 
-    public static Intent newIntent(Context context) {
+    public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, WriteToDeveloperActivity.class);
+        intent.putExtra(WRITE_TO_DEVELOPER_TITLE, title);
         return intent;
     }
 
     @Override
     public void defineInputData(Bundle savedInstanceState) {
+        setTitleToActivity();
+    }
 
+    private void setTitleToActivity() {
+        if (getIntent().getStringExtra(WRITE_TO_DEVELOPER_TITLE) != null) {
+            setTitle(getIntent().getStringExtra(WRITE_TO_DEVELOPER_TITLE));
+        }
     }
 
     @Override

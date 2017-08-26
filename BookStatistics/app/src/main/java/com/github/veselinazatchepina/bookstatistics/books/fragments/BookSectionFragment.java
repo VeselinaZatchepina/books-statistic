@@ -260,7 +260,7 @@ public class BookSectionFragment extends Fragment {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             if (getData() != null && !getData().isEmpty()) {
                 Book currentBook = getData().get(position);
-                holder.bookNameTextView.setText(currentBook.getBookName());
+                holder.bookNameTextView.setText("\"" + currentBook.getBookName() + "\"");
                 holder.bookAuthorTextView.setText(currentBook.getAuthorName());
                 holder.book = currentBook;
                 setListenerToChangeSectionImageView(holder);

@@ -20,18 +20,26 @@ import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
 public class BookCategoriesMainActivity extends NavigationAbstractActivity implements BookCategoriesFragment.BookCategoryCallbacks {
 
+    private static final String BOOK_CATEGORY_TITLE = "book_category_title";
+
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
     private Fragment mMainFragment;
     private int mFabImageResourceId = setFabImageResourceId();
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, BookCategoriesMainActivity.class);
+    public static Intent newIntent(Context context, String title) {
+        Intent intent = new Intent(context, BookCategoriesMainActivity.class);
+        intent.putExtra(BOOK_CATEGORY_TITLE, title);
+        return intent;
     }
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
-
+        if (getIntent().getStringExtra(BOOK_CATEGORY_TITLE) != null) {
+            setTitle(getIntent().getStringExtra(BOOK_CATEGORY_TITLE));
+        } else {
+            setTitle("Book categories");
+        }
     }
 
     @Override
@@ -64,7 +72,7 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
 
     @Override
     public void onCategorySelected(String currentCategory) {
-        startActivity(BookSectionActivity.newIntent(this, currentCategory));
+        startActivity(BookSectionActivity.newIntent(this, currentCategory, currentCategory));
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.BookSectionFragment;
+import com.github.veselinazatchepina.bookstatistics.utils.ColorationTextChar;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import butterknife.ButterKnife;
 public class BookSectionActivity extends AppCompatActivity implements BookSectionFragment.CurrentBookCallbacks {
 
     private static final String BOOK_CATEGORY_INTENT = "book_category_intent";
+    private static final String BOOK_CATEGORY_TITLE = "book_category_title";
 
     @BindView(R.id.view_pager)
     ViewPager mSectionViewPager;
@@ -46,14 +48,16 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     private ArrayList<String> mSectionTypes;
     private String mCurrentCategory;
 
-    public static Intent newIntent(Context context) {
+    public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, BookSectionActivity.class);
+        intent.putExtra(BOOK_CATEGORY_TITLE, title);
         return intent;
     }
 
-    public static Intent newIntent(Context context, String currentCategory) {
+    public static Intent newIntent(Context context, String currentCategory, String title) {
         Intent intent = new Intent(context, BookSectionActivity.class);
         intent.putExtra(BOOK_CATEGORY_INTENT, currentCategory);
+        intent.putExtra(BOOK_CATEGORY_TITLE, title);
         return intent;
     }
 
@@ -63,18 +67,27 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         setContentView(R.layout.activity_book_section);
         ButterKnife.bind(this);
         defineInputData();
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        mTabLayout.setupWithViewPager(mSectionViewPager);
-        defineViewPager();
+        setTitle(ColorationTextChar.setFirstVowelColor(getTitle().toString(), this));
+        defineActionBar();
         defineTabLayout();
+        defineViewPager();
         defineFab();
     }
 
     private void defineInputData() {
         createSectionTypeList();
         mCurrentCategory = getIntent().getStringExtra(BOOK_CATEGORY_INTENT);
+        setTitleToActivity();
+    }
+
+    private void defineActionBar() {
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void defineTabLayout() {
+        mTabLayout.setupWithViewPager(mSectionViewPager);
     }
 
     private void createSectionTypeList() {
@@ -82,6 +95,12 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         mSectionTypes.add(BookTypeEnums.NEW_BOOK);
         mSectionTypes.add(BookTypeEnums.CURRENT_BOOK);
         mSectionTypes.add(BookTypeEnums.READ_BOOK);
+    }
+
+    private void setTitleToActivity() {
+        if (getIntent().getStringExtra(BOOK_CATEGORY_TITLE) != null) {
+            setTitle(getIntent().getStringExtra(BOOK_CATEGORY_TITLE));
+        }
     }
 
     private void defineViewPager() {
@@ -110,33 +129,13 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
 
             @Override
             public void finishUpdate(ViewGroup container) {
-                try{
+                try {
                     super.finishUpdate(container);
-                } catch (NullPointerException nullPointerException){
+                } catch (NullPointerException nullPointerException) {
                     System.out.println("Catch the NullPointerException in FragmentPagerAdapter.finishUpdate");
                 }
             }
         });
-    }
-
-    private void defineTabLayout() {
-        int[] imageArray = new int[]{
-                R.drawable.toolbar_gradient,
-                R.drawable.toolbar_gradient,
-                R.drawable.toolbar_gradient,
-        };
-
-        int[] colorArray = new int[]{
-                R.color.coordinator_tab_layout,
-                R.color.coordinator_tab_layout,
-                R.color.coordinator_tab_layout,
-        };
-
-//        mCoordinatorTabLayout.setTitle("Book sections")
-//                .setImageArray(imageArray, colorArray)
-//                .setupWithViewPager(mSectionViewPager)
-//                .setBackEnable(true)
-//                .setBackground(getResources().getDrawable(R.drawable.background1));
     }
 
     private void defineFab() {
@@ -163,7 +162,7 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     }
 
     private void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this);
+        Intent intent = AddBookActivity.newIntent(this, "Add book");
         startActivity(intent);
     }
 

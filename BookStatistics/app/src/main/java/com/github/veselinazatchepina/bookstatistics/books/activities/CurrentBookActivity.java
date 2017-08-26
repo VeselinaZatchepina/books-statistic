@@ -149,7 +149,7 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this, mChooseBookIdForIntent);
+        Intent intent = AddBookActivity.newIntent(this, mChooseBookIdForIntent, "Edit book");
         startActivity(intent);
     }
 
