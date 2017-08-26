@@ -82,8 +82,10 @@
     <dimen name="theme_pref_padding_left">6dp</dimen>
     <dimen name="theme_pref_padding_right">6dp</dimen>
     <dimen name="theme_pref_padding_top">6dp</dimen>
-    <dimen name="theme_pref_image_width">80dp</dimen>
-    <dimen name="theme_pref_image_height">80dp</dimen>
+    <dimen name="theme_pref_image_width">100dp</dimen>
+    <dimen name="theme_pref_image_height">100dp</dimen>
+    <dimen name="theme_pref_image_background_width">108dp</dimen>
+    <dimen name="theme_pref_image_background_height">108dp</dimen>
     <dimen name="theme_pref_image_margin_end">30dp</dimen>
     <dimen name="theme_pref_image_padding">1dp</dimen>
 

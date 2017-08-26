@@ -70,7 +70,17 @@ public class ThemePreference extends ListPreference {
     private void updateIcon() {
         int identifier = resources.getIdentifier(selectedImageFileName, "drawable",
                 context.getPackageName());
-        themeImageView.setImageResource(identifier);
+        if (selectedImageFileName.equals("ic_first")) {
+            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background1));
+        }
+        if (selectedImageFileName.equals("ic_second")) {
+            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background2));
+        }
+        if (selectedImageFileName.equals("ic_third")) {
+            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background3));
+        }
+        //themeImageView.setImageResource(identifier);
+
         themeImageView.setTag(selectedImageFileName);
     }
 

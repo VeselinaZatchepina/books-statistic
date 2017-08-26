@@ -12,6 +12,7 @@
         android:layout_marginBottom="@dimen/edit_text_margin_bottom"
         android:background="@android:color/white"
         android:gravity="top"
+        android:padding="15dp"
         android:hint="@string/write_to_developer_text_hint"
         android:inputType="textMultiLine"/>
 
@@ -20,6 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:background="@color/card_background"
+        android:textColor="@android:color/white"
         android:text="@string/write_to_developer_button_text"/>
 
 </LinearLayout>
