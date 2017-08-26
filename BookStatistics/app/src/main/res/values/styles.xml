@@ -36,12 +36,6 @@
         <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
-    <!-- Navigation drawer style -->
-    <style name="TextAppearanceForNav">
-        <item name="android:textColor">@android:color/darker_gray</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
      <!-- Launch style
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
@@ -58,6 +52,14 @@
 
     <style name="AppTheme3" parent="AppTheme">
         <item name="android:windowBackground">@drawable/background3</item>
+    </style>
+
+    <style name="NavigationViewStyle">
+        <item name="android:textSize">14sp</item> <!-- menu item text size-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item><!-- menu item height-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/card_background</item>
+        <item name="android:listDivider">@color/card_background</item>
     </style>
 
 

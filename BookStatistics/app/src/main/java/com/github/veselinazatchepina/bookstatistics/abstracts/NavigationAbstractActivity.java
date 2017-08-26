@@ -103,7 +103,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         Menu menu = mNavigationView.getMenu();
         MenuItem tools= menu.findItem(R.id.other);
         SpannableString s = new SpannableString(tools.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceForNav), 0, s.length(), 0);
+        s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewStyle), 0, s.length(), 0);
         tools.setTitle(s);
         mNavigationView.setNavigationItemSelectedListener(this);
     }
