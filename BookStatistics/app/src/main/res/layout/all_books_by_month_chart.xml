@@ -55,6 +55,7 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart_all_books"
+            android:layout_gravity="center"
             android:layout_width="@dimen/chart_width"
             android:layout_height="@dimen/chart_height"/>
 

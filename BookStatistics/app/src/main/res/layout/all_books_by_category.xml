@@ -55,6 +55,7 @@
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart_all_categories"
+            android:layout_gravity="center"
             android:layout_width="@dimen/chart_width"
             android:layout_height="@dimen/chart_height"/>
 
