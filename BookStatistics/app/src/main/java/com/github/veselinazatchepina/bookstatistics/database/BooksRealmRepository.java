@@ -581,6 +581,15 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     @Override
+    public RealmResults<Book> getBookBySectionAndBookNameByCategory(String sectionType, String bookName, String category) {
+        return mRealm.where(Book.class)
+                .contains("bookName", bookName, Case.INSENSITIVE)
+                .equalTo("section.sectionName", sectionType)
+                .equalTo("bookCategory.categoryName", category)
+                .findAll();
+    }
+
+    @Override
     public void saveChangedBook(final long currentBookId, final HashMap<BookPropertiesEnum, String> mapOfBookProperties) {
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override

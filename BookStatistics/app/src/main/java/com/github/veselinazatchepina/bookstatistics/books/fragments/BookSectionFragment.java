@@ -316,9 +316,17 @@ public class BookSectionFragment extends Fragment {
         public void filterResults(String text) {
             text = text == null ? null : text.toLowerCase().trim();
             if(text == null || "".equals(text)) {
-                updateData(mBooksRealmRepository.getAllBooksInCurrentSection(currentSectionType));
+                if (mCurrentCategory ==  null) {
+                    updateData(mBooksRealmRepository.getAllBooksInCurrentSection(currentSectionType));
+                } else {
+                    updateData(mBooksRealmRepository.getAllBooksInCurrentSectionByCategory(currentSectionType, mCurrentCategory));
+                }
             } else {
-                updateData(mBooksRealmRepository.getBookBySectionAndBookName(currentSectionType, text));
+                if (mCurrentCategory ==  null) {
+                    updateData(mBooksRealmRepository.getBookBySectionAndBookName(currentSectionType, text));
+                } else {
+                    updateData(mBooksRealmRepository.getBookBySectionAndBookNameByCategory(currentSectionType, text, mCurrentCategory));
+                }
             }
         }
 

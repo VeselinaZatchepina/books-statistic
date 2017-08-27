@@ -19,6 +19,8 @@ public interface RealmRepository {
 
     List<Book> getAllBooksInCurrentSectionByCategory(String sectionType, String currentCategory);
 
+    List<Book> getBookBySectionAndBookNameByCategory(String sectionType, String bookName, String category);
+
     List<Book> getAllBooksInCurrentSection(String sectionType);
 
     List<Book> getBookById(long currentBookId);
