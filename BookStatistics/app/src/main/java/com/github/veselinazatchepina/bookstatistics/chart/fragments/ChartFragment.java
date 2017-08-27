@@ -188,8 +188,8 @@ public class ChartFragment extends Fragment {
 
     private void setRealmLineDataSetStyle(RealmLineDataSet<AllBookMonthDivision> lineDataSet) {
         lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        lineDataSet.setColor(ColorTemplate.rgb("#FF5722"));
-        lineDataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        lineDataSet.setColor(ColorTemplate.rgb("#339064"));
+        lineDataSet.setCircleColor(ColorTemplate.rgb("#339064"));
         lineDataSet.setLineWidth(1.8f);
         lineDataSet.setCircleRadius(3.6f);
         lineDataSet.setValueTextSize(8f);
@@ -227,7 +227,7 @@ public class ChartFragment extends Fragment {
 
     private void setRealmBarDataSetStyle(RealmBarDataSet<BookMonthDivision> barDataSet) {
         barDataSet.setValueTextSize(8f);
-        barDataSet.setColors(new int[]{ColorTemplate.rgb("#FF5722"), ColorTemplate.rgb("#03A9F4")});
+        barDataSet.setColors(new int[]{ColorTemplate.rgb("#339064"), ColorTemplate.rgb("#c1272d")});
         barDataSet.setValueFormatter(new FloatToIntInsideChartValueFormatter());
     }
 
@@ -291,8 +291,8 @@ public class ChartFragment extends Fragment {
 
     private void setLineDataSetStyle(LineDataSet dataSet) {
         dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        dataSet.setColor(ColorTemplate.rgb("#FF5722"));
-        dataSet.setCircleColor(ColorTemplate.rgb("#FF5722"));
+        dataSet.setColor(ColorTemplate.rgb("#339064"));
+        dataSet.setCircleColor(ColorTemplate.rgb("#339064"));
         dataSet.setLineWidth(1.8f);
         dataSet.setCircleRadius(3.6f);
         dataSet.setValueTextSize(8f);
