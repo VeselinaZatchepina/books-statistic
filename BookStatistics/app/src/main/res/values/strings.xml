@@ -112,4 +112,16 @@
     <string name="write_to_developer_button_text">SEND</string>
     <string name="write_to_developer_text_hint">Place your text here</string>
 
+    <!-- Chart fragment -->
+    <!-- All books by month chart -->
+    <string name="all_book_chart_title">All books by month</string>
+    <string name="chart_year_spinner_hint">Year</string>
+    <string name="chart_all_books_x_axis_name">Book count</string>
+    <string name="chart_month_spinner_hint">Month division</string>
+    <!-- All books by category chart -->
+    <string name="chart_all_books_by_month_title">All books by category</string>
+    <!-- All current category books by month -->
+    <string name="chart_current_category_title">All current category books by month</string>
+    <string name="chart_category_spinner_hint">Category</string>
+
 </resources>

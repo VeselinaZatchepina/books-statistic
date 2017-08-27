@@ -15,4 +15,7 @@
 
     <!-- BookSectionActivity -->
     <color name="coordinator_tab_layout">#83FFFFFF</color>
+
+    <!-- Chart fragment -->
+    <color name="chart_title_color">#c1272d</color>
 </resources>

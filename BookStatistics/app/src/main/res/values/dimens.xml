@@ -50,7 +50,8 @@
     <dimen name="text_input_layout_margin_top">16dp</dimen>
     <dimen name="text_input_layout_margin_bottom">8dp</dimen>
     <dimen name="divider_add_book">1dp</dimen>
-    <dimen name="divider_add_book_margin_top">8dp</dimen>
+    <dimen name="divider_add_book_margin_top">6dp</dimen>
+
 
     <!-- Add category dialog -->
     <dimen name="add_category_dialog_title_margin">24dp</dimen>
@@ -68,11 +69,26 @@
     <dimen name="delete_category_dialog_title_margin">24dp</dimen>
 
     <!-- Chart Fragment -->
-    <dimen name="chart_horizontal_margin">16dp</dimen>
-    <dimen name="chart_vertical_margin">16dp</dimen>
-    <dimen name="chart_bottom_margin">16dp</dimen>
+    <dimen name="chart_padding">16dp</dimen>
+    <dimen name="card_view_margin_chart">8dp</dimen>
+    <dimen name="chart_margin_bottom">60dp</dimen>
+    <!-- All books chart by month -->
+    <dimen name="chart_title_margin_bottom">8dp</dimen>
+    <dimen name="chart_title_margin_top">16dp</dimen>
     <dimen name="chart_width">350dp</dimen>
+    <dimen name="chart_year_spinner_hint_text_size">14sp</dimen>
+    <dimen name="chart_year_spinner_width">120dp</dimen>
     <dimen name="chart_height">250dp</dimen>
+    <dimen name="chart_title_text_size">18sp</dimen>
+    <dimen name="year_divider">1dp</dimen>
+    <dimen name="year_divider_margin_top">8dp</dimen>
+    <dimen name="chart_x_axis_all_books_margin_top">20dp</dimen>
+    <dimen name="chart_x_axis_all_books_text_size">14sp</dimen>
+    <dimen name="chart_y_axis_all_books_margin_top">10dp</dimen>
+    <!-- All current category books by month -->
+    <dimen name="chart_year_spinner_margin_right">30dp</dimen>
+
+
 
     <!-- Change rating dialog -->
     <dimen name="dialog_rating_spinner_margin">80dp</dimen>
