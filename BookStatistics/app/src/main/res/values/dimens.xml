@@ -64,6 +64,8 @@
     <dimen name="section_book_author_text_view_margin_top">3dp</dimen>
     <dimen name="section_book_grade_margin_bottom">14dp</dimen>
     <dimen name="section_book_autor_text_size">14sp</dimen>
+    <dimen name="section_book_data_margin_end">10dp</dimen>
+    <dimen name="section_linear_layout_margin">16dp</dimen>
 
     <!-- Delete current category dialog -->
     <dimen name="delete_category_dialog_title_margin">24dp</dimen>

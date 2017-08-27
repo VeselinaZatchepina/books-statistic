@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -402,6 +403,10 @@ public class BookSectionFragment extends Fragment {
                                 });
                 AlertDialog alertDialog = mDialogBuilder.create();
                 alertDialog.show();
+                Button nButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                nButton.setTextColor(getResources().getColor(R.color.book_accent_background));
+                Button pButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                pButton.setTextColor(getResources().getColor(R.color.book_accent_background));
             }
         }
     }

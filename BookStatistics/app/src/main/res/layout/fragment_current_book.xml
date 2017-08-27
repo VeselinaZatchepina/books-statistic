@@ -19,40 +19,46 @@
         card_view:cardElevation="@dimen/card_elevation"
         card_view:cardUseCompatPadding="true">
 
-        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/current_book_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="16dp"
+                    tools:text="Book name text"/>
+
+                <TextView
+                    android:id="@+id/current_book_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    tools:text="Book author text"
+                    android:layout_marginBottom="24dp"/>
+
+                <View
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/year_divider"
+                    android:background="@color/card_background"/>
+
+            </LinearLayout>
+
+        <GridLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:columnCount="2"
                     android:orientation="horizontal"
                     android:useDefaultMargins="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/current_book_name"/>
-
-            <TextView
-                android:id="@+id/current_book_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                tools:text="Book name text"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="@string/current_book_author"/>
-
-            <TextView
-                android:id="@+id/current_book_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                tools:text="Book author text"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -64,7 +70,7 @@
                 android:id="@+id/current_book_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="end"
                 tools:text="Book category text"/>
 
             <TextView
@@ -77,7 +83,7 @@
                 android:id="@+id/current_book_section"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="end"
                 tools:text="Book section type text"/>
 
             <TextView
@@ -90,7 +96,7 @@
                 android:id="@+id/current_book_pages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="end"
                 tools:text="Book pages text"/>
 
             <TextView
@@ -103,7 +109,7 @@
                 android:id="@+id/current_book_date_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="end"
                 tools:text="Book date start text"/>
 
             <TextView
@@ -116,7 +122,7 @@
                 android:id="@+id/current_book_date_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="end"
                 tools:text="Book date end text"/>
 
             <TextView
@@ -129,10 +135,12 @@
                 android:id="@+id/current_book_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="end"
                 tools:text="Book rating text"/>
 
         </GridLayout>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
