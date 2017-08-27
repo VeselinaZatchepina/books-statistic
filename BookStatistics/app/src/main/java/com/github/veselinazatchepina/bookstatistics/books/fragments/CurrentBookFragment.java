@@ -22,6 +22,7 @@ import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
+import com.github.veselinazatchepina.bookstatistics.utils.ColorationTextChar;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
@@ -79,6 +80,7 @@ public class CurrentBookFragment extends Fragment {
     }
 
     private void defineInputData(Bundle savedInstanceState) {
+        getActivity().setTitle(ColorationTextChar.setFirstVowelColor("Current book", getActivity()));
         if (getArguments() != null) {
             mCurrentBookId = getArguments().getLong(CURRENT_BOOK_ID);
         }

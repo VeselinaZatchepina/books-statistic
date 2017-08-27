@@ -2,6 +2,7 @@ package com.github.veselinazatchepina.bookstatistics.chart.valueformatters;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookMonthDivision;
 
 import io.realm.RealmResults;
@@ -16,6 +17,7 @@ public class XAxisBarChartValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return realmResults.get((int) value - 1).getCategory().getCategoryName();
+        BookCategory bookCategory = realmResults.get((int) value - 1).getCategory();
+        return  bookCategory == null ? "No data" : bookCategory.getCategoryName();
     }
 }

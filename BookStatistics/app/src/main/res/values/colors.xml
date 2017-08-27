@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Status bar opacity -->
+    <color name="status_bar_opacity">#00000000</color>
+
     <!-- BookCategoriesFragment colors -->
     <color name="card_background">#339064</color>
     <color name="book_accent_background">#339064</color>

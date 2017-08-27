@@ -3,7 +3,7 @@
     <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/status_bar_opacity</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textSize">16sp</item>
     </style>

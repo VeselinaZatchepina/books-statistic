@@ -607,8 +607,8 @@ public class BooksRealmRepository implements RealmRepository {
                 if (isNotNullAndEmpty(newStartDateValue)) {
                     updateBookYear(realm, currentBook, newStartDateValue);
                 }
-                saveBookInTablesForChart(realm, currentBook);
                 if (!oldDateStart.equals("") && !oldDateEnd.equals("")) {
+                    saveBookInTablesForChart(realm, currentBook);
                     ArrayList<Integer> array = createMonthYearArray(oldDateStart, oldDateEnd);
                     float indexMonth = isContainsList(array, Division.oneMonthDivisionArrays);
                     String divisionType = DivisionType.ONE;
