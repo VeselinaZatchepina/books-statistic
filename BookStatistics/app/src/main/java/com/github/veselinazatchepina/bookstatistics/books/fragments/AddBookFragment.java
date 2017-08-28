@@ -256,7 +256,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
         );
-        datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
+        datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_1);
         return datePickerDialog;
     }
 
@@ -452,8 +452,16 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
+    public void onDateSet(DatePickerDialog view, int yearValue, int monthOfYear, int dayOfMonth) {
+        String day = String.valueOf(dayOfMonth);
+        String month = String.valueOf(++monthOfYear);
+        if (dayOfMonth < 10) {
+            day = "0" + day;
+        }
+        if (++monthOfYear < 10) {
+            month = "0" + month;
+        }
+        String date = day + "/" + month + "/" + yearValue;
         if (view.getTag().equals(DATE_PICKER_START_DATE)) {
             mStartDateEditText.setText(date);
         } else {

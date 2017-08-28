@@ -97,13 +97,13 @@ public class CurrentBookFragment extends Fragment {
             public void onChange(RealmResults<Book> element) {
                 if (isAdded() && !element.isEmpty()) {
                     Book currentBook = element.first();
-                    mCurrentBookName.setText(currentBook.getBookName());
+                    mCurrentBookName.setText("\"" + currentBook.getBookName() + "\"");
                     mCurrentBookAuthor.setText(currentBook.getAuthorName());
                     mCurrentBookCategory.setText(currentBook.getBookCategory().getCategoryName());
                     mCurrentBookSection.setText(currentBook.getSection().getSectionName());
                     mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
-                    mCurrentBookDateStart.setText(currentBook.getDateStart());
-                    mCurrentBookDateEnd.setText(currentBook.getDateEnd());
+                    mCurrentBookDateStart.setText(currentBook.getDateStart().replace("/", "."));
+                    mCurrentBookDateEnd.setText(currentBook.getDateEnd().replace("/", "."));
                     mCurrentBookRating.setText(String.valueOf(currentBook.getRating().getStarsCount()));
                 }
             }

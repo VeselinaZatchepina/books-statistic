@@ -34,7 +34,8 @@
                     android:id="@+id/current_book_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
                     android:layout_marginBottom="16dp"
                     tools:text="Book name text"/>
 
@@ -44,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     tools:text="Book author text"
+                    android:textColor="@android:color/black"
                     android:layout_marginBottom="24dp"/>
 
                 <View
@@ -58,12 +60,14 @@
                     android:layout_gravity="center"
                     android:columnCount="2"
                     android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/current_book_grid_margin_bottom"
                     android:useDefaultMargins="true">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:textSize="12sp"
                 android:text="@string/current_book_category"/>
 
             <TextView
@@ -71,12 +75,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
                 tools:text="Book category text"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:textSize="12sp"
                 android:text="@string/current_book_section"/>
 
             <TextView
@@ -84,12 +91,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:textColor="@android:color/black"
                 tools:text="Book section type text"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:textSize="12sp"
                 android:text="@string/current_book_pages"/>
 
             <TextView
@@ -97,12 +106,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:textColor="@android:color/black"
                 tools:text="Book pages text"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:textSize="12sp"
                 android:text="@string/current_book_start_date"/>
 
             <TextView
@@ -110,12 +121,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:textColor="@android:color/black"
                 tools:text="Book date start text"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:textSize="12sp"
                 android:text="@string/current_book_end_date"/>
 
             <TextView
@@ -123,12 +136,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:textColor="@android:color/black"
                 tools:text="Book date end text"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:textSize="12sp"
                 android:text="@string/current_book_rating"/>
 
             <TextView
@@ -136,6 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:textColor="@android:color/black"
                 tools:text="Book rating text"/>
 
         </GridLayout>

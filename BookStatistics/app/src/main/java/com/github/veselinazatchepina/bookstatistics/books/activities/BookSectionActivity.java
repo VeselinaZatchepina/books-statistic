@@ -67,11 +67,17 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         setContentView(R.layout.activity_book_section);
         ButterKnife.bind(this);
         defineInputData();
-        setTitle(ColorationTextChar.setFirstVowelColor(getTitle().toString(), this));
+        defineTitle();
         defineActionBar();
         defineTabLayout();
         defineViewPager();
         defineFab();
+    }
+
+    private void defineTitle() {
+        String oldTitle = getTitle().toString();
+        String title = Character.toUpperCase(oldTitle.charAt(0)) + oldTitle.substring(1);;
+        setTitle(ColorationTextChar.setFirstVowelColor(title, this));
     }
 
     private void defineInputData() {
