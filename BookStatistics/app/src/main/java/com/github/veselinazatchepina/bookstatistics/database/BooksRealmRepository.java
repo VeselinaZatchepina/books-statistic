@@ -4,6 +4,7 @@ package com.github.veselinazatchepina.bookstatistics.database;
 import android.util.Log;
 
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.books.enums.DivisionType;
 import com.github.veselinazatchepina.bookstatistics.books.enums.MonthIndex;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.AddBookFragment;
@@ -54,7 +55,8 @@ public class BooksRealmRepository implements RealmRepository {
                 Book currentBook = saveBook(realm, mapOfQuoteProperties);
                 String currentStartDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START);
                 String currentEndDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_END);
-                if (isNotNullAndEmpty(currentStartDateValue) && isNotNullAndEmpty(currentEndDateValue)) {
+                if (isNotNullAndEmpty(currentStartDateValue) && isNotNullAndEmpty(currentEndDateValue)
+                        && mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_TYPE).equals(BookTypeEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
                 }
             }
@@ -607,8 +609,11 @@ public class BooksRealmRepository implements RealmRepository {
                 if (isNotNullAndEmpty(newStartDateValue)) {
                     updateBookYear(realm, currentBook, newStartDateValue);
                 }
-                if (!oldDateStart.equals("") && !oldDateEnd.equals("")) {
+                if (!currentBook.getDateStart().equals("") && !currentBook.getDateEnd().equals("")
+                        && currentBook.getSection().getSectionName().equals(BookTypeEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
+                }
+                if (!oldDateStart.equals("") && !oldDateEnd.equals("")) {
                     ArrayList<Integer> array = createMonthYearArray(oldDateStart, oldDateEnd);
                     float indexMonth = isContainsList(array, Division.oneMonthDivisionArrays);
                     String divisionType = DivisionType.ONE;

@@ -72,7 +72,8 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     @Override
     public void defineActionWhenFabIsPressed() {
         AddBookFragment addBookFragment = ((AddBookFragment) currentFragment);
-        if (!addBookFragment.isSpinnerSelectedItemHint() && addBookFragment.isPagePositiveNumber()) {
+        if (!addBookFragment.isSpinnerSelectedItemHint() && addBookFragment.isPagePositiveNumber()
+                && addBookFragment.isDateExistInReadSectionType()) {
             addBookFragment.createMapOfBookProperties();
             this.finish();
         }

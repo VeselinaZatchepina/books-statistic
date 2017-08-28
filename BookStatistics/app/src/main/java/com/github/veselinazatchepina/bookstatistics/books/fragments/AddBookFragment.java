@@ -427,12 +427,29 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_START, mStartDateEditText.getText().toString());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_END, mEndDateEditText.getText().toString());
-
         if (mCurrentBookIdForEdit != -1) {
             mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit, mapOfBookProperties);
         } else {
             mBooksRealmRepository.saveQuote(mapOfBookProperties);
         }
+    }
+
+    public boolean isDateExistInReadSectionType() {
+        boolean isDateExist = true;
+        if (mTypeSpinner.getSelectedItem().toString().equals(BookTypeEnums.READ_BOOK)) {
+            if (mStartDateEditText.getText().toString().equals("") && mEndDateEditText.getText().toString().equals("")) {
+                mDateStartInputLayout.setError(getString(R.string.error_date_start_value));
+                mEndDateInputLayout.setError(getString(R.string.error_date_end_value));
+                isDateExist = false;
+            } else if (mStartDateEditText.getText().toString().equals("")) {
+                mDateStartInputLayout.setError(getString(R.string.error_date_start_value));
+                isDateExist = false;
+            } else if (mEndDateEditText.getText().toString().equals("")) {
+                mEndDateInputLayout.setError(getString(R.string.error_date_end_value));
+                isDateExist = false;
+            }
+        }
+        return isDateExist;
     }
 
     @Override

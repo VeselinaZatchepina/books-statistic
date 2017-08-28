@@ -35,6 +35,8 @@
     <string name="title_spinner_category">Select book category</string>
     <string name="default_value"> - </string>
     <string name="error_page_number">Page number cannot be negative</string>
+    <string name="error_date_start_value">Date start field cannot be empty</string>
+    <string name="error_date_end_value">Date end field cannot be empty</string>
     <string name="error_category_spinner">Select book category</string>
 
     <!-- Add category dialog -->
