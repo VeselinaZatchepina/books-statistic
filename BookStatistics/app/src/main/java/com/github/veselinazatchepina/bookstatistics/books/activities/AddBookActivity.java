@@ -18,9 +18,11 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
 
     private static final String CURRENT_BOOK_ID_INTENT = "current_book_id_intent";
     private static final String CURRENT_BOOK_TITLE = "current_book_title";
+    private static final String CURRENT_BOOK_SECTION_TYPE = "current_book_section_type";
 
     private Fragment mCurrentFragment;
     private long mCurrentBookId;
+    private int mCurrentSectionType;
 
     public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, AddBookActivity.class);
@@ -35,10 +37,18 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
         return intent;
     }
 
+    public static Intent newIntent(Context context, String title, int sectionType) {
+        Intent intent = new Intent(context, AddBookActivity.class);
+        intent.putExtra(CURRENT_BOOK_TITLE, title);
+        intent.putExtra(CURRENT_BOOK_SECTION_TYPE, sectionType);
+        return intent;
+    }
+
     @Override
     public void defineInputData(Bundle saveInstanceState) {
         super.defineInputData(saveInstanceState);
         mCurrentBookId = getIntent().getLongExtra(CURRENT_BOOK_ID_INTENT, -1);
+        mCurrentSectionType = getIntent().getIntExtra(CURRENT_BOOK_SECTION_TYPE, -1);
         setTitleToActivity();
     }
 
@@ -50,7 +60,7 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public Fragment createFragment() {
-        mCurrentFragment = AddBookFragment.newInstance(mCurrentBookId);
+        mCurrentFragment = AddBookFragment.newInstance(mCurrentBookId, mCurrentSectionType);
         return mCurrentFragment;
     }
 

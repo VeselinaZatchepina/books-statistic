@@ -49,6 +49,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private static final String DATE_PICKER_START_DATE = "start date";
     private static final String DATE_PICKER_END_DATE = "end date";
     private static final String CURRENT_BOOK_ID = "current_book_id";
+    private static final String CURRENT_BOOK_SECTION_TYPE = "current_book_section_type";
 
 
     @BindView(R.id.category_spinner)
@@ -84,6 +85,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private long mCurrentBookIdForEdit;
     private RealmResults<Book> mBookForEdit;
     AlertDialog mAlertDialog;
+    private int mCurrentSectionType;
 
     @State
     String bookNameSaveInstance;
@@ -106,9 +108,10 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     public AddBookFragment() {
     }
 
-    public static AddBookFragment newInstance(long currentBookId) {
+    public static AddBookFragment newInstance(long currentBookId, int sectionType) {
         Bundle args = new Bundle();
         args.putLong(CURRENT_BOOK_ID, currentBookId);
+        args.putInt(CURRENT_BOOK_SECTION_TYPE, sectionType);
         AddBookFragment fragment = new AddBookFragment();
         fragment.setArguments(args);
         return fragment;
@@ -126,6 +129,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private void defineInputData() {
         if (getArguments() != null) {
             mCurrentBookIdForEdit = getArguments().getLong(CURRENT_BOOK_ID, -1);
+            mCurrentSectionType = getArguments().getInt(CURRENT_BOOK_SECTION_TYPE);
         }
     }
 
@@ -226,6 +230,9 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
         mTypeSpinnerAdapter.addAll(BookTypeEnums.NEW_BOOK, BookTypeEnums.CURRENT_BOOK, BookTypeEnums.READ_BOOK);
         mTypeSpinner.setAdapter(mTypeSpinnerAdapter);
+        if (mCurrentSectionType != -1) {
+            mTypeSpinner.setSelection(mCurrentSectionType);
+        }
     }
 
     private void defineStartDate() {
