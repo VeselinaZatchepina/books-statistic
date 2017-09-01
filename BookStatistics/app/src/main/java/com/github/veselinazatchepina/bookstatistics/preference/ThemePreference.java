@@ -93,6 +93,7 @@ public class ThemePreference extends ListPreference {
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+        builder.getContext().setTheme(R.style.PreferenceThemeDialog);
         defineDialogButton(builder);
         getEntriesAndEntryValuesOfPreference();
         String selectedIcon = preferences.getString(
@@ -132,6 +133,8 @@ public class ThemePreference extends ListPreference {
                 context, R.layout.theme_item, ThemeIcons);
         builder.setAdapter(customListPreferenceAdapter, null);
     }
+
+
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {

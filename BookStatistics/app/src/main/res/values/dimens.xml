@@ -119,4 +119,9 @@
     <!-- Current book -->
     <dimen name="current_book_grid_margin_bottom">150dp</dimen>
 
+    <!-- Preference dialog -->
+    <dimen name="preference_dialog_subtitle_text_size">14sp</dimen>
+    <dimen name="preference_dialog_frame_margin">20dp</dimen>
+    <dimen name="preference_dialog_theme_image_margin">4dp</dimen>
+
 </resources>

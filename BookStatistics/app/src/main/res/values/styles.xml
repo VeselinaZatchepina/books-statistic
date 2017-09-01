@@ -62,12 +62,10 @@
         <item name="android:listDivider">@color/card_background</item>
     </style>
 
-
-
-
-
-
-
-
+    <!-- Preference dialog style -->
+    <style name="PreferenceThemeDialog" parent="AppTheme">
+        <item name="colorAccent">@color/card_background</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
 </resources>
