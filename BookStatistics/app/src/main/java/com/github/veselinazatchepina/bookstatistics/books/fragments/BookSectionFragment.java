@@ -261,8 +261,16 @@ public class BookSectionFragment extends Fragment {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             if (getData() != null && !getData().isEmpty()) {
                 Book currentBook = getData().get(position);
-                holder.bookNameTextView.setText("\"" + currentBook.getBookName() + "\"");
-                holder.bookAuthorTextView.setText(currentBook.getAuthorName());
+                if (currentBook.getBookName() != null && !currentBook.getBookName().equals("")) {
+                    holder.bookNameTextView.setText("\"" + currentBook.getBookName() + "\"");
+                } else {
+                    holder.bookNameTextView.setText(getResources().getString(R.string.empty_field_book_name));
+                }
+                if (currentBook.getAuthorName() != null &&!currentBook.getAuthorName().equals("")) {
+                    holder.bookAuthorTextView.setText(currentBook.getAuthorName());
+                } else {
+                    holder.bookAuthorTextView.setText(getResources().getString(R.string.empty_field_book_author));
+                }
                 holder.book = currentBook;
                 setListenerToChangeSectionImageView(holder);
                 setListenerToChangeRating(holder);

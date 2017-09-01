@@ -97,13 +97,33 @@ public class CurrentBookFragment extends Fragment {
             public void onChange(RealmResults<Book> element) {
                 if (isAdded() && !element.isEmpty()) {
                     Book currentBook = element.first();
-                    mCurrentBookName.setText("\"" + currentBook.getBookName() + "\"");
-                    mCurrentBookAuthor.setText(currentBook.getAuthorName());
+                    if (currentBook.getBookName() != null && !currentBook.getBookName().equals("")) {
+                        mCurrentBookName.setText("\"" + currentBook.getBookName() + "\"");
+                    } else {
+                        mCurrentBookName.setText(getResources().getString(R.string.empty_field_book_name));
+                    }
+                    if (currentBook.getAuthorName() != null &&!currentBook.getAuthorName().equals("")) {
+                        mCurrentBookAuthor.setText(currentBook.getAuthorName());
+                    } else {
+                        mCurrentBookAuthor.setText(getResources().getString(R.string.empty_field_book_author));
+                    }
                     mCurrentBookCategory.setText(currentBook.getBookCategory().getCategoryName());
                     mCurrentBookSection.setText(currentBook.getSection().getSectionName());
-                    mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
-                    mCurrentBookDateStart.setText(currentBook.getDateStart().replace("/", "."));
-                    mCurrentBookDateEnd.setText(currentBook.getDateEnd().replace("/", "."));
+                    if (currentBook.getPageCount() != 0) {
+                        mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
+                    } else {
+                        mCurrentBookPages.setText(getResources().getString(R.string.empty_field));
+                    }
+                    if (currentBook.getDateStart() != null && !currentBook.getDateStart().equals("")) {
+                        mCurrentBookDateStart.setText(currentBook.getDateStart().replace("/", "."));
+                    } else {
+                        mCurrentBookDateStart.setText(getResources().getString(R.string.empty_field));
+                    }
+                    if (currentBook.getDateEnd() != null &&!currentBook.getDateEnd().equals("")) {
+                        mCurrentBookDateEnd.setText(currentBook.getDateEnd().replace("/", "."));
+                    } else {
+                        mCurrentBookDateEnd.setText(getResources().getString(R.string.empty_field));
+                    }
                     mCurrentBookRating.setText(String.valueOf(currentBook.getRating().getStarsCount()));
                 }
             }

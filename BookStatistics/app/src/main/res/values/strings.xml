@@ -126,4 +126,9 @@
     <string name="chart_current_category_title">All current category books by month</string>
     <string name="chart_category_spinner_hint">Category</string>
 
+    <!-- Empty fields -->
+    <string name="empty_field">-</string>
+    <string name="empty_field_book_name">"\""No book name"\""</string>
+    <string name="empty_field_book_author">No book author</string>
+
 </resources>
