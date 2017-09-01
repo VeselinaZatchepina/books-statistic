@@ -19,10 +19,12 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     private static final String CURRENT_BOOK_ID_INTENT = "current_book_id_intent";
     private static final String CURRENT_BOOK_TITLE = "current_book_title";
     private static final String CURRENT_BOOK_SECTION_TYPE = "current_book_section_type";
+    private static final String CURRENT_BOOK_CATEGORY = "current_book_category";
 
     private Fragment mCurrentFragment;
     private long mCurrentBookId;
     private int mCurrentSectionType;
+    private String mCurrentCategory;
 
     public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, AddBookActivity.class);
@@ -37,10 +39,11 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
         return intent;
     }
 
-    public static Intent newIntent(Context context, String title, int sectionType) {
+    public static Intent newIntent(Context context, String title, int sectionType, String currentCategory) {
         Intent intent = new Intent(context, AddBookActivity.class);
         intent.putExtra(CURRENT_BOOK_TITLE, title);
         intent.putExtra(CURRENT_BOOK_SECTION_TYPE, sectionType);
+        intent.putExtra(CURRENT_BOOK_CATEGORY, currentCategory);
         return intent;
     }
 
@@ -49,6 +52,7 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
         super.defineInputData(saveInstanceState);
         mCurrentBookId = getIntent().getLongExtra(CURRENT_BOOK_ID_INTENT, -1);
         mCurrentSectionType = getIntent().getIntExtra(CURRENT_BOOK_SECTION_TYPE, -1);
+        mCurrentCategory = getIntent().getStringExtra(CURRENT_BOOK_CATEGORY);
         setTitleToActivity();
     }
 
@@ -60,7 +64,7 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public Fragment createFragment() {
-        mCurrentFragment = AddBookFragment.newInstance(mCurrentBookId, mCurrentSectionType);
+        mCurrentFragment = AddBookFragment.newInstance(mCurrentBookId, mCurrentSectionType, mCurrentCategory);
         return mCurrentFragment;
     }
 

@@ -50,6 +50,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private static final String DATE_PICKER_END_DATE = "end date";
     private static final String CURRENT_BOOK_ID = "current_book_id";
     private static final String CURRENT_BOOK_SECTION_TYPE = "current_book_section_type";
+    private static final String CURRENT_BOOK_CATEGORY = "current_book_category";
 
 
     @BindView(R.id.category_spinner)
@@ -86,6 +87,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private RealmResults<Book> mBookForEdit;
     AlertDialog mAlertDialog;
     private int mCurrentSectionType;
+    private String mCurrentCategory;
 
     @State
     String bookNameSaveInstance;
@@ -108,10 +110,11 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     public AddBookFragment() {
     }
 
-    public static AddBookFragment newInstance(long currentBookId, int sectionType) {
+    public static AddBookFragment newInstance(long currentBookId, int sectionType, String currentCategory) {
         Bundle args = new Bundle();
         args.putLong(CURRENT_BOOK_ID, currentBookId);
         args.putInt(CURRENT_BOOK_SECTION_TYPE, sectionType);
+        args.putString(CURRENT_BOOK_CATEGORY, currentCategory);
         AddBookFragment fragment = new AddBookFragment();
         fragment.setArguments(args);
         return fragment;
@@ -130,6 +133,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         if (getArguments() != null) {
             mCurrentBookIdForEdit = getArguments().getLong(CURRENT_BOOK_ID, -1);
             mCurrentSectionType = getArguments().getInt(CURRENT_BOOK_SECTION_TYPE);
+            mCurrentCategory = getArguments().getString(CURRENT_BOOK_CATEGORY);
         }
     }
 
@@ -213,6 +217,9 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         if (savedInstanceState != null) {
             createSpinnerAdapter();
             mCategorySpinner.setSelection(bookCategorySaveInstance);
+        }
+        if (mCurrentCategory != null) {
+            mCategorySpinner.setSelection(mAllCategories.indexOf(mCurrentCategory.toUpperCase()));
         }
     }
 

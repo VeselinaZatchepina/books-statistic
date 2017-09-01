@@ -170,7 +170,7 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
 
     private void defineActionWhenFabIsPressed() {
         mCurrentSectionType = mSectionViewPager.getCurrentItem();
-        Intent intent = AddBookActivity.newIntent(this, "Add book", mCurrentSectionType);
+        Intent intent = AddBookActivity.newIntent(this, "Add book", mCurrentSectionType, mCurrentCategory);
         startActivity(intent);
     }
 
