@@ -51,6 +51,7 @@
     <dimen name="text_input_layout_margin_bottom">8dp</dimen>
     <dimen name="divider_add_book">1dp</dimen>
     <dimen name="divider_add_book_margin_top">6dp</dimen>
+    <dimen name="date_picker_clear_button_margin">16dp</dimen>
 
 
     <!-- Add category dialog -->
@@ -89,8 +90,6 @@
     <dimen name="chart_y_axis_all_books_margin_top">10dp</dimen>
     <!-- All current category books by month -->
     <dimen name="chart_year_spinner_margin_right">30dp</dimen>
-
-
 
     <!-- Change rating dialog -->
     <dimen name="dialog_rating_spinner_margin">80dp</dimen>

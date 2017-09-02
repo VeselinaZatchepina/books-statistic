@@ -24,6 +24,7 @@ import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
+import com.github.veselinazatchepina.bookstatistics.utils.ClearableDatePickerDialog;
 import com.squareup.leakcanary.RefWatcher;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -264,13 +265,22 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     private DatePickerDialog createDatePickerDialog() {
         Calendar now = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                AddBookFragment.this,
+        DatePickerDialog datePickerDialog = new ClearableDatePickerDialog();
+        datePickerDialog.initialize(AddBookFragment.this,
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH)
-        );
+                now.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_1);
+        ((ClearableDatePickerDialog) datePickerDialog).setOnDateClearedListener(new ClearableDatePickerDialog.OnDateClearedListener() {
+            @Override
+            public void onDateCleared(ClearableDatePickerDialog view) {
+                if (view.getTag().equals(DATE_PICKER_START_DATE)) {
+                    mStartDateEditText.setText("");
+                } else {
+                    mEndDateEditText.setText("");
+                }
+            }
+        });
         return datePickerDialog;
     }
 

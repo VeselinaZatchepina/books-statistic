@@ -38,6 +38,7 @@
     <string name="error_date_start_value">Date start field cannot be empty</string>
     <string name="error_date_end_value">Date end field cannot be empty</string>
     <string name="error_category_spinner">Select book category</string>
+    <string name="date_picker_clear_button_text">Clear</string>
 
     <!-- Add category dialog -->
     <string name="dialog_add_category_title">Enter the category name</string>
