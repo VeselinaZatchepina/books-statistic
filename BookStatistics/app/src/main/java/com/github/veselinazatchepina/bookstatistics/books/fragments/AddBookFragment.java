@@ -189,8 +189,9 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
                 createBookCategoryListForSpinner(element);
             }
             createSpinnerAdapter();
+            setCategorySpinnerOnCurrentPosition(savedInstanceState);
         }
-        setCategorySpinnerOnCurrentPosition(savedInstanceState);
+
     }
 
     private void createBookCategoryListForSpinner(List<BookCategory> bookCategories) {
