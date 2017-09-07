@@ -114,6 +114,7 @@
     <!-- WriteToDeveloperFragment -->
     <dimen name="edit_text_for_developer_height">200dp</dimen>
     <dimen name="edit_text_margin_bottom">16dp</dimen>
+    <dimen name="edit_text_padding">15dp</dimen>
 
     <!-- Current book -->
     <dimen name="current_book_grid_margin_bottom">150dp</dimen>

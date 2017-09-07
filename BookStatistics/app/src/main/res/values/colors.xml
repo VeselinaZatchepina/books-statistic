@@ -21,4 +21,5 @@
 
     <!-- Chart fragment -->
     <color name="chart_title_color">#c1272d</color>
+    <color name="chart_background_no_data_color">#D1CECE</color>
 </resources>

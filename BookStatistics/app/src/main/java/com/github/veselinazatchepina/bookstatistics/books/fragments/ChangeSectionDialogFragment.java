@@ -16,6 +16,7 @@ import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
+import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.HashMap;
@@ -75,7 +76,7 @@ public class ChangeSectionDialogFragment extends DialogFragment {
                 .setPositiveButton(getString(R.string.dialog_change_section_ok_button),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mBooksRealmRepository.updateBookSectionInTransaction(mCurrentBookIdForEdit,
+                                mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit,
                                         createMapOfProperties());
                             }
                         })
@@ -101,7 +102,15 @@ public class ChangeSectionDialogFragment extends DialogFragment {
 
     private HashMap<BookPropertiesEnum, String> createMapOfProperties() {
         HashMap<BookPropertiesEnum, String> mapOfBookProperties = new HashMap<>();
+        Book book = mBooksRealmRepository.getBookById(mCurrentBookIdForEdit).first();
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_NAME, book.getBookName());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_AUTHOR, book.getAuthorName());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_RATING, String.valueOf(book.getRating().getStarsCount()));
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_PAGE, String.valueOf(book.getPageCount()));
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_CATEGORY, book.getBookCategory().getCategoryName());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_START,book.getDateStart());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_END, book.getDateEnd());
         return mapOfBookProperties;
     }
 

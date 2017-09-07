@@ -499,7 +499,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         if (dayOfMonth < 10) {
             day = "0" + day;
         }
-        if (++monthOfYear < 10) {
+        if (++monthOfYear <= 10) {
             month = "0" + month;
         }
         String date = day + "/" + month + "/" + yearValue;

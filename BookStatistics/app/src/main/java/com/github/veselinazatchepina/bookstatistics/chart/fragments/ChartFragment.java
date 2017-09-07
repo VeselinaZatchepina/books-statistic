@@ -459,6 +459,10 @@ public class ChartFragment extends Fragment {
                     public void onChange(RealmResults<BookMonthDivision> element) {
                         if (isAdded() && !element.isEmpty()) {
                             createCategoryLineChart(element);
+                        } else {
+                            mLineChartBooksCurrentCategory.clear();
+                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
+                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
                     }
                 });

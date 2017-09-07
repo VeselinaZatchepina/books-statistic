@@ -613,7 +613,7 @@ public class BooksRealmRepository implements RealmRepository {
                         && currentBook.getSection().getSectionName().equals(BookTypeEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
                 }
-                if (!oldDateStart.equals("") && !oldDateEnd.equals("")) {
+                if (!oldDateStart.equals("") && !oldDateEnd.equals("") ) {
                     ArrayList<Integer> array = createMonthYearArray(oldDateStart, oldDateEnd);
                     float indexMonth = isContainsList(array, Division.oneMonthDivisionArrays);
                     String divisionType = DivisionType.ONE;
@@ -700,13 +700,14 @@ public class BooksRealmRepository implements RealmRepository {
 
     @Override
     public void updateBookSectionInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties) {
-        mRealm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Book book = realm.where(Book.class).equalTo("id", currentBookIdForEdit).findAll().first();
-                updateBookSection(realm, book, mapOfBookProperties);
-            }
-        });
+        saveChangedBook(currentBookIdForEdit, mapOfBookProperties);
+//        mRealm.executeTransactionAsync(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                Book book = realm.where(Book.class).equalTo("id", currentBookIdForEdit).findAll().first();
+//                updateBookSection(realm, book, mapOfBookProperties);
+//            }
+//        });
     }
 
     private void updateBookCountLastSection(Book book) {
