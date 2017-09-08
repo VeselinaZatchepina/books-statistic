@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
@@ -76,8 +77,13 @@ public class ChangeSectionDialogFragment extends DialogFragment {
                 .setPositiveButton(getString(R.string.dialog_change_section_ok_button),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit,
-                                        createMapOfProperties());
+                                Book book = mBooksRealmRepository.getBookById(mCurrentBookIdForEdit).first();
+                                if (book.getDateStart().equals("") || book.getDateEnd().equals("") && mTypeSpinner.getSelectedItem().toString().equals(BookTypeEnums.READ_BOOK)) {
+                                    Toast.makeText(getActivity(), "You need to fill start and end date of reading", Toast.LENGTH_LONG).show();
+                                } else {
+                                    mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit,
+                                            createMapOfProperties());
+                                }
                             }
                         })
                 .setNegativeButton(getString(R.string.dialog_cancel_button),

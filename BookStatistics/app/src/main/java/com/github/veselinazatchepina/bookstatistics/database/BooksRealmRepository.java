@@ -601,6 +601,7 @@ public class BooksRealmRepository implements RealmRepository {
                 String oldDateStart = currentBook.getDateStart();
                 String oldDateEnd = currentBook.getDateEnd();
                 String oldCategory = currentBook.getBookCategory().getCategoryName();
+                String oldSection = currentBook.getSection().getSectionName();
                 saveOrUpdateBookFields(currentBook, mapOfBookProperties);
                 updateBookCategory(realm, currentBook, mapOfBookProperties);
                 updateBookSection(realm, currentBook, mapOfBookProperties);
@@ -613,7 +614,8 @@ public class BooksRealmRepository implements RealmRepository {
                         && currentBook.getSection().getSectionName().equals(BookTypeEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
                 }
-                if (!oldDateStart.equals("") && !oldDateEnd.equals("") ) {
+                if (!oldDateStart.equals("") && !oldDateEnd.equals("") &&
+                        oldSection.equals(BookTypeEnums.READ_BOOK)) {
                     ArrayList<Integer> array = createMonthYearArray(oldDateStart, oldDateEnd);
                     float indexMonth = isContainsList(array, Division.oneMonthDivisionArrays);
                     String divisionType = DivisionType.ONE;
