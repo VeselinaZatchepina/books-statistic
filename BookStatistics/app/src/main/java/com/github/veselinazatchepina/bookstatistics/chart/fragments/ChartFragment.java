@@ -379,6 +379,10 @@ public class ChartFragment extends Fragment {
                     public void onChange(RealmResults<AllBookMonthDivision> element) {
                         if (isAdded() && !element.isEmpty()) {
                             createLineChart(element);
+                        } else {
+                            mLineChartAllBooks.clear();
+                            mLineChartAllBooks.setNoDataText("No books here");
+                            mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
                     }
                 });
@@ -417,6 +421,10 @@ public class ChartFragment extends Fragment {
                     public void onChange(RealmResults<BookMonthDivision> element) {
                         if (isAdded() && !element.isEmpty()) {
                             createBarChart(element);
+                        } else {
+                            mBarChartAllCategories.clear();
+                            mBarChartAllCategories.setNoDataText("No books here");
+                            mBarChartAllCategories.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
                     }
                 });
@@ -438,6 +446,10 @@ public class ChartFragment extends Fragment {
                     public void onChange(RealmResults<BookMonthDivision> element) {
                         if (isAdded() && !element.isEmpty()) {
                             createCategoryLineChart(element);
+                        } else {
+                            mLineChartBooksCurrentCategory.clear();
+                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
+                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
                     }
                 });

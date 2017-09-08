@@ -77,8 +77,9 @@ public class ChangeSectionDialogFragment extends DialogFragment {
                 .setPositiveButton(getString(R.string.dialog_change_section_ok_button),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+
                                 Book book = mBooksRealmRepository.getBookById(mCurrentBookIdForEdit).first();
-                                if (book.getDateStart().equals("") || book.getDateEnd().equals("") && mTypeSpinner.getSelectedItem().toString().equals(BookTypeEnums.READ_BOOK)) {
+                                if ((book.getDateStart().equals("") || book.getDateEnd().equals("")) && mTypeSpinner.getSelectedItem().toString().equals(BookTypeEnums.READ_BOOK)) {
                                     Toast.makeText(getActivity(), "You need to fill start and end date of reading", Toast.LENGTH_LONG).show();
                                 } else {
                                     mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit,

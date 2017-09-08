@@ -63,6 +63,8 @@ public class BookSectionFragment extends Fragment {
     private String mSortedBy;
     private SearchView mSearchView;
     private MenuItem mSearchMenuItem;
+    private ChangeSectionDialogFragment mChangeSectionDialogFragment;
+    private ChangeRatingDialogFragment mChangeRatingDialogFragment;
 
     public BookSectionFragment() {
     }
@@ -216,6 +218,8 @@ public class BookSectionFragment extends Fragment {
         super.onDetach();
         mCallbacks = null;
         clearSearchView();
+        mChangeSectionDialogFragment = null;
+        mChangeRatingDialogFragment = null;
     }
 
     @Override
@@ -281,8 +285,8 @@ public class BookSectionFragment extends Fragment {
             holder.goToOtherSectionImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChangeSectionDialogFragment changeSectionDialogFragment = ChangeSectionDialogFragment.newInstance(holder.book.getId());
-                    changeSectionDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_CHANGE_SECTION_DIALOG);
+                    mChangeSectionDialogFragment = ChangeSectionDialogFragment.newInstance(holder.book.getId());
+                    mChangeSectionDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_CHANGE_SECTION_DIALOG);
                 }
             });
         }
@@ -291,8 +295,8 @@ public class BookSectionFragment extends Fragment {
             holder.ratingImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChangeRatingDialogFragment changeRatingDialogFragment = ChangeRatingDialogFragment.newInstance(holder.book.getId());
-                    changeRatingDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_CHANGE_RATING_DIALOG);
+                    mChangeRatingDialogFragment = ChangeRatingDialogFragment.newInstance(holder.book.getId());
+                    mChangeRatingDialogFragment.show(getActivity().getSupportFragmentManager(), TAG_CHANGE_RATING_DIALOG);
                 }
             });
         }
