@@ -416,18 +416,13 @@ public class ChartFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mMonthTypeAllCategories = parent.getItemAtPosition(position).toString();
                 mBookMonthDivisions = mBooksRealmRepository.getBookMonthDivision();
-                mBookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
-                    @Override
-                    public void onChange(RealmResults<BookMonthDivision> element) {
-                        if (isAdded() && !element.isEmpty()) {
-                            createBarChart(element);
+                        if (isAdded() && !mBookMonthDivisions.isEmpty()) {
+                            createBarChart(mBookMonthDivisions);
                         } else {
                             mBarChartAllCategories.clear();
                             mBarChartAllCategories.setNoDataText("No books here");
                             mBarChartAllCategories.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
-                    }
-                });
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -486,6 +481,10 @@ public class ChartFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
     @Override
     public void onDestroyView() {
