@@ -7,14 +7,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +29,9 @@ import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.BookSectionFragment;
+import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivity;
+import com.github.veselinazatchepina.bookstatistics.preference.activities.ThemePreferencesActivity;
+import com.github.veselinazatchepina.bookstatistics.preference.activities.WriteToDeveloperActivity;
 import com.github.veselinazatchepina.bookstatistics.utils.ColorationTextChar;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -31,7 +40,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BookSectionActivity extends AppCompatActivity implements BookSectionFragment.CurrentBookCallbacks {
+public class BookSectionActivity extends AppCompatActivity implements BookSectionFragment.CurrentBookCallbacks,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String BOOK_CATEGORY_INTENT = "book_category_intent";
     private static final String BOOK_CATEGORY_TITLE = "book_category_title";
@@ -44,6 +54,10 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     FloatingActionButton mSectionFab;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
 
     private ArrayList<String> mSectionTypes;
     private String mCurrentCategory;
@@ -69,10 +83,27 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         ButterKnife.bind(this);
         defineInputData();
         defineTitle();
-        defineActionBar();
         defineTabLayout();
+        defineNavigationDrawer();
         defineViewPager();
         defineFab();
+    }
+
+    private void defineNavigationDrawer() {
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+        Menu menu = mNavigationView.getMenu();
+        MenuItem tools= menu.findItem(R.id.other);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewStyle), 0, s.length(), 0);
+        tools.setTitle(s);
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     private void defineTitle() {
@@ -85,12 +116,6 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         createSectionTypeList();
         mCurrentCategory = getIntent().getStringExtra(BOOK_CATEGORY_INTENT);
         setTitleToActivity();
-    }
-
-    private void defineActionBar() {
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void defineTabLayout() {
@@ -194,5 +219,40 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         super.onDestroy();
         RefWatcher refWatcher = MyApplication.getRefWatcher(this);
         refWatcher.watch(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.menu_book_categories:
+                intent = BookCategoriesMainActivity.newIntent(this, "Book categories");
+                break;
+            case R.id.menu_chart:
+                intent = ChartActivity.newIntent(this, "Charts");
+                break;
+            case R.id.menu_all_books:
+                intent = BookSectionActivity.newIntent(this, "All books");
+                break;
+            case R.id.settings:
+                intent = ThemePreferencesActivity.newIntent(this, "Settings");
+                break;
+            case R.id.write_to_developer:
+                intent = WriteToDeveloperActivity.newIntent(this, "Write to developer");
+        }
+        if (intent != null) {
+            startActivity(intent);
+        }
+        return true;
     }
 }
