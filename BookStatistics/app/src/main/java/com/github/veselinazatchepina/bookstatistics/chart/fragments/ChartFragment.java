@@ -78,7 +78,6 @@ public class ChartFragment extends Fragment {
     View mRootView;
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<AllBookMonthDivision> mAllBooksMonthDivision;
-    private RealmResults<BookMonthDivision> mBookMonthDivisions;
     private RealmResults<BookMonthDivision> mBookMonthDivisionsByCategory;
     private RealmResults<Year> mAllYears;
     private RealmResults<BookCategory> mAllBookCategories;
@@ -88,10 +87,10 @@ public class ChartFragment extends Fragment {
     ArrayAdapter<String> mCategorySpinnerAdapter;
     ArrayAdapter<String> mMonthTypeSpinnerAdapter;
 
-    String mDivisionTypeAllBooks = DivisionType.THREE;
+    String mDivisionTypeAllBooks = DivisionType.ONE;
     String mCategoryNameCurrentCategory = DivisionType.THREE;
     String mDivisionTypeCurrentCategory = DivisionType.THREE;
-    String mMonthTypeAllCategories = AllMonth.JANUARY_JUNE;
+    String mMonthTypeAllCategories = AllMonth.JANUARY_DECEMBER;
 
     public ChartFragment() {
     }
@@ -107,8 +106,6 @@ public class ChartFragment extends Fragment {
         mBooksRealmRepository = new BooksRealmRepository();
         mAllYears = mBooksRealmRepository.getAllYears();
         mAllBookCategories = mBooksRealmRepository.getListOfBookCategories();
-        mBookMonthDivisions = mBooksRealmRepository.getBookMonthDivision();
-        mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory);
     }
 
     private void defineInputData(Bundle savedInstanceState) {
@@ -205,6 +202,7 @@ public class ChartFragment extends Fragment {
         barDataSets.add(barDataSet);
         BarData barData = new BarData(barDataSets);
         mBarChartAllCategories.setData(barData);
+        mBarChartAllCategories.invalidate();
         mBarChartAllCategories.setFitBars(true);
         mBarChartAllCategories.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
@@ -301,7 +299,7 @@ public class ChartFragment extends Fragment {
 
     private void defineYearSpinners() {
         mYearSpinnerAdapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        for (Year year: mAllYears) {
+        for (Year year : mAllYears) {
             mYearSpinnerAdapter.add(year.getYearNumber());
         }
         mYearSpinnerAllBooks.setAdapter(mYearSpinnerAdapter);
@@ -327,7 +325,7 @@ public class ChartFragment extends Fragment {
 
     private void defineCategorySpinner() {
         mCategorySpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        for (BookCategory bookCategory: mAllBookCategories) {
+        for (BookCategory bookCategory : mAllBookCategories) {
             mCategorySpinnerAdapter.add(bookCategory.getCategoryName());
         }
         mCategorySpinner.setAdapter(mCategorySpinnerAdapter);
@@ -336,31 +334,23 @@ public class ChartFragment extends Fragment {
     private void setListenerToYearSpinnerAllBooks() {
         mYearSpinnerAllBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void setListenerToYearSpinnerAllCategories() {
-        mYearSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               //mDivisionTypeAllCategories = parent.getItemAtPosition(position).toString();
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void setListenerToYearSpinnerCurrentCategory() {
-        mYearSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 //mDivisionTypeCurrentCategory = parent.getItemAtPosition(position).toString();
+                int currentYearAllBooksChart = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                mDivisionTypeAllBooks = mMonthDivisionSpinnerAllBooks.getSelectedItem().toString();
+                RealmResults<AllBookMonthDivision> allBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
+                        getEndIndexForAllBookMonthDivision(),
+                        currentYearAllBooksChart);
+                allBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<AllBookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createLineChart(element);
+                        } else {
+                            mLineChartAllBooks.clear();
+                            mLineChartAllBooks.setNoDataText("No books here");
+                            mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                        }
+                    }
+                });
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -372,8 +362,11 @@ public class ChartFragment extends Fragment {
     private void setListenerToMonthDivisionSpinnerAllBooks() {
         mMonthDivisionSpinnerAllBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int currentYearAllBooksChart = Integer.valueOf(mYearSpinnerAllBooks.getSelectedItem().toString());
                 mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
-                mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonth(MonthIndex.ZERO, getEndIndexForAllBookMonthDivision());
+                mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
+                        getEndIndexForAllBookMonthDivision(),
+                        currentYearAllBooksChart);
                 mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<AllBookMonthDivision> element) {
@@ -383,6 +376,136 @@ public class ChartFragment extends Fragment {
                             mLineChartAllBooks.clear();
                             mLineChartAllBooks.setNoDataText("No books here");
                             mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToYearSpinnerAllCategories() {
+        mYearSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final int currentYearAllCategoriesChart = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                mMonthTypeAllCategories = mMonthTypeSpinnerAllCategories.getSelectedItem().toString();
+                RealmResults<BookMonthDivision> bookMonthDivisions = mBooksRealmRepository.getBookMonthDivision(currentYearAllCategoriesChart);
+                bookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createBarChart(element);
+                        } else {
+                            mBarChartAllCategories.clear();
+                            mBarChartAllCategories.setNoDataText("No books here");
+                            mBarChartAllCategories.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToMonthTypeSpinnerAllCategories() {
+        mMonthTypeSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mMonthTypeAllCategories = parent.getItemAtPosition(position).toString();
+                int currentYearAllCategoriesChart = Integer.valueOf(mYearSpinnerAllCategories.getSelectedItem().toString());
+                RealmResults<BookMonthDivision> bookMonthDivisions = mBooksRealmRepository.getBookMonthDivision(currentYearAllCategoriesChart);
+                bookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createBarChart(element);
+                        } else {
+                            mBarChartAllCategories.clear();
+                            mBarChartAllCategories.setNoDataText("No books here");
+                            mBarChartAllCategories.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToYearSpinnerCurrentCategory() {
+        mYearSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDivisionTypeCurrentCategory = mMonthDivisionSpinnerCurrentCategory.getSelectedItem().toString();
+                int currentYearCurrentCategory = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, currentYearCurrentCategory);
+                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createCategoryLineChart(element);
+                        } else {
+                            mLineChartBooksCurrentCategory.clear();
+                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
+                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToMonthDivisionSpinnerCurrentCategory() {
+        mMonthDivisionSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mDivisionTypeCurrentCategory = parent.getItemAtPosition(position).toString();
+                int currentYearCurrentCategory = Integer.valueOf(mYearSpinnerCurrentCategory.getSelectedItem().toString());
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, currentYearCurrentCategory);
+                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createCategoryLineChart(element);
+                        } else {
+                            mLineChartBooksCurrentCategory.clear();
+                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
+                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                        }
+                    }
+                });
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setListenerToCategorySpinnerCurrentCategory() {
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCategoryNameCurrentCategory = parent.getItemAtPosition(position).toString();
+                int currentYearCurrentCategory = Integer.valueOf(mYearSpinnerCurrentCategory.getSelectedItem().toString());
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, currentYearCurrentCategory);
+                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<BookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createCategoryLineChart(element);
+                        } else {
+                            mLineChartBooksCurrentCategory.clear();
+                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
+                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
                     }
                 });
@@ -408,77 +531,6 @@ public class ChartFragment extends Fragment {
                 break;
         }
         return endIndex;
-    }
-
-
-    private void setListenerToMonthTypeSpinnerAllCategories() {
-        mMonthTypeSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mMonthTypeAllCategories = parent.getItemAtPosition(position).toString();
-                mBookMonthDivisions = mBooksRealmRepository.getBookMonthDivision();
-                        if (isAdded() && !mBookMonthDivisions.isEmpty()) {
-                            createBarChart(mBookMonthDivisions);
-                        } else {
-                            mBarChartAllCategories.clear();
-                            mBarChartAllCategories.setNoDataText("No books here");
-                            mBarChartAllCategories.setNoDataTextColor(getResources().getColor(R.color.card_background));
-                        }
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void setListenerToMonthDivisionSpinnerCurrentCategory() {
-        mMonthDivisionSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mDivisionTypeCurrentCategory = parent.getItemAtPosition(position).toString();
-                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory);
-                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
-                    @Override
-                    public void onChange(RealmResults<BookMonthDivision> element) {
-                        if (isAdded() && !element.isEmpty()) {
-                            createCategoryLineChart(element);
-                        } else {
-                            mLineChartBooksCurrentCategory.clear();
-                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
-                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
-                        }
-                    }
-                });
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void setListenerToCategorySpinnerCurrentCategory() {
-        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCategoryNameCurrentCategory = parent.getItemAtPosition(position).toString();
-                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory);
-                mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
-                    @Override
-                    public void onChange(RealmResults<BookMonthDivision> element) {
-                        if (isAdded() && !element.isEmpty()) {
-                            createCategoryLineChart(element);
-                        } else {
-                            mLineChartBooksCurrentCategory.clear();
-                            mLineChartBooksCurrentCategory.setNoDataText("No books here");
-                            mLineChartBooksCurrentCategory.setNoDataTextColor(getResources().getColor(R.color.card_background));
-                        }
-                    }
-                });
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     @Override

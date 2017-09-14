@@ -35,9 +35,9 @@ public interface RealmRepository {
 
     List<AllBookMonthDivision> getAllBookMonth(int begin, int end);
 
-    List<BookMonthDivision> getBookMonthDivision();
+    List<BookMonthDivision> getBookMonthDivision(int year);
 
-    List<BookMonthDivision> getBookMonthDivisionByCategory(String category);
+    List<BookMonthDivision> getBookMonthDivisionByCategory(String category, int year);
 
     void updateBookSectionInTransaction(final long currentBookIdForEdit, final HashMap<BookPropertiesEnum, String> mapOfBookProperties);
 

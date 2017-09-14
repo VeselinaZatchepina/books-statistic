@@ -35,7 +35,6 @@ import io.realm.RealmResults;
 public class BooksRealmRepository implements RealmRepository {
 
     private final Realm mRealm;
-    private Boolean isInitAllMonth = false;
     private int minusIndex;
 
     public BooksRealmRepository() {
@@ -285,21 +284,20 @@ public class BooksRealmRepository implements RealmRepository {
     }
 
     private void saveBookInAllBookMonthDivision(Realm realm, final Book book, final float index, final String divisionType) {
-        if (!isInitAllMonth) {
-            initAllBookMonth(realm);
+        RealmResults<AllBookMonthDivision> years = realm.where(AllBookMonthDivision.class).equalTo("year.yearNumber",
+                book.getYear().getYearNumber()).findAll();
+        if (years == null || years.isEmpty()) {
+            initAllBookMonth(realm, book.getDateStart());
         }
-        RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, index);
+        RealmResults<AllBookMonthDivision> allBookResults = realm.where(AllBookMonthDivision.class)
+                .equalTo("month", index)
+                .equalTo("year.yearNumber", book.getYear().getYearNumber()).findAll();
         AllBookMonthDivision currentMonth = allBookResults.first();
-        currentMonth.setYear(book.getYear());
         setAllBookCount(currentMonth, divisionType);
     }
 
-    private void initAllBookMonth(Realm realm) {
-        RealmResults<AllBookMonthDivision> allBookResults = realm.where(AllBookMonthDivision.class).findAll();
-        if (allBookResults.isEmpty()) {
-            createAllBookMonthDivision(realm);
-        }
-        isInitAllMonth = true;
+    private void initAllBookMonth(Realm realm, String date) {
+        createAllBookMonthDivision(realm, date);
     }
 
     private RealmResults<AllBookMonthDivision> getAllBookMonthDivisionByMonth(Realm realm, float index) {
@@ -340,17 +338,31 @@ public class BooksRealmRepository implements RealmRepository {
         }
     }
 
-    private void createAllBookMonthDivision(Realm realm) {
-        for (int i = 0; i <= MonthIndex.ELEVEN; i++) {
+    private void createAllBookMonthDivision(Realm realm, String date) {
+        int index = getIdForAllBookMonthDivision(realm);
+        int monthIndex = 0;
+        for (int i = index; i <= index + 11; i++) {
             AllBookMonthDivision allBookMonthDivision = realm.createObject(AllBookMonthDivision.class);
-            allBookMonthDivision.setId(getNextKey(allBookMonthDivision, realm));
-            allBookMonthDivision.setMonth(i);
+            allBookMonthDivision.setId(i);
+            allBookMonthDivision.setMonth(monthIndex);
+            allBookMonthDivision.setYear(checkAndGetYear(realm, date));
+            monthIndex++;
         }
+    }
+
+    private int getIdForAllBookMonthDivision(Realm realm) {
+        int id;
+        try {
+            id = realm.where(AllBookMonthDivision.class).max("id").intValue() + 1;
+        } catch (NullPointerException n) {
+            id = 0;
+        }
+        return id;
     }
 
     private void saveBookInMonthDivision(Realm realm, final Book book, final float index, final String monthDivisionType) {
         BookMonthDivision bookMonthDivision;
-        RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, book.getBookCategory().getCategoryName());
+        RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, book.getBookCategory().getCategoryName(), book.getYear().getYearNumber());
         if (realmResults.isEmpty()) {
             bookMonthDivision = createBookMonthDivision(realm, book);
         } else {
@@ -359,14 +371,14 @@ public class BooksRealmRepository implements RealmRepository {
         checkMonth((int) index, bookMonthDivision, monthDivisionType);
     }
 
-    private RealmResults<BookMonthDivision> getBookMonthDivisionByCategory(Realm realm, String category) {
-        return realm.where(BookMonthDivision.class).equalTo("category.categoryName", category).findAll();
+    private RealmResults<BookMonthDivision> getBookMonthDivisionByCategory(Realm realm, String category, int yearNumber) {
+        return realm.where(BookMonthDivision.class).equalTo("category.categoryName", category).equalTo("year.yearNumber", yearNumber).findAll();
     }
 
     private BookMonthDivision createBookMonthDivision(Realm realm, Book book) {
         BookMonthDivision bookMonthDivision = realm.createObject(BookMonthDivision.class);
         bookMonthDivision.setId(getNextKey(bookMonthDivision, realm));
-        bookMonthDivision.setCategoryIndex(bookMonthDivision.getId());
+        bookMonthDivision.setCategoryIndex(Float.valueOf(1));
         bookMonthDivision.setYear(book.getYear());
         bookMonthDivision.setCategory(book.getBookCategory());
         return bookMonthDivision;
@@ -633,7 +645,7 @@ public class BooksRealmRepository implements RealmRepository {
                 setAllBookCountMinus(currentMonth, divisionType);
 
                 BookMonthDivision bookMonthDivision;
-                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory);
+                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory, getYearNumber(oldDateStart));
                 bookMonthDivision = realmResults.first();
                 minusIndex = 1;
                 checkMonth((int) indexMonth, bookMonthDivision, divisionType);
@@ -647,7 +659,7 @@ public class BooksRealmRepository implements RealmRepository {
                 setAllBookCountMinus(currentMonth, divisionType);
 
                 BookMonthDivision bookMonthDivision;
-                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory);
+                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory, getYearNumber(oldDateStart));
                 if (realmResults != null && !realmResults.isEmpty()) {
                     bookMonthDivision = realmResults.first();
                     minusIndex = 1;
@@ -663,7 +675,7 @@ public class BooksRealmRepository implements RealmRepository {
                 setAllBookCountMinus(currentMonth, divisionType);
 
                 BookMonthDivision bookMonthDivision;
-                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory);
+                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory, getYearNumber(oldDateStart));
                 if (realmResults != null && !realmResults.isEmpty()) {
                     bookMonthDivision = realmResults.first();
                     minusIndex = 1;
@@ -679,7 +691,7 @@ public class BooksRealmRepository implements RealmRepository {
                 setAllBookCountMinus(currentMonth, divisionType);
 
                 BookMonthDivision bookMonthDivision;
-                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory);
+                RealmResults<BookMonthDivision> realmResults = getBookMonthDivisionByCategory(realm, oldCategory, getYearNumber(oldDateStart));
                 if (realmResults != null && !realmResults.isEmpty()) {
                     bookMonthDivision = realmResults.first();
                     minusIndex = 1;
@@ -853,14 +865,19 @@ public class BooksRealmRepository implements RealmRepository {
         return mRealm.where(AllBookMonthDivision.class).between("id", begin, end).findAllAsync();
     }
 
-    @Override
-    public RealmResults<BookMonthDivision> getBookMonthDivision() {
-        return mRealm.where(BookMonthDivision.class).findAll();
+
+    public RealmResults<AllBookMonthDivision> getAllBookMonthByYear(int begin, int end, int year) {
+        return mRealm.where(AllBookMonthDivision.class).between("month", Float.valueOf(begin), Float.valueOf(end)).equalTo("year.yearNumber", year).findAllAsync();
     }
 
     @Override
-    public RealmResults<BookMonthDivision> getBookMonthDivisionByCategory(String category) {
-        return mRealm.where(BookMonthDivision.class).equalTo("category.categoryName", category).findAllAsync();
+    public RealmResults<BookMonthDivision> getBookMonthDivision(int year) {
+        return mRealm.where(BookMonthDivision.class).equalTo("year.yearNumber", year).findAllAsync();
+    }
+
+    @Override
+    public RealmResults<BookMonthDivision> getBookMonthDivisionByCategory(String category, int year) {
+        return mRealm.where(BookMonthDivision.class).equalTo("category.categoryName", category).equalTo("year.yearNumber", year).findAllAsync();
     }
 
     @Override
