@@ -77,12 +77,16 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     public void defineActionWhenFabIsPressed() {
         AddBookFragment addBookFragment = ((AddBookFragment) currentFragment);
         if (!addBookFragment.isSpinnerSelectedItemHint() && addBookFragment.isPagePositiveNumber()
-                && addBookFragment.isDateExistInReadSectionType()) {
+                && addBookFragment.isDateExistInReadSectionType()
+                && addBookFragment.isEndDateMoreThenStartDate()) {
             addBookFragment.createMapOfBookProperties();
             this.finish();
         }
         if (addBookFragment.isSpinnerSelectedItemHint()) {
             Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
+        }
+        if (!addBookFragment.isEndDateMoreThenStartDate()) {
+            Toast.makeText(this, getString(R.string.toast_end_date_more_start_date), Toast.LENGTH_LONG).show();
         }
     }
 

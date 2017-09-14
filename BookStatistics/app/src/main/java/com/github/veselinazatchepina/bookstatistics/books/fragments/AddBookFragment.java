@@ -470,6 +470,26 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         return isDateExist;
     }
 
+    public boolean isEndDateMoreThenStartDate() {
+        String dateStart = mDateStartInputLayout.getEditText().getText().toString();
+        String dateEnd = mEndDateInputLayout.getEditText().getText().toString();
+        if (!dateStart.equals("") && !dateEnd.equals("")) {
+            String[] dateStartArray = dateStart.split("/");
+            String[] dateEndArray = dateEnd.split("/");
+            int startDay = Integer.valueOf(dateStartArray[0]);
+            int endDay = Integer.valueOf(dateEndArray[0]);
+            int startMonth = Integer.valueOf(dateStartArray[1]);
+            int endMonth = Integer.valueOf(dateEndArray[1]);
+            int startYear = Integer.valueOf(dateStartArray[2]);
+            int endYear = Integer.valueOf(dateEndArray[2]);
+
+            if (endYear < startYear) return false;
+            if (endMonth < startMonth) return false;
+            if (endDay < startDay) return false;
+        }
+        return true;
+    }
+
     @Override
     public void onPause() {
         super.onPause();

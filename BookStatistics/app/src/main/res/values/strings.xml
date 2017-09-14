@@ -21,6 +21,7 @@
 
     <!-- AddBookActivity-->
     <string name="toast_choose_category">Choose category</string>
+    <string name="toast_end_date_more_start_date">End date must be longer than the start date</string>
 
     <!-- AddBookFragment-->
     <string name="hint_book_name">Book name</string>
