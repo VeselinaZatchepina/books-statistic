@@ -92,6 +92,10 @@ public class ChartFragment extends Fragment {
     String mDivisionTypeCurrentCategory = DivisionType.THREE;
     String mMonthTypeAllCategories = AllMonth.JANUARY_DECEMBER;
 
+    int mCurrentYearAllBooksChart = 0;
+    int mCurrentYearAllCategoriesChart = 0;
+    int mCurrentYearCurrentCategory = 0;
+
     public ChartFragment() {
     }
 
@@ -334,11 +338,11 @@ public class ChartFragment extends Fragment {
     private void setListenerToYearSpinnerAllBooks() {
         mYearSpinnerAllBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int currentYearAllBooksChart = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                mCurrentYearAllBooksChart = Integer.valueOf(parent.getItemAtPosition(position).toString());
                 mDivisionTypeAllBooks = mMonthDivisionSpinnerAllBooks.getSelectedItem().toString();
                 RealmResults<AllBookMonthDivision> allBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
                         getEndIndexForAllBookMonthDivision(),
-                        currentYearAllBooksChart);
+                        mCurrentYearAllBooksChart);
                 allBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<AllBookMonthDivision> element) {
@@ -362,24 +366,26 @@ public class ChartFragment extends Fragment {
     private void setListenerToMonthDivisionSpinnerAllBooks() {
         mMonthDivisionSpinnerAllBooks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int currentYearAllBooksChart = Integer.valueOf(mYearSpinnerAllBooks.getSelectedItem().toString());
-                mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
-                mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
-                        getEndIndexForAllBookMonthDivision(),
-                        currentYearAllBooksChart);
-                mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
-                    @Override
-                    public void onChange(RealmResults<AllBookMonthDivision> element) {
-                        if (isAdded() && !element.isEmpty()) {
-                            createLineChart(element);
-                        } else {
-                            mLineChartAllBooks.clear();
-                            mLineChartAllBooks.setNoDataText("No books here");
-                            mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                if (mYearSpinnerAllBooks.getSelectedItem() != null) {
+                    mCurrentYearAllBooksChart = Integer.valueOf(mYearSpinnerAllBooks.getSelectedItem().toString());
+                }
+                    mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
+                    mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
+                            getEndIndexForAllBookMonthDivision(),
+                            mCurrentYearAllBooksChart);
+                    mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
+                        @Override
+                        public void onChange(RealmResults<AllBookMonthDivision> element) {
+                            if (isAdded() && !element.isEmpty()) {
+                                createLineChart(element);
+                            } else {
+                                mLineChartAllBooks.clear();
+                                mLineChartAllBooks.setNoDataText("No books here");
+                                mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
 
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -390,9 +396,9 @@ public class ChartFragment extends Fragment {
     private void setListenerToYearSpinnerAllCategories() {
         mYearSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                final int currentYearAllCategoriesChart = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                mCurrentYearAllCategoriesChart = Integer.valueOf(parent.getItemAtPosition(position).toString());
                 mMonthTypeAllCategories = mMonthTypeSpinnerAllCategories.getSelectedItem().toString();
-                RealmResults<BookMonthDivision> bookMonthDivisions = mBooksRealmRepository.getBookMonthDivision(currentYearAllCategoriesChart);
+                RealmResults<BookMonthDivision> bookMonthDivisions = mBooksRealmRepository.getBookMonthDivision(mCurrentYearAllCategoriesChart);
                 bookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<BookMonthDivision> element) {
@@ -417,8 +423,10 @@ public class ChartFragment extends Fragment {
         mMonthTypeSpinnerAllCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mMonthTypeAllCategories = parent.getItemAtPosition(position).toString();
-                int currentYearAllCategoriesChart = Integer.valueOf(mYearSpinnerAllCategories.getSelectedItem().toString());
-                RealmResults<BookMonthDivision> bookMonthDivisions = mBooksRealmRepository.getBookMonthDivision(currentYearAllCategoriesChart);
+                if (mYearSpinnerAllCategories.getSelectedItem() != null) {
+                    mCurrentYearAllCategoriesChart = Integer.valueOf(mYearSpinnerAllCategories.getSelectedItem().toString());
+                }
+                RealmResults<BookMonthDivision> bookMonthDivisions = mBooksRealmRepository.getBookMonthDivision(mCurrentYearAllCategoriesChart);
                 bookMonthDivisions.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<BookMonthDivision> element) {
@@ -443,8 +451,8 @@ public class ChartFragment extends Fragment {
         mYearSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mDivisionTypeCurrentCategory = mMonthDivisionSpinnerCurrentCategory.getSelectedItem().toString();
-                int currentYearCurrentCategory = Integer.valueOf(parent.getItemAtPosition(position).toString());
-                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, currentYearCurrentCategory);
+                mCurrentYearCurrentCategory = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, mCurrentYearCurrentCategory);
                 mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<BookMonthDivision> element) {
@@ -469,8 +477,10 @@ public class ChartFragment extends Fragment {
         mMonthDivisionSpinnerCurrentCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mDivisionTypeCurrentCategory = parent.getItemAtPosition(position).toString();
-                int currentYearCurrentCategory = Integer.valueOf(mYearSpinnerCurrentCategory.getSelectedItem().toString());
-                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, currentYearCurrentCategory);
+                if (mYearSpinnerCurrentCategory.getSelectedItem() != null) {
+                    mCurrentYearCurrentCategory = Integer.valueOf(mYearSpinnerCurrentCategory.getSelectedItem().toString());
+                }
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, mCurrentYearCurrentCategory);
                 mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<BookMonthDivision> element) {
@@ -495,8 +505,10 @@ public class ChartFragment extends Fragment {
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCategoryNameCurrentCategory = parent.getItemAtPosition(position).toString();
-                int currentYearCurrentCategory = Integer.valueOf(mYearSpinnerCurrentCategory.getSelectedItem().toString());
-                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, currentYearCurrentCategory);
+                if (mYearSpinnerCurrentCategory.getSelectedItem() != null) {
+                    mCurrentYearCurrentCategory = Integer.valueOf(mYearSpinnerCurrentCategory.getSelectedItem().toString());
+                }
+                mBookMonthDivisionsByCategory = mBooksRealmRepository.getBookMonthDivisionByCategory(mCategoryNameCurrentCategory, mCurrentYearCurrentCategory);
                 mBookMonthDivisionsByCategory.addChangeListener(new RealmChangeListener<RealmResults<BookMonthDivision>>() {
                     @Override
                     public void onChange(RealmResults<BookMonthDivision> element) {

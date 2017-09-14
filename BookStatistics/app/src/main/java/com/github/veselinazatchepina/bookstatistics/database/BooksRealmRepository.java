@@ -345,9 +345,17 @@ public class BooksRealmRepository implements RealmRepository {
             AllBookMonthDivision allBookMonthDivision = realm.createObject(AllBookMonthDivision.class);
             allBookMonthDivision.setId(i);
             allBookMonthDivision.setMonth(monthIndex);
-            allBookMonthDivision.setYear(checkAndGetYear(realm, date));
+            allBookMonthDivision.setYear(getYearForAllBookMonthDivision(realm, date));
             monthIndex++;
         }
+    }
+
+    private Year getYearForAllBookMonthDivision(Realm realm, String date) {
+        int currentYear = getYearNumber(date);
+        RealmResults<Year> years = realm.where(Year.class)
+                .equalTo("yearNumber", currentYear)
+                .findAll();
+        return years.first();
     }
 
     private int getIdForAllBookMonthDivision(Realm realm) {
