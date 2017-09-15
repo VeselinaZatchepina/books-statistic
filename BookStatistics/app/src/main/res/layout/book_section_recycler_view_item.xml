@@ -8,6 +8,8 @@
                                     card_view:cardBackgroundColor="@color/card_background"
                                     card_view:cardCornerRadius="@dimen/corner_radius"
                                     card_view:cardElevation="@dimen/card_elevation"
+                                    android:layout_marginStart="@dimen/section_card_view_margin_start"
+                                    android:layout_marginEnd="@dimen/section_card_view_margin_end"
                                     card_view:cardUseCompatPadding="true">
 
     <LinearLayout

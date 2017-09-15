@@ -3,6 +3,9 @@
     <!-- NavHeader -->
     <dimen name="nav_header_height">160dp</dimen>
 
+    <dimen name="margin_start">2dp</dimen>
+    <dimen name="margin_end">2dp</dimen>
+
     <!-- Toolbar size -->
     <dimen name="toolbar_height">247dp</dimen>
     <dimen name="toolbar_height_normal_portrait">80dp</dimen>
@@ -34,6 +37,8 @@
     <dimen name="card_view_horizontal_margin">16dp</dimen>
     <dimen name="image_view_horizontal_margin">32dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_view_margin_start">2dp</dimen>
+    <dimen name="card_view_margin_end">2dp</dimen>
 
     <!-- CardView dimensions -->
     <dimen name="cardview_margin_top_add_book">8dp</dimen>
@@ -67,6 +72,8 @@
     <dimen name="section_book_autor_text_size">14sp</dimen>
     <dimen name="section_book_data_margin_end">10dp</dimen>
     <dimen name="section_linear_layout_margin">8dp</dimen>
+    <dimen name="section_card_view_margin_start">2dp</dimen>
+    <dimen name="section_card_view_margin_end">2dp</dimen>
 
     <!-- Delete current category dialog -->
     <dimen name="delete_category_dialog_title_margin">24dp</dimen>
