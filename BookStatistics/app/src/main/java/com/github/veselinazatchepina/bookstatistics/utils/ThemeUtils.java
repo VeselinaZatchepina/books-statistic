@@ -27,13 +27,13 @@ public class ThemeUtils {
         setThemeNameFromPreference(activity);
         switch (sTheme) {
             case THEME_FIRST:
-                activity.setTheme(R.style.AppTheme1);
+                activity.setTheme(R.style.AppThemeGreen);
                 break;
             case THEME_SECOND:
-                activity.setTheme(R.style.AppTheme2);
+                activity.setTheme(R.style.AppThemeBrown);
                 break;
             case THEME_THIRD:
-                activity.setTheme(R.style.AppTheme3);
+                activity.setTheme(R.style.AppThemeBlue);
                 break;
         }
     }

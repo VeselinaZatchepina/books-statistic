@@ -42,16 +42,16 @@
     </style> -->
 
     <!-- Custom theme -->
-    <style name="AppTheme1" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/background1</item>
+    <style name="AppThemeGreen" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_green</item>
     </style>
 
-    <style name="AppTheme2" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/background2</item>
+    <style name="AppThemeBrown" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_brown</item>
     </style>
 
-    <style name="AppTheme3" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/background3</item>
+    <style name="AppThemeBlue" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_blue</item>
     </style>
 
     <style name="NavigationViewStyle">

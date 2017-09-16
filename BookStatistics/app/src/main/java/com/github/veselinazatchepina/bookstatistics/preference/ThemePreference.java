@@ -71,13 +71,13 @@ public class ThemePreference extends ListPreference {
         int identifier = resources.getIdentifier(selectedImageFileName, "drawable",
                 context.getPackageName());
         if (selectedImageFileName.equals("ic_first")) {
-            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background1));
+            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background_green));
         }
         if (selectedImageFileName.equals("ic_second")) {
-            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background2));
+            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background_brown));
         }
         if (selectedImageFileName.equals("ic_third")) {
-            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background3));
+            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background_blue));
         }
         //themeImageView.setImageResource(identifier);
 
