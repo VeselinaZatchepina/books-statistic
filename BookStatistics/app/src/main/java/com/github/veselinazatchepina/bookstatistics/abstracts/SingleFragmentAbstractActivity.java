@@ -41,13 +41,11 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
 
-    public Fragment currentFragment;
-    public FloatingActionButton fab;
-    public int fabImageResourceId;
+    private SharedPreferences mPrefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
 
-    SharedPreferences prefs;
-    SharedPreferences.OnSharedPreferenceChangeListener prefListener;
-    String themeName;
+    public Fragment mCurrentFragment;
+    public int mFabImageResourceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +64,17 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     private void definePreferenceListener() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                themeName = prefs.getString(key, null);
-                ThemeUtils.changeToTheme(SingleFragmentAbstractActivity.this, themeName);
+                String currentPreferenceThemeName = prefs.getString(key, null);
+                ThemeUtils.changeToTheme(SingleFragmentAbstractActivity.this, currentPreferenceThemeName);
             }
         };
     }
 
-    public void defineInputData(Bundle saveInstanceState) { }
+    public void defineInputData(Bundle saveInstanceState) {
+    }
 
     @LayoutRes
     protected int getLayoutResId() {
@@ -90,9 +89,9 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     private void setAppBarNotExpandable() {
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-            Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams, mCollapsingToolbarLayout, configuration);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+        Configuration configuration = getResources().getConfiguration();
+        AppBarLayoutExpended.setAppBarLayoutExpended(this, mAppBarLayout, layoutParams, mCollapsingToolbarLayout, configuration);
     }
 
     public void setNewTitleStyle() {
@@ -101,11 +100,11 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
 
     public void defineFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (currentFragment == null) {
-            currentFragment = createFragment();
+        mCurrentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (mCurrentFragment == null) {
+            mCurrentFragment = createFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, currentFragment)
+                    .add(R.id.fragment_container, mCurrentFragment)
                     .commit();
         }
     }
@@ -123,11 +122,11 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     private void setFabImage() {
-        fabImageResourceId = setFabImageResourceId();
+        mFabImageResourceId = setFabImageResourceId();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFloatingActionButton.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
+            mFloatingActionButton.setImageDrawable(getResources().getDrawable(mFabImageResourceId, getTheme()));
         } else {
-            mFloatingActionButton.setImageDrawable(getResources().getDrawable(fabImageResourceId));
+            mFloatingActionButton.setImageDrawable(getResources().getDrawable(mFabImageResourceId));
         }
     }
 
@@ -136,19 +135,19 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     public void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this, "Add book");
+        Intent intent = AddBookActivity.newIntent(this, getString(R.string.add_book_title));
         startActivity(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+        mPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+        mPrefs.unregisterOnSharedPreferenceChangeListener(mPrefListener);
     }
 }

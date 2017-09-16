@@ -18,13 +18,14 @@ import butterknife.BindView;
 
 import static com.github.veselinazatchepina.bookstatistics.R.id.fab;
 
-public class BookCategoriesMainActivity extends NavigationAbstractActivity implements BookCategoriesFragment.BookCategoryCallbacks {
+public class BookCategoriesMainActivity extends NavigationAbstractActivity
+        implements BookCategoriesFragment.BookCategoryCallbacks {
 
     private static final String BOOK_CATEGORY_TITLE = "book_category_title";
 
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
-    private Fragment mMainFragment;
+
     private int mFabImageResourceId = setFabImageResourceId();
 
     public static Intent newIntent(Context context, String title) {
@@ -38,7 +39,7 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
         if (getIntent().getStringExtra(BOOK_CATEGORY_TITLE) != null) {
             setTitle(getIntent().getStringExtra(BOOK_CATEGORY_TITLE));
         } else {
-            setTitle("Book categories");
+            setTitle(getString(R.string.book_categories_title));
         }
     }
 
@@ -50,11 +51,11 @@ public class BookCategoriesMainActivity extends NavigationAbstractActivity imple
     @Override
     public void defineFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mMainFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (mMainFragment == null) {
-            mMainFragment = BookCategoriesFragment.newInstance();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (currentFragment == null) {
+            currentFragment = BookCategoriesFragment.newInstance();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, mMainFragment)
+                    .add(R.id.fragment_container, currentFragment)
                     .commit();
         }
     }

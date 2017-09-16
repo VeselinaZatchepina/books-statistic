@@ -21,7 +21,6 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
     private static final String CURRENT_BOOK_SECTION_TYPE = "current_book_section_type";
     private static final String CURRENT_BOOK_CATEGORY = "current_book_category";
 
-    private Fragment mCurrentFragment;
     private long mCurrentBookId;
     private int mCurrentSectionType;
     private String mCurrentCategory;
@@ -75,10 +74,11 @@ public class AddBookActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public void defineActionWhenFabIsPressed() {
-        AddBookFragment addBookFragment = ((AddBookFragment) currentFragment);
-        if (!addBookFragment.isSpinnerSelectedItemHint() && addBookFragment.isPagePositiveNumber()
-                && addBookFragment.isDateExistInReadSectionType()
-                && addBookFragment.isEndDateMoreThenStartDate()) {
+        AddBookFragment addBookFragment = ((AddBookFragment) mCurrentFragment);
+        if (!addBookFragment.isSpinnerSelectedItemHint() &&
+                addBookFragment.isPagePositiveNumber() &&
+                addBookFragment.isDateExistInReadSectionType() &&
+                addBookFragment.isEndDateMoreThenStartDate()) {
             addBookFragment.createMapOfBookProperties();
             this.finish();
         }

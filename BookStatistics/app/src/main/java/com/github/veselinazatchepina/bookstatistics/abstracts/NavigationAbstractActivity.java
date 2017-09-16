@@ -56,8 +56,8 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    SharedPreferences mPrefs;
-    SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
+    private SharedPreferences mPrefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +161,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     }
 
     public void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this, "Add book");
+        Intent intent = AddBookActivity.newIntent(this, getString(R.string.add_book_title));
         startActivity(intent);
     }
 
@@ -180,19 +180,19 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_book_categories:
-                intent = BookCategoriesMainActivity.newIntent(this, "Book categories");
+                intent = BookCategoriesMainActivity.newIntent(this, getString(R.string.book_categories_title));
                 break;
             case R.id.menu_chart:
-                intent = ChartActivity.newIntent(this, "Charts");
+                intent = ChartActivity.newIntent(this, getString(R.string.chart_title));
                 break;
             case R.id.menu_all_books:
-                intent = BookSectionActivity.newIntent(this, "All books");
+                intent = BookSectionActivity.newIntent(this, getString(R.string.all_books_title));
                 break;
             case R.id.settings:
-                intent = ThemePreferencesActivity.newIntent(this, "Settings");
+                intent = ThemePreferencesActivity.newIntent(this, getString(R.string.settings_title));
                 break;
             case R.id.write_to_developer:
-                intent = WriteToDeveloperActivity.newIntent(this, "Write to developer");
+                intent = WriteToDeveloperActivity.newIntent(this, getString(R.string.write_to_developer_title));
         }
         if (intent != null) {
             startActivity(intent);

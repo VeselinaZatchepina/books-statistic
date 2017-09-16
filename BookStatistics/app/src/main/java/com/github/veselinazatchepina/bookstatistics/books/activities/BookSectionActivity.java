@@ -99,7 +99,7 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         Menu menu = mNavigationView.getMenu();
-        MenuItem tools= menu.findItem(R.id.other);
+        MenuItem tools = menu.findItem(R.id.other);
         SpannableString s = new SpannableString(tools.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewStyle), 0, s.length(), 0);
         tools.setTitle(s);
@@ -108,7 +108,8 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
 
     private void defineTitle() {
         String oldTitle = getTitle().toString();
-        String title = Character.toUpperCase(oldTitle.charAt(0)) + oldTitle.substring(1);;
+        String title = Character.toUpperCase(oldTitle.charAt(0)) + oldTitle.substring(1);
+        ;
         setTitle(ColorationTextChar.setFirstVowelColor(title, this));
     }
 

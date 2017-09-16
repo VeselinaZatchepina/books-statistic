@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Boost</string>
 
+    <!-- NavigationAbstractActivity -->
+    <string name="add_book_title">Add book</string>
+    <string name="book_categories_title">Book categories</string>
+    <string name="chart_title">Charts</string>
+    <string name="all_books_title">All books</string>
+    <string name="settings_title">Settings</string>
+    <string name="write_to_developer_title">Write to developer</string>
+
     <!-- Navigation Drawer -->
     <string name="title_book_categories">Book categories</string>
     <string name="title_chart">Chart</string>
@@ -20,7 +28,7 @@
     <string name="image_content_description">Icon of current category</string>
 
     <!-- AddBookActivity-->
-    <string name="toast_choose_category">Choose category</string>
+    <string name="toast_choose_category">Please choose category</string>
     <string name="toast_end_date_more_start_date">End date must be longer than the start date</string>
 
     <!-- AddBookFragment-->
