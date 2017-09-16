@@ -36,10 +36,10 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-     <!-- Launch style
+     <!-- Launch style -->
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
-    </style> -->
+    </style>
 
     <!-- Custom theme -->
     <style name="AppThemeGreen" parent="AppTheme">

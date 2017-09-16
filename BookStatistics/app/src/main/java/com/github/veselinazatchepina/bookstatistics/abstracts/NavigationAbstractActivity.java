@@ -56,13 +56,12 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    SharedPreferences prefs;
-    SharedPreferences.OnSharedPreferenceChangeListener prefListener;
-    String value;
+    SharedPreferences mPrefs;
+    SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //setTheme(R.style.AppTheme);
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         definePreferenceListener();
         ThemeUtils.onActivityCreateSetTheme(this);
@@ -77,11 +76,11 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     }
 
     private void definePreferenceListener() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                value = prefs.getString(key, null);
-                ThemeUtils.changeToTheme(NavigationAbstractActivity.this, value);
+                String currentPreferenceThemeName = prefs.getString(key, null);
+                ThemeUtils.changeToTheme(NavigationAbstractActivity.this, currentPreferenceThemeName);
             }
         };
     }
@@ -101,7 +100,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         Menu menu = mNavigationView.getMenu();
-        MenuItem tools= menu.findItem(R.id.other);
+        MenuItem tools = menu.findItem(R.id.other);
         SpannableString s = new SpannableString(tools.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.NavigationViewStyle), 0, s.length(), 0);
         tools.setTitle(s);
@@ -204,12 +203,12 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+        mPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
+        mPrefs.unregisterOnSharedPreferenceChangeListener(mPrefListener);
     }
 }

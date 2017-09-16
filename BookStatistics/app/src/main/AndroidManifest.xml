@@ -12,7 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeGreen">
+        android:theme="@style/AppTheme.Launcher">
         <activity android:name=".books.activities.BookCategoriesMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
