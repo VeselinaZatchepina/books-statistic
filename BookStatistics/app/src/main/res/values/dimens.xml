@@ -126,6 +126,7 @@
     <!-- Current book -->
     <dimen name="current_book_grid_margin_bottom">150dp</dimen>
     <dimen name="current_book_text_hint_size">14sp</dimen>
+    <dimen name="current_book_padding">16dp</dimen>
 
     <!-- Preference dialog -->
     <dimen name="preference_dialog_subtitle_text_size">14sp</dimen>
