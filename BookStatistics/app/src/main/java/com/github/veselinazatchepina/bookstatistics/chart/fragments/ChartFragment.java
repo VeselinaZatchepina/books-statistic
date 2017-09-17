@@ -369,23 +369,23 @@ public class ChartFragment extends Fragment {
                 if (mYearSpinnerAllBooks.getSelectedItem() != null) {
                     mCurrentYearAllBooksChart = Integer.valueOf(mYearSpinnerAllBooks.getSelectedItem().toString());
                 }
-                    mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
-                    mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
-                            getEndIndexForAllBookMonthDivision(),
-                            mCurrentYearAllBooksChart);
-                    mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
-                        @Override
-                        public void onChange(RealmResults<AllBookMonthDivision> element) {
-                            if (isAdded() && !element.isEmpty()) {
-                                createLineChart(element);
-                            } else {
-                                mLineChartAllBooks.clear();
-                                mLineChartAllBooks.setNoDataText("No books here");
-                                mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
-                            }
+                mDivisionTypeAllBooks = parent.getItemAtPosition(position).toString();
+                mAllBooksMonthDivision = mBooksRealmRepository.getAllBookMonthByYear(MonthIndex.ZERO,
+                        getEndIndexForAllBookMonthDivision(),
+                        mCurrentYearAllBooksChart);
+                mAllBooksMonthDivision.addChangeListener(new RealmChangeListener<RealmResults<AllBookMonthDivision>>() {
+                    @Override
+                    public void onChange(RealmResults<AllBookMonthDivision> element) {
+                        if (isAdded() && !element.isEmpty()) {
+                            createLineChart(element);
+                        } else {
+                            mLineChartAllBooks.clear();
+                            mLineChartAllBooks.setNoDataText("No books here");
+                            mLineChartAllBooks.setNoDataTextColor(getResources().getColor(R.color.card_background));
                         }
-                    });
-                }
+                    }
+                });
+            }
 
             public void onNothingSelected(AdapterView<?> parent) {
 

@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 
 import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
-import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookSectionEnums;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.BookSectionFragment;
 import com.github.veselinazatchepina.bookstatistics.chart.activities.ChartActivity;
 import com.github.veselinazatchepina.bookstatistics.preference.activities.ThemePreferencesActivity;
@@ -61,7 +61,6 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
 
     private ArrayList<String> mSectionTypes;
     private String mCurrentCategory;
-    private int mCurrentSectionType;
 
     public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, BookSectionActivity.class);
@@ -109,7 +108,6 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     private void defineTitle() {
         String oldTitle = getTitle().toString();
         String title = Character.toUpperCase(oldTitle.charAt(0)) + oldTitle.substring(1);
-        ;
         setTitle(ColorationTextChar.setFirstVowelColor(title, this));
     }
 
@@ -125,14 +123,15 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
 
     private void createSectionTypeList() {
         mSectionTypes = new ArrayList<>();
-        mSectionTypes.add(BookTypeEnums.NEW_BOOK);
-        mSectionTypes.add(BookTypeEnums.CURRENT_BOOK);
-        mSectionTypes.add(BookTypeEnums.READ_BOOK);
+        mSectionTypes.add(BookSectionEnums.NEW_BOOK);
+        mSectionTypes.add(BookSectionEnums.CURRENT_BOOK);
+        mSectionTypes.add(BookSectionEnums.READ_BOOK);
     }
 
     private void setTitleToActivity() {
-        if (getIntent().getStringExtra(BOOK_CATEGORY_TITLE) != null) {
-            setTitle(getIntent().getStringExtra(BOOK_CATEGORY_TITLE));
+        String titleFromIntent = getIntent().getStringExtra(BOOK_CATEGORY_TITLE);
+        if (titleFromIntent != null) {
+            setTitle(titleFromIntent);
         }
     }
 
@@ -165,7 +164,7 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
                 try {
                     super.finishUpdate(container);
                 } catch (NullPointerException nullPointerException) {
-                    System.out.println("Catch the NullPointerException in FragmentPagerAdapter.finishUpdate");
+                    System.out.println(getString(R.string.view_pager_exception));
                 }
             }
         });
@@ -195,8 +194,8 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
     }
 
     private void defineActionWhenFabIsPressed() {
-        mCurrentSectionType = mSectionViewPager.getCurrentItem();
-        Intent intent = AddBookActivity.newIntent(this, "Add book", mCurrentSectionType, mCurrentCategory);
+        int currentSectionType = mSectionViewPager.getCurrentItem();
+        Intent intent = AddBookActivity.newIntent(this, getString(R.string.add_book_title), currentSectionType, mCurrentCategory);
         startActivity(intent);
     }
 
@@ -237,19 +236,19 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_book_categories:
-                intent = BookCategoriesMainActivity.newIntent(this, "Book categories");
+                intent = BookCategoriesMainActivity.newIntent(this, getString(R.string.book_categories_title));
                 break;
             case R.id.menu_chart:
-                intent = ChartActivity.newIntent(this, "Charts");
+                intent = ChartActivity.newIntent(this, getString(R.string.chart_title));
                 break;
             case R.id.menu_all_books:
-                intent = BookSectionActivity.newIntent(this, "All books");
+                intent = BookSectionActivity.newIntent(this, getString(R.string.all_books_title));
                 break;
             case R.id.settings:
-                intent = ThemePreferencesActivity.newIntent(this, "Settings");
+                intent = ThemePreferencesActivity.newIntent(this, getString(R.string.settings_title));
                 break;
             case R.id.write_to_developer:
-                intent = WriteToDeveloperActivity.newIntent(this, "Write to developer");
+                intent = WriteToDeveloperActivity.newIntent(this, getString(R.string.write_to_developer_title));
         }
         if (intent != null) {
             startActivity(intent);

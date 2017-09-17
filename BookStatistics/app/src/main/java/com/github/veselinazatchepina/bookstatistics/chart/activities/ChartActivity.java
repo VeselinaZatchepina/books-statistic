@@ -26,7 +26,7 @@ public class ChartActivity extends NavigationAbstractActivity {
     @BindView(fab)
     FloatingActionButton mFloatingActionButton;
 
-    private Fragment mMainFragment;
+    private Fragment mCurrentFragment;
 
     public static Intent newIntent(Context context, String title) {
         Intent intent = new Intent(context, ChartActivity.class);
@@ -58,11 +58,11 @@ public class ChartActivity extends NavigationAbstractActivity {
     @Override
     public void defineFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mMainFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (mMainFragment == null) {
-            mMainFragment = ChartFragment.newInstance();
+        mCurrentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (mCurrentFragment == null) {
+            mCurrentFragment = ChartFragment.newInstance();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, mMainFragment)
+                    .add(R.id.fragment_container, mCurrentFragment)
                     .commit();
         }
     }

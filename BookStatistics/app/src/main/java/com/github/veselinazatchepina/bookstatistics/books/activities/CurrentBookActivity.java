@@ -35,9 +35,8 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
     private long mCurrentBookId;
     private String mCurrentSectionType;
     private String mCurrentCategory;
-    private Fragment mMainFragment;
-    private long mChooseBookIdForIntent;
-    private RealmResults<Book> mBooks;
+    private long mChoosenBookIdForIntent;
+    private RealmResults<Book> mBooksInCurrentSection;
 
 
     public static Intent newIntent(Context context, long currentBookId, String currentSectionType, String currentCategory) {
@@ -59,7 +58,7 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
         mCurrentSectionType = getIntent().getStringExtra(CURRENT_SECTION_TYPE_INTENT);
         mCurrentCategory = getIntent().getStringExtra(CURRENT_BOOK_CATEGORY_INTENT);
         defineBooksForViewPager();
-        mBooks.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
+        mBooksInCurrentSection.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
             @Override
             public void onChange(RealmResults<Book> element) {
                 defineViewPager(element);
@@ -75,8 +74,8 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                mMainFragment = CurrentBookFragment.newInstance(element.get(position).getId());
-                return mMainFragment;
+                mCurrentFragment = CurrentBookFragment.newInstance(element.get(position).getId());
+                return mCurrentFragment;
             }
 
             @Override
@@ -86,14 +85,14 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
 
             @Override
             public void finishUpdate(ViewGroup container) {
-                try{
+                try {
                     super.finishUpdate(container);
-                } catch (NullPointerException nullPointerException){
-                    System.out.println("Catch the NullPointerException in FragmentPagerAdapter.finishUpdate");
+                } catch (NullPointerException nullPointerException) {
+                    System.out.println(getString(R.string.view_pager_exception));
                 }
             }
         });
-        setViewPagerOnClickedQuotePosition(mViewPager, element);
+        setViewPagerOnClickedBookPosition(mViewPager, element);
         setViewPagerOnPageChangeListener(mViewPager, element);
     }
 
@@ -107,11 +106,11 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
         return null;
     }
 
-    private void setViewPagerOnClickedQuotePosition(ViewPager viewPager, RealmResults<Book> element) {
+    private void setViewPagerOnClickedBookPosition(ViewPager viewPager, RealmResults<Book> element) {
         for (int i = 0; i < element.size(); i++) {
             if (element.get(i).getId() == mCurrentBookId) {
                 viewPager.setCurrentItem(i);
-                mChooseBookIdForIntent = element.get(viewPager.getCurrentItem()).getId();
+                mChoosenBookIdForIntent = element.get(viewPager.getCurrentItem()).getId();
             }
         }
     }
@@ -124,7 +123,7 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
 
             @Override
             public void onPageSelected(int position) {
-                mChooseBookIdForIntent = element.get(position).getId();
+                mChoosenBookIdForIntent = element.get(position).getId();
             }
 
             @Override
@@ -136,9 +135,9 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
     private void defineBooksForViewPager() {
         BooksRealmRepository booksRealmRepository = new BooksRealmRepository();
         if (mCurrentCategory != null) {
-            mBooks = booksRealmRepository.getAllBooksInCurrentSectionByCategory(mCurrentSectionType, mCurrentCategory);
+            mBooksInCurrentSection = booksRealmRepository.getAllBooksInCurrentSectionByCategory(mCurrentSectionType, mCurrentCategory);
         } else {
-            mBooks = booksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType);
+            mBooksInCurrentSection = booksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType);
         }
     }
 
@@ -149,7 +148,7 @@ public class CurrentBookActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public void defineActionWhenFabIsPressed() {
-        Intent intent = AddBookActivity.newIntent(this, mChooseBookIdForIntent, "Edit book");
+        Intent intent = AddBookActivity.newIntent(this, mChoosenBookIdForIntent, getString(R.string.edit_book_title));
         startActivity(intent);
     }
 

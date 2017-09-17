@@ -8,5 +8,6 @@ public final class BookRatingEnums {
     public static final Integer TWO_STARS = 2;
     public static final Integer ONE_STAR = 1;
 
-    private BookRatingEnums() { }
+    private BookRatingEnums() {
+    }
 }

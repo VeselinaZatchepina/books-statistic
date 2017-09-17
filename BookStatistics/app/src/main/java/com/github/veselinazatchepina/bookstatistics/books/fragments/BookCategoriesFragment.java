@@ -48,7 +48,6 @@ public class BookCategoriesFragment extends Fragment {
     private String mCategoryForDelete;
 
     public BookCategoriesFragment() {
-
     }
 
     public static BookCategoriesFragment newInstance() {
@@ -58,17 +57,8 @@ public class BookCategoriesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        defineInputData(savedInstanceState);
         mBooksRealmRepository = new BooksRealmRepository();
         mBookCategories = mBooksRealmRepository.getListOfBookCategories();
-    }
-
-    private void defineInputData(Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE);
-//        } else if (getArguments() != null) {
-//            mQuoteType = getArguments().getString(CURRENT_QUOTE_TYPE_NEW_INSTANCE);
-//        }
     }
 
     @Override
@@ -78,13 +68,17 @@ public class BookCategoriesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
         setCurrentCategoryTitleIsGone();
         defineRecyclerView();
+        defineListenerToBookCategoriesResults();
+        return rootView;
+    }
+
+    private void defineListenerToBookCategoriesResults() {
         mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
             @Override
             public void onChange(RealmResults<BookCategory> element) {
                 mBookCategoryRecyclerViewAdapter.mData = element;
             }
         });
-        return rootView;
     }
 
     private void setCurrentCategoryTitleIsGone() {
@@ -95,12 +89,6 @@ public class BookCategoriesFragment extends Fragment {
         mBookCategoryRecyclerViewAdapter = new BookCategoryRecyclerViewAdapter(getActivity(), mBookCategories, true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookCategoryRecyclerViewAdapter);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        //outState.putString(QUOTE_TYPE_BUNDLE, mQuoteType);
-        super.onSaveInstanceState(outState);
     }
 
     @Override

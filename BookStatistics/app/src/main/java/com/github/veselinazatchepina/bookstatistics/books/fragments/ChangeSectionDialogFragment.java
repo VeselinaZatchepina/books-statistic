@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
-import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookSectionEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.squareup.leakcanary.RefWatcher;
@@ -32,10 +32,10 @@ public class ChangeSectionDialogFragment extends DialogFragment {
     private static final String CURRENT_BOOK_ID = "current_book_id";
 
     @BindView(R.id.section_spinner_for_change)
-    Spinner mTypeSpinner;
+    Spinner mSectionSpinner;
     private Unbinder unbinder;
 
-    ArrayAdapter<String> mTypeSpinnerAdapter;
+    ArrayAdapter<String> mSectionSpinnerAdapter;
     private long mCurrentBookIdForEdit;
     private BooksRealmRepository mBooksRealmRepository;
 
@@ -79,8 +79,8 @@ public class ChangeSectionDialogFragment extends DialogFragment {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 Book book = mBooksRealmRepository.getBookById(mCurrentBookIdForEdit).first();
-                                if ((book.getDateStart().equals("") || book.getDateEnd().equals("")) && mTypeSpinner.getSelectedItem().toString().equals(BookTypeEnums.READ_BOOK)) {
-                                    Toast.makeText(getActivity(), "You need to fill start and end date of reading", Toast.LENGTH_LONG).show();
+                                if ((book.getDateStart().equals("") || book.getDateEnd().equals("")) && mSectionSpinner.getSelectedItem().toString().equals(BookSectionEnums.READ_BOOK)) {
+                                    Toast.makeText(getActivity(), getString(R.string.dialog_change_section_error), Toast.LENGTH_LONG).show();
                                 } else {
                                     mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit,
                                             createMapOfProperties());
@@ -97,10 +97,10 @@ public class ChangeSectionDialogFragment extends DialogFragment {
     }
 
     private void defineSectionSpinner() {
-        mTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        mTypeSpinnerAdapter.addAll(BookTypeEnums.NEW_BOOK, BookTypeEnums.CURRENT_BOOK, BookTypeEnums.READ_BOOK);
-        mTypeSpinner.setAdapter(mTypeSpinnerAdapter);
-        mTypeSpinner.setSelection(mTypeSpinnerAdapter.getPosition(mBooksRealmRepository
+        mSectionSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        mSectionSpinnerAdapter.addAll(BookSectionEnums.NEW_BOOK, BookSectionEnums.CURRENT_BOOK, BookSectionEnums.READ_BOOK);
+        mSectionSpinner.setAdapter(mSectionSpinnerAdapter);
+        mSectionSpinner.setSelection(mSectionSpinnerAdapter.getPosition(mBooksRealmRepository
                 .getBookById(mCurrentBookIdForEdit)
                 .first()
                 .getSection()
@@ -115,8 +115,8 @@ public class ChangeSectionDialogFragment extends DialogFragment {
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_RATING, String.valueOf(book.getRating().getStarsCount()));
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_PAGE, String.valueOf(book.getPageCount()));
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_CATEGORY, book.getBookCategory().getCategoryName());
-        mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
-        mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_START,book.getDateStart());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mSectionSpinner.getSelectedItem().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_START, book.getDateStart());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_END, book.getDateEnd());
         return mapOfBookProperties;
     }

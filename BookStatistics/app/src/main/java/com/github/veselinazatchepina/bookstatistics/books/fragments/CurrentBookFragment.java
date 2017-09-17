@@ -72,15 +72,15 @@ public class CurrentBookFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        defineInputData(savedInstanceState);
+        defineInputData();
         mBooksRealmRepository = new BooksRealmRepository();
         if (mCurrentBookId != -1) {
             mBookWithCurrentId = mBooksRealmRepository.getBookById(mCurrentBookId);
         }
     }
 
-    private void defineInputData(Bundle savedInstanceState) {
-        getActivity().setTitle(ColorationTextChar.setFirstVowelColor("Current book", getActivity()));
+    private void defineInputData() {
+        getActivity().setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.current_book_title), getActivity()));
         if (getArguments() != null) {
             mCurrentBookId = getArguments().getLong(CURRENT_BOOK_ID);
         }
@@ -96,39 +96,43 @@ public class CurrentBookFragment extends Fragment {
             @Override
             public void onChange(RealmResults<Book> element) {
                 if (isAdded() && !element.isEmpty()) {
-                    Book currentBook = element.first();
-                    if (currentBook.getBookName() != null && !currentBook.getBookName().equals("")) {
-                        mCurrentBookName.setText("\"" + currentBook.getBookName() + "\"");
-                    } else {
-                        mCurrentBookName.setText(getResources().getString(R.string.empty_field_book_name));
-                    }
-                    if (currentBook.getAuthorName() != null &&!currentBook.getAuthorName().equals("")) {
-                        mCurrentBookAuthor.setText(currentBook.getAuthorName());
-                    } else {
-                        mCurrentBookAuthor.setText(getResources().getString(R.string.empty_field_book_author));
-                    }
-                    mCurrentBookCategory.setText(currentBook.getBookCategory().getCategoryName());
-                    mCurrentBookSection.setText(currentBook.getSection().getSectionName());
-                    if (currentBook.getPageCount() != 0) {
-                        mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
-                    } else {
-                        mCurrentBookPages.setText(getResources().getString(R.string.empty_field));
-                    }
-                    if (currentBook.getDateStart() != null && !currentBook.getDateStart().equals("")) {
-                        mCurrentBookDateStart.setText(currentBook.getDateStart().replace("/", "."));
-                    } else {
-                        mCurrentBookDateStart.setText(getResources().getString(R.string.empty_field));
-                    }
-                    if (currentBook.getDateEnd() != null &&!currentBook.getDateEnd().equals("")) {
-                        mCurrentBookDateEnd.setText(currentBook.getDateEnd().replace("/", "."));
-                    } else {
-                        mCurrentBookDateEnd.setText(getResources().getString(R.string.empty_field));
-                    }
-                    mCurrentBookRating.setText(String.valueOf(currentBook.getRating().getStarsCount()));
+                    fillCurrentBookFragmentFields(element);
                 }
             }
         });
         return rootView;
+    }
+
+    private void fillCurrentBookFragmentFields(RealmResults<Book> element) {
+        Book currentBook = element.first();
+        if (currentBook.getBookName() != null && !currentBook.getBookName().equals("")) {
+            mCurrentBookName.setText("\"" + currentBook.getBookName() + "\"");
+        } else {
+            mCurrentBookName.setText(getResources().getString(R.string.empty_field_book_name));
+        }
+        if (currentBook.getAuthorName() != null && !currentBook.getAuthorName().equals("")) {
+            mCurrentBookAuthor.setText(currentBook.getAuthorName());
+        } else {
+            mCurrentBookAuthor.setText(getResources().getString(R.string.empty_field_book_author));
+        }
+        mCurrentBookCategory.setText(currentBook.getBookCategory().getCategoryName());
+        mCurrentBookSection.setText(currentBook.getSection().getSectionName());
+        if (currentBook.getPageCount() != 0) {
+            mCurrentBookPages.setText(String.valueOf(currentBook.getPageCount()));
+        } else {
+            mCurrentBookPages.setText(getResources().getString(R.string.empty_field));
+        }
+        if (currentBook.getDateStart() != null && !currentBook.getDateStart().equals("")) {
+            mCurrentBookDateStart.setText(currentBook.getDateStart().replace("/", "."));
+        } else {
+            mCurrentBookDateStart.setText(getResources().getString(R.string.empty_field));
+        }
+        if (currentBook.getDateEnd() != null && !currentBook.getDateEnd().equals("")) {
+            mCurrentBookDateEnd.setText(currentBook.getDateEnd().replace("/", "."));
+        } else {
+            mCurrentBookDateEnd.setText(getResources().getString(R.string.empty_field));
+        }
+        mCurrentBookRating.setText(String.valueOf(currentBook.getRating().getStarsCount()));
     }
 
     @Override
@@ -145,7 +149,7 @@ public class CurrentBookFragment extends Fragment {
                 openDeleteBookDialog();
                 break;
             case R.id.menu_item_share:
-                startActivity(Intent.createChooser(mSharingIntent, "Select conversation"));
+                startActivity(Intent.createChooser(mSharingIntent, getString(R.string.current_book_share_intent)));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -186,7 +190,7 @@ public class CurrentBookFragment extends Fragment {
         mSharingIntent = new Intent(Intent.ACTION_SEND);
         mSharingIntent.setType("text/plain");
         String quoteTextForShareBody = "\"" + mBookWithCurrentId.first().getBookName() + "\"\n" + mBookWithCurrentId.first().getAuthorName();
-        mSharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great Book!");
+        mSharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.current_book_share_intent_theme));
         mSharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, quoteTextForShareBody);
         if (shareActionProvider != null) {
             shareActionProvider.setShareIntent(mSharingIntent);

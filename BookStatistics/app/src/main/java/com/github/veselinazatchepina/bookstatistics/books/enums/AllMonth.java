@@ -3,27 +3,30 @@ package com.github.veselinazatchepina.bookstatistics.books.enums;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Division type (month) for barchart.
+ */
 public final class AllMonth {
-    public static final String JANUARY = "january";
-    public static final String FEBRUARY = "february";
-    public static final String MARCH = "march";
-    public static final String APRIL = "april";
-    public static final String MAY = "may";
-    public static final String JUNE = "june";
-    public static final String JULY = "july";
-    public static final String AUGUST = "august";
-    public static final String SEPTEMBER = "september";
-    public static final String OCTOBER = "october";
-    public static final String NOVEMBER = "november";
-    public static final String DECEMBER = "december";
+    private static final String JANUARY = "january";
+    private static final String FEBRUARY = "february";
+    private static final String MARCH = "march";
+    private static final String APRIL = "april";
+    private static final String MAY = "may";
+    private static final String JUNE = "june";
+    private static final String JULY = "july";
+    private static final String AUGUST = "august";
+    private static final String SEPTEMBER = "september";
+    private static final String OCTOBER = "october";
+    private static final String NOVEMBER = "november";
+    private static final String DECEMBER = "december";
 
-    public static final String JANUARY_MARCH = "januaryMarch";
-    public static final String APRIL_JUNE = "aprilJune";
-    public static final String JULY_SEPTEMBER = "julySeptember";
-    public static final String OCTOBER_DECEMBER = "octoberDecember";
+    private static final String JANUARY_MARCH = "januaryMarch";
+    private static final String APRIL_JUNE = "aprilJune";
+    private static final String JULY_SEPTEMBER = "julySeptember";
+    private static final String OCTOBER_DECEMBER = "octoberDecember";
 
-    public static final String JANUARY_JUNE = "januaryJune";
-    public static final String JULY_DECEMBER = "julyDecember";
+    private static final String JANUARY_JUNE = "januaryJune";
+    private static final String JULY_DECEMBER = "julyDecember";
 
     public static final String JANUARY_DECEMBER = "januaryDecember";
 
@@ -51,5 +54,6 @@ public final class AllMonth {
         listOfAllMonth.add(JANUARY_DECEMBER);
     }
 
-    private AllMonth() { }
+    private AllMonth() {
+    }
 }

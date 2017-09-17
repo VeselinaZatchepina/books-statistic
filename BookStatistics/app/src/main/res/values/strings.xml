@@ -57,6 +57,10 @@
     <!-- BookSectionFragment -->
     <string name="go_to_other_section_content_description">Go to other section</string>
     <string name="set_rating_content_description">Set rating</string>
+    <string name="view_pager_exception">Catch the NullPointerException in FragmentPagerAdapter.finishUpdate</string>
+    <string name="sort_by_author_name_realm">authorName</string>
+    <string name="sort_by_book_name_realm">bookName</string>
+    <string name="sort_by_rating_realm">rating.starsCount</string>
 
     <!-- CurrentBookFragment -->
     <string name="current_book_name">Book name:</string>
@@ -67,6 +71,10 @@
     <string name="current_book_section">Book section type:</string>
     <string name="current_book_start_date">Start date of reading:</string>
     <string name="current_book_end_date">End date of reading:</string>
+    <string name="edit_book_title">Edit book</string>
+    <string name="current_book_title">Current book</string>
+    <string name="current_book_share_intent">Select conversation</string>
+    <string name="current_book_share_intent_theme">It is great Book!</string>
 
     <!-- Delete category dialog -->
     <string name="dialog_delete_category_title">Delete current category?</string>
@@ -97,6 +105,7 @@
     <!-- Change section dialog -->
     <string name="title_change_section">Change section</string>
     <string name="dialog_change_section_ok_button">OK</string>
+    <string name="dialog_change_section_error">You need to fill start and end date of reading</string>
 
     <!-- Preference -->
     <string name="theme_default">ic_first</string>

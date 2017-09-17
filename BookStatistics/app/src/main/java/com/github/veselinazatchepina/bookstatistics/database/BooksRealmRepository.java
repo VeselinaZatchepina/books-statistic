@@ -4,7 +4,7 @@ package com.github.veselinazatchepina.bookstatistics.database;
 import android.util.Log;
 
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
-import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookSectionEnums;
 import com.github.veselinazatchepina.bookstatistics.books.enums.DivisionType;
 import com.github.veselinazatchepina.bookstatistics.books.enums.MonthIndex;
 import com.github.veselinazatchepina.bookstatistics.books.fragments.AddBookFragment;
@@ -55,7 +55,7 @@ public class BooksRealmRepository implements RealmRepository {
                 String currentStartDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_START);
                 String currentEndDateValue = mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_DATE_END);
                 if (isNotNullAndEmpty(currentStartDateValue) && isNotNullAndEmpty(currentEndDateValue)
-                        && mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_TYPE).equals(BookTypeEnums.READ_BOOK)) {
+                        && mapOfQuoteProperties.get(BookPropertiesEnum.BOOK_TYPE).equals(BookSectionEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
                 }
             }
@@ -631,7 +631,7 @@ public class BooksRealmRepository implements RealmRepository {
                     updateBookYear(realm, currentBook, newStartDateValue);
                 }
                 if (!currentBook.getDateStart().equals("") && !currentBook.getDateEnd().equals("")
-                        && currentBook.getSection().getSectionName().equals(BookTypeEnums.READ_BOOK)) {
+                        && currentBook.getSection().getSectionName().equals(BookSectionEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
                 }
                 updateTablesForCharts(realm, oldDateStart, oldDateEnd, oldSection, oldCategory);
@@ -642,7 +642,7 @@ public class BooksRealmRepository implements RealmRepository {
     private void updateTablesForCharts(Realm realm, String oldDateStart, String oldDateEnd, String oldSection,
                                        String oldCategory) {
         if (!oldDateStart.equals("") && !oldDateEnd.equals("") &&
-                oldSection.equals(BookTypeEnums.READ_BOOK)) {
+                oldSection.equals(BookSectionEnums.READ_BOOK)) {
             ArrayList<Integer> array = createMonthYearArray(oldDateStart, oldDateEnd);
 
             float indexMonth = isContainsList(array, Division.oneMonthDivisionArrays);

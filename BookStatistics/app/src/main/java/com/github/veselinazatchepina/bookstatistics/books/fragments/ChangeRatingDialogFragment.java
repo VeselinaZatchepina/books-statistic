@@ -112,8 +112,10 @@ public class ChangeRatingDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.book_accent_background));
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.book_accent_background));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(R.color.book_accent_background));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(getResources().getColor(R.color.book_accent_background));
     }
 
     @Override

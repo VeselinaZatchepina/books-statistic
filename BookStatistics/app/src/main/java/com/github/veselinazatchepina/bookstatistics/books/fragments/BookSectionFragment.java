@@ -62,7 +62,6 @@ public class BookSectionFragment extends Fragment {
     private long mBookIdForDelete;
     private String mSortedBy;
     private SearchView mSearchView;
-    private MenuItem mSearchMenuItem;
     private ChangeSectionDialogFragment mChangeSectionDialogFragment;
     private ChangeRatingDialogFragment mChangeRatingDialogFragment;
 
@@ -90,19 +89,23 @@ public class BookSectionFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        defineInputData(savedInstanceState);
+        defineInputData();
+        getBooksInCurrentSection();
+    }
+
+    private void defineInputData() {
+        if (getArguments() != null) {
+            mCurrentSectionType = getArguments().getString(CURRENT_BOOK_SECTION);
+            mCurrentCategory = getArguments().getString(CURRENT_BOOK_CATEGORY);
+        }
+    }
+
+    private void getBooksInCurrentSection() {
         mBooksRealmRepository = new BooksRealmRepository();
         if (mCurrentCategory != null) {
             mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSectionByCategory(mCurrentSectionType, mCurrentCategory);
         } else {
             mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType);
-        }
-    }
-
-    private void defineInputData(Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            mCurrentSectionType = getArguments().getString(CURRENT_BOOK_SECTION);
-            mCurrentCategory = getArguments().getString(CURRENT_BOOK_CATEGORY);
         }
     }
 
@@ -113,14 +116,7 @@ public class BookSectionFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
         setCurrentCategoryTitleIsGone();
         defineRecyclerView();
-        mBooksInCurrentSection.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
-            @Override
-            public void onChange(RealmResults<Book> element) {
-                if (mBookSectionRecyclerViewAdapter != null) {
-                    mBookSectionRecyclerViewAdapter.updateData(element);
-                }
-            }
-        });
+        defineListenerToBooksInCurrentSectionResults();
         return rootView;
     }
 
@@ -129,17 +125,31 @@ public class BookSectionFragment extends Fragment {
     }
 
     private void defineRecyclerView() {
-        mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(), mBooksInCurrentSection, true, mCurrentSectionType);
+        mBookSectionRecyclerViewAdapter = new BookSectionRecyclerViewAdapter(getActivity(),
+                mBooksInCurrentSection,
+                true,
+                mCurrentSectionType);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mBookSectionRecyclerViewAdapter);
+    }
+
+    private void defineListenerToBooksInCurrentSectionResults() {
+        mBooksInCurrentSection.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
+            @Override
+            public void onChange(RealmResults<Book> element) {
+                if (mBookSectionRecyclerViewAdapter != null) {
+                    mBookSectionRecyclerViewAdapter.updateData(element);
+                }
+            }
+        });
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         clearSearchView();
         inflater.inflate(R.menu.book_section, menu);
-        mSearchMenuItem = menu.findItem(R.id.search_book);
-        mSearchView = (SearchView) mSearchMenuItem.getActionView();
+        MenuItem searchMenuItem = menu.findItem(R.id.search_book);
+        mSearchView = (SearchView) searchMenuItem.getActionView();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -180,13 +190,13 @@ public class BookSectionFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.filter_by_book_name:
-                        mSortedBy = "bookName";
+                        mSortedBy = getString(R.string.sort_by_book_name_realm);
                         break;
                     case R.id.filter_by_book_author:
-                        mSortedBy = "authorName";
+                        mSortedBy = getString(R.string.sort_by_author_name_realm);
                         break;
                     case R.id.filter_by_rating:
-                        mSortedBy = "rating.starsCount";
+                        mSortedBy = getString(R.string.sort_by_rating_realm);
                         break;
                 }
                 sortAndUpdateRecyclerView(mSortedBy);
@@ -199,7 +209,7 @@ public class BookSectionFragment extends Fragment {
     }
 
     private void sortAndUpdateRecyclerView(String mSortedBy) {
-        if (mSortedBy.equals("rating.starsCount")) {
+        if (mSortedBy.equals(getString(R.string.sort_by_rating_realm))) {
             mBooksInCurrentSection = mBooksInCurrentSection.sort(mSortedBy, Sort.DESCENDING);
         } else {
             mBooksInCurrentSection = mBooksInCurrentSection.sort(mSortedBy, Sort.ASCENDING);
@@ -270,7 +280,7 @@ public class BookSectionFragment extends Fragment {
                 } else {
                     holder.bookNameTextView.setText(getResources().getString(R.string.empty_field_book_name));
                 }
-                if (currentBook.getAuthorName() != null &&!currentBook.getAuthorName().equals("")) {
+                if (currentBook.getAuthorName() != null && !currentBook.getAuthorName().equals("")) {
                     holder.bookAuthorTextView.setText(currentBook.getAuthorName());
                 } else {
                     holder.bookAuthorTextView.setText(getResources().getString(R.string.empty_field_book_author));
@@ -327,14 +337,14 @@ public class BookSectionFragment extends Fragment {
 
         public void filterResults(String text) {
             text = text == null ? null : text.toLowerCase().trim();
-            if(text == null || "".equals(text)) {
-                if (mCurrentCategory ==  null) {
+            if (text == null || "".equals(text)) {
+                if (mCurrentCategory == null) {
                     updateData(mBooksRealmRepository.getAllBooksInCurrentSection(currentSectionType));
                 } else {
                     updateData(mBooksRealmRepository.getAllBooksInCurrentSectionByCategory(currentSectionType, mCurrentCategory));
                 }
             } else {
-                if (mCurrentCategory ==  null) {
+                if (mCurrentCategory == null) {
                     updateData(mBooksRealmRepository.getBookBySectionAndBookName(currentSectionType, text));
                 } else {
                     updateData(mBooksRealmRepository.getBookBySectionAndBookNameByCategory(currentSectionType, text, mCurrentCategory));

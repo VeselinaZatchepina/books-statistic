@@ -16,6 +16,7 @@ public final class MonthIndex {
     public static final int TEN = 10;
     public static final int ELEVEN = 11;
 
-    private MonthIndex() { }
+    private MonthIndex() {
+    }
 
 }

@@ -20,7 +20,7 @@ import com.github.veselinazatchepina.bookstatistics.MyApplication;
 import com.github.veselinazatchepina.bookstatistics.R;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookPropertiesEnum;
 import com.github.veselinazatchepina.bookstatistics.books.enums.BookRatingEnums;
-import com.github.veselinazatchepina.bookstatistics.books.enums.BookTypeEnums;
+import com.github.veselinazatchepina.bookstatistics.books.enums.BookSectionEnums;
 import com.github.veselinazatchepina.bookstatistics.database.BooksRealmRepository;
 import com.github.veselinazatchepina.bookstatistics.database.model.Book;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
@@ -59,28 +59,29 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     @BindView(R.id.rating_spinner)
     Spinner mRatingSpinner;
     @BindView(R.id.type_spinner)
-    Spinner mTypeSpinner;
+    Spinner mSectionSpinner;
     @BindView(R.id.book_name)
-    EditText mBookName;
+    EditText mBookNameEditText;
     @BindView(R.id.book_author)
-    EditText mBookAuthor;
+    EditText mBookAuthorEditText;
     @BindView(R.id.book_page)
-    EditText mBookPage;
+    EditText mBookPageEditText;
     @BindView(R.id.book_page_input_layout)
     TextInputLayout mBookPageInputLayout;
     @BindView(R.id.date_start_input_layout)
     TextInputLayout mDateStartInputLayout;
     @BindView(R.id.date_end_input_layout)
     TextInputLayout mEndDateInputLayout;
-    private Unbinder unbinder;
 
+    private Unbinder unbinder;
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<BookCategory> mBookCategories;
+
     @State
     ArrayList<String> mAllCategories;
     private ArrayAdapter<String> mCategorySpinnerAdapter;
-    ArrayAdapter<Integer> mRatingSpinnerAdapter;
-    ArrayAdapter<String> mTypeSpinnerAdapter;
+    private ArrayAdapter<Integer> mRatingSpinnerAdapter;
+    private ArrayAdapter<String> mSectionSpinnerAdapter;
     private String mSelectedValueOfCategory;
     private EditText mStartDateEditText;
     private EditText mEndDateEditText;
@@ -91,21 +92,21 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private String mCurrentCategory;
 
     @State
-    String bookNameSaveInstance;
+    String mBookNameSaveInstance;
     @State
-    String bookAuthorSaveInstance;
+    String mBookAuthorSaveInstance;
     @State
-    int ratingSaveInstance;
+    int mRatingSaveInstance;
     @State
-    int bookPageSaveInstance;
+    int mBookPageSaveInstance;
     @State
-    int bookCategorySaveInstance;
+    int mBookCategorySaveInstance;
     @State
-    int bookTypeSaveInstance;
+    int mBookSectionSaveInstance;
     @State
-    String startDateSaveInstance;
+    String mStartDateSaveInstance;
     @State
-    String endDateSaveInstance;
+    String mEndDateSaveInstance;
 
 
     public AddBookFragment() {
@@ -150,14 +151,9 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         Icepick.restoreInstanceState(this, savedInstanceState);
         final View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
-            @Override
-            public void onChange(RealmResults<BookCategory> element) {
-                defineCategorySpinner(element, savedInstanceState);
-            }
-        });
+        defineListenerToBookCategoriesResults(savedInstanceState);
         defineRatingSpinner();
-        defineTypeSpinner();
+        defineSectionSpinner();
         setListenerToCategorySpinner();
         defineStartDate();
         defineEndDate();
@@ -167,19 +163,28 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         return rootView;
     }
 
+    private void defineListenerToBookCategoriesResults(final Bundle savedInstanceState) {
+        mBookCategories.addChangeListener(new RealmChangeListener<RealmResults<BookCategory>>() {
+            @Override
+            public void onChange(RealmResults<BookCategory> element) {
+                defineCategorySpinner(element, savedInstanceState);
+            }
+        });
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        bookNameSaveInstance = mBookName.getText().toString();
-        bookAuthorSaveInstance = mBookAuthor.getText().toString();
-        ratingSaveInstance = mRatingSpinner.getSelectedItemPosition();
-        if (!mBookPage.getText().toString().equals("")) {
-            bookPageSaveInstance = Integer.valueOf(mBookPage.getText().toString());
+        mBookNameSaveInstance = mBookNameEditText.getText().toString();
+        mBookAuthorSaveInstance = mBookAuthorEditText.getText().toString();
+        mRatingSaveInstance = mRatingSpinner.getSelectedItemPosition();
+        if (!mBookPageEditText.getText().toString().equals("")) {
+            mBookPageSaveInstance = Integer.valueOf(mBookPageEditText.getText().toString());
         }
-        bookCategorySaveInstance = mCategorySpinner.getSelectedItemPosition();
-        bookTypeSaveInstance = mTypeSpinner.getSelectedItemPosition();
-        startDateSaveInstance = mStartDateEditText.getText().toString();
-        endDateSaveInstance = mEndDateEditText.getText().toString();
+        mBookCategorySaveInstance = mCategorySpinner.getSelectedItemPosition();
+        mBookSectionSaveInstance = mSectionSpinner.getSelectedItemPosition();
+        mStartDateSaveInstance = mStartDateEditText.getText().toString();
+        mEndDateSaveInstance = mEndDateEditText.getText().toString();
         Icepick.saveInstanceState(this, outState);
     }
 
@@ -218,7 +223,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private void setCategorySpinnerOnCurrentPosition(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             createSpinnerAdapter();
-            mCategorySpinner.setSelection(bookCategorySaveInstance);
+            mCategorySpinner.setSelection(mBookCategorySaveInstance);
         }
         if (mCurrentCategory != null) {
             mCategorySpinner.setSelection(mAllCategories.indexOf(mCurrentCategory.toUpperCase()));
@@ -235,12 +240,12 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         mRatingSpinner.setAdapter(mRatingSpinnerAdapter);
     }
 
-    private void defineTypeSpinner() {
-        mTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-        mTypeSpinnerAdapter.addAll(BookTypeEnums.NEW_BOOK, BookTypeEnums.CURRENT_BOOK, BookTypeEnums.READ_BOOK);
-        mTypeSpinner.setAdapter(mTypeSpinnerAdapter);
+    private void defineSectionSpinner() {
+        mSectionSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
+        mSectionSpinnerAdapter.addAll(BookSectionEnums.NEW_BOOK, BookSectionEnums.CURRENT_BOOK, BookSectionEnums.READ_BOOK);
+        mSectionSpinner.setAdapter(mSectionSpinnerAdapter);
         if (mCurrentSectionType != -1) {
-            mTypeSpinner.setSelection(mCurrentSectionType);
+            mSectionSpinner.setSelection(mCurrentSectionType);
         }
     }
 
@@ -305,12 +310,12 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     private void setBookDataToFields(RealmResults<Book> element) {
         Book book = element.first();
         if (isAdded()) {
-            mBookName.setText(book.getBookName());
-            mBookAuthor.setText(book.getAuthorName());
+            mBookNameEditText.setText(book.getBookName());
+            mBookAuthorEditText.setText(book.getAuthorName());
             mRatingSpinner.setSelection(mRatingSpinnerAdapter.getPosition(book.getRating().getStarsCount()));
-            mBookPage.setText(String.valueOf(book.getPageCount()));
+            mBookPageEditText.setText(String.valueOf(book.getPageCount()));
             setCategorySpinnerSelectionOnCurrentCategory(element);
-            mTypeSpinner.setSelection(mTypeSpinnerAdapter.getPosition(book.getSection().getSectionName()));
+            mSectionSpinner.setSelection(mSectionSpinnerAdapter.getPosition(book.getSection().getSectionName()));
             mDateStartInputLayout.getEditText().setText(book.getDateStart());
             mEndDateInputLayout.getEditText().setText(book.getDateEnd());
         }
@@ -318,14 +323,14 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     private void setBookDataToFieldsFromBundle() {
         if (isAdded()) {
-            mBookName.setText(bookNameSaveInstance);
-            mBookAuthor.setText(bookAuthorSaveInstance);
-            mRatingSpinner.setSelection(ratingSaveInstance);
-            mBookPage.setText(String.valueOf(bookPageSaveInstance));
-            mCategorySpinner.setSelection(bookCategorySaveInstance);
-            mTypeSpinner.setSelection(bookTypeSaveInstance);
-            mDateStartInputLayout.getEditText().setText(startDateSaveInstance);
-            mEndDateInputLayout.getEditText().setText(endDateSaveInstance);
+            mBookNameEditText.setText(mBookNameSaveInstance);
+            mBookAuthorEditText.setText(mBookAuthorSaveInstance);
+            mRatingSpinner.setSelection(mRatingSaveInstance);
+            mBookPageEditText.setText(String.valueOf(mBookPageSaveInstance));
+            mCategorySpinner.setSelection(mBookCategorySaveInstance);
+            mSectionSpinner.setSelection(mBookSectionSaveInstance);
+            mDateStartInputLayout.getEditText().setText(mStartDateSaveInstance);
+            mEndDateInputLayout.getEditText().setText(mEndDateSaveInstance);
         }
     }
 
@@ -420,7 +425,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     public boolean isPagePositiveNumber() {
-        return isCurrentNumberPositive(mBookPage, mBookPageInputLayout);
+        return isCurrentNumberPositive(mBookPageEditText, mBookPageInputLayout);
     }
 
     private boolean isCurrentNumberPositive(EditText editText, TextInputLayout textInputLayout) {
@@ -437,12 +442,12 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
      */
     public void createMapOfBookProperties() {
         HashMap<BookPropertiesEnum, String> mapOfBookProperties = new HashMap<>();
-        mapOfBookProperties.put(BookPropertiesEnum.BOOK_NAME, mBookName.getText().toString());
-        mapOfBookProperties.put(BookPropertiesEnum.BOOK_AUTHOR, mBookAuthor.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_NAME, mBookNameEditText.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_AUTHOR, mBookAuthorEditText.getText().toString());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_RATING, mRatingSpinner.getSelectedItem().toString());
-        mapOfBookProperties.put(BookPropertiesEnum.BOOK_PAGE, mBookPage.getText().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_PAGE, mBookPageEditText.getText().toString());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_CATEGORY, mCategorySpinner.getSelectedItem().toString().toLowerCase());
-        mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mTypeSpinner.getSelectedItem().toString());
+        mapOfBookProperties.put(BookPropertiesEnum.BOOK_TYPE, mSectionSpinner.getSelectedItem().toString());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_START, mStartDateEditText.getText().toString());
         mapOfBookProperties.put(BookPropertiesEnum.BOOK_DATE_END, mEndDateEditText.getText().toString());
         if (mCurrentBookIdForEdit != -1) {
@@ -454,7 +459,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
 
     public boolean isDateExistInReadSectionType() {
         boolean isDateExist = true;
-        if (mTypeSpinner.getSelectedItem().toString().equals(BookTypeEnums.READ_BOOK)) {
+        if (mSectionSpinner.getSelectedItem().toString().equals(BookSectionEnums.READ_BOOK)) {
             if (mStartDateEditText.getText().toString().equals("") && mEndDateEditText.getText().toString().equals("")) {
                 mDateStartInputLayout.setError(getString(R.string.error_date_start_value));
                 mEndDateInputLayout.setError(getString(R.string.error_date_end_value));
