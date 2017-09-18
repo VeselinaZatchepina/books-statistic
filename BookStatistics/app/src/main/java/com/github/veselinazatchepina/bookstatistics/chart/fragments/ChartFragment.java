@@ -106,16 +106,10 @@ public class ChartFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        defineInputData(savedInstanceState);
         mBooksRealmRepository = new BooksRealmRepository();
         mAllYears = mBooksRealmRepository.getAllYears();
         mAllBookCategories = mBooksRealmRepository.getListOfBookCategories();
     }
-
-    private void defineInputData(Bundle savedInstanceState) {
-
-    }
-
 
     @Nullable
     @Override
@@ -163,7 +157,7 @@ public class ChartFragment extends Fragment {
                 columnName = "allBookCountSixMonth";
                 break;
             case DivisionType.TWELVE:
-                columnName = "allBookCountTwelve";
+                columnName = "allBookCountTwelveMonth";
                 break;
         }
         return columnName;

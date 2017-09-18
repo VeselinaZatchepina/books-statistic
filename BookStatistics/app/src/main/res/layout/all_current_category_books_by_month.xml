@@ -92,9 +92,9 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart_books_current_category"
-            android:layout_gravity="center"
             android:layout_width="@dimen/chart_width"
-            android:layout_height="@dimen/chart_height"/>
+            android:layout_height="@dimen/chart_height"
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Division {
-    public static ArrayList<List<Integer>> oneMonthDivisionArrays  =  new ArrayList<>();
-    public static ArrayList<List<Integer>> threeMonthDivisionArrays =  new ArrayList<>();
-    public static ArrayList<List<Integer>> sixMonthDivisionArrays =  new ArrayList<>();
-    public static ArrayList<List<Integer>> twelveMonthDivisionArrays =  new ArrayList<>();
+    public static ArrayList<List<Integer>> oneMonthDivisionArrays = new ArrayList<>();
+    public static ArrayList<List<Integer>> threeMonthDivisionArrays = new ArrayList<>();
+    public static ArrayList<List<Integer>> sixMonthDivisionArrays = new ArrayList<>();
+    public static ArrayList<List<Integer>> twelveMonthDivisionArrays = new ArrayList<>();
 
     static {
         for (int i = 1; i < 13; i++) {

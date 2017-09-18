@@ -228,6 +228,12 @@ public class BookSectionFragment extends Fragment {
         super.onDetach();
         mCallbacks = null;
         clearSearchView();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         mChangeSectionDialogFragment = null;
         mChangeRatingDialogFragment = null;
     }

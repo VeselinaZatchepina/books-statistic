@@ -2,12 +2,12 @@
 <Button
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/clear"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_marginLeft="@dimen/date_picker_clear_button_margin"
-    android:layout_marginStart="@dimen/date_picker_clear_button_margin"
-    android:layout_marginRight="@dimen/date_picker_clear_button_margin"
-    android:layout_marginEnd="@dimen/date_picker_clear_button_margin"
-    android:textColor="@color/colorAccent"
     style="@style/mdtp_ActionButton.Text"
-    android:text="@string/date_picker_clear_button_text"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/date_picker_clear_button_margin"
+    android:layout_marginLeft="@dimen/date_picker_clear_button_margin"
+    android:layout_marginRight="@dimen/date_picker_clear_button_margin"
+    android:layout_marginStart="@dimen/date_picker_clear_button_margin"
+    android:text="@string/date_picker_clear_button_text"
+    android:textColor="@color/colorAccent"/>

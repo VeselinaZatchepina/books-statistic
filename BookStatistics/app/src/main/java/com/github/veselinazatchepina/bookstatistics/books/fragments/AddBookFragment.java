@@ -453,7 +453,7 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
         if (mCurrentBookIdForEdit != -1) {
             mBooksRealmRepository.saveChangedBook(mCurrentBookIdForEdit, mapOfBookProperties);
         } else {
-            mBooksRealmRepository.saveQuote(mapOfBookProperties);
+            mBooksRealmRepository.saveCurrentBook(mapOfBookProperties);
         }
     }
 

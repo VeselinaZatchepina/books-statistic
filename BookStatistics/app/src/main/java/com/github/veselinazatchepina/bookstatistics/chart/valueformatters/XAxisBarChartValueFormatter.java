@@ -18,6 +18,6 @@ public class XAxisBarChartValueFormatter implements IAxisValueFormatter {
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         BookCategory bookCategory = realmResults.get((int) value - 1).getCategory();
-        return  bookCategory == null ? "No data" : bookCategory.getCategoryName();
+        return bookCategory == null ? "No data" : bookCategory.getCategoryName();
     }
 }

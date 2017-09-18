@@ -5,28 +5,28 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="@dimen/section_vertical_margin"
+                                    android:layout_marginEnd="@dimen/section_card_view_margin_end"
+                                    android:layout_marginStart="@dimen/section_card_view_margin_start"
                                     card_view:cardBackgroundColor="@color/card_background"
                                     card_view:cardCornerRadius="@dimen/corner_radius"
                                     card_view:cardElevation="@dimen/card_elevation"
-                                    android:layout_marginStart="@dimen/section_card_view_margin_start"
-                                    android:layout_marginEnd="@dimen/section_card_view_margin_end"
                                     card_view:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:baselineAligned="false"
         android:layout_margin="@dimen/section_linear_layout_margin"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:paddingEnd="@dimen/section_book_data_margin_end"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/section_book_data_margin_end">
 
             <TextView
                 android:id="@+id/book_name_in_section"
@@ -43,8 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/section_book_author_text_view_margin_top"
-                android:textSize="@dimen/section_book_autor_text_size"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/section_book_autor_text_size"
                 tools:text="Book author"/>
 
         </LinearLayout>
@@ -52,9 +52,9 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal|center_vertical"
                       android:layout_margin="@dimen/section_card_view_horizontal_margin_grade_swap"
                       android:layout_weight="1"
-                      android:layout_gravity="center_horizontal|center_vertical"
                       android:gravity="center"
                       android:orientation="vertical">
 

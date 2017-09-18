@@ -4,16 +4,16 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical" >
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/title_current_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/recycler_view_text_view_margin_top"
         android:layout_marginBottom="@dimen/recycler_view_text_view_margin_bottom"
         android:layout_marginEnd="@dimen/recycler_view_text_view_margin_end"
         android:layout_marginStart="@dimen/recycler_view_text_view_margin_start"
+        android:layout_marginTop="@dimen/recycler_view_text_view_margin_top"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/card_background"
         tools:text="Current category"/>
@@ -26,7 +26,7 @@
         android:layout_marginLeft="@dimen/recycler_view_horizontal_margin"
         android:layout_marginRight="@dimen/recycler_view_horizontal_margin"
         android:layout_marginTop="@dimen/recycler_view_vertical_margin"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
 
 </LinearLayout>
 

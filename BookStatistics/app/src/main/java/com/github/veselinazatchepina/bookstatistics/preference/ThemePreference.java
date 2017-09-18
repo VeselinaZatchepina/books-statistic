@@ -26,29 +26,29 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ThemePreference extends ListPreference {
-    private Context context;
-    private ImageView themeImageView;
-    private CharSequence[] themeImageFileCharArray;
-    private CharSequence[] themeImageNameCharArray;
-    private List<ThemeItem> ThemeIcons;
-    private SharedPreferences preferences;
-    private Resources resources;
-    private String selectedImageFileName, defaultImageFileName;
-    private TextView summaryTextView;
+    private Context mContext;
+    private ImageView mThemeImageView;
+    private CharSequence[] mThemeImageFileCharArray;
+    private CharSequence[] mThemeImageNameCharArray;
+    private List<ThemeItem> mThemeIcons;
+    private SharedPreferences mPreferences;
+    private Resources mResources;
+    private String mSelectedImageFileName, mDefaultImageFileName;
+    private TextView mSummaryTextView;
 
     public ThemePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
-        resources = context.getResources();
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.mContext = context;
+        mResources = context.getResources();
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         getCustomAttributes(attrs);
     }
 
     private void getCustomAttributes(AttributeSet attrs) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
+        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.attrs_icon, 0, 0);
         try {
-            defaultImageFileName = a.getString(R.styleable.attrs_icon_iconFile);
+            mDefaultImageFileName = a.getString(R.styleable.attrs_icon_iconFile);
         } finally {
             //The recycle() causes the allocated memory to be returned to the available pool immediately
             // and will not stay until garbage collection
@@ -59,34 +59,30 @@ public class ThemePreference extends ListPreference {
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
-        selectedImageFileName = preferences.getString(
-                resources.getString(R.string.custom_theme_key), defaultImageFileName);
-        themeImageView = ButterKnife.findById(view, R.id.iconSelected);
+        mSelectedImageFileName = mPreferences.getString(
+                mResources.getString(R.string.custom_theme_key), mDefaultImageFileName);
+        mThemeImageView = ButterKnife.findById(view, R.id.iconSelected);
         updateIcon();
-        summaryTextView = ButterKnife.findById(view, R.id.summary);
-        summaryTextView.setText(getEntry(selectedImageFileName));
+        mSummaryTextView = ButterKnife.findById(view, R.id.summary);
+        mSummaryTextView.setText(getEntry(mSelectedImageFileName));
     }
 
     private void updateIcon() {
-        int identifier = resources.getIdentifier(selectedImageFileName, "drawable",
-                context.getPackageName());
-        if (selectedImageFileName.equals("ic_first")) {
-            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background_green));
+        if (mSelectedImageFileName.equals("ic_first")) {
+            mThemeImageView.setBackground(mContext.getResources().getDrawable(R.drawable.background_green));
         }
-        if (selectedImageFileName.equals("ic_second")) {
-            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background_brown));
+        if (mSelectedImageFileName.equals("ic_second")) {
+            mThemeImageView.setBackground(mContext.getResources().getDrawable(R.drawable.background_brown));
         }
-        if (selectedImageFileName.equals("ic_third")) {
-            themeImageView.setBackground(context.getResources().getDrawable(R.drawable.background_blue));
+        if (mSelectedImageFileName.equals("ic_third")) {
+            mThemeImageView.setBackground(mContext.getResources().getDrawable(R.drawable.background_blue));
         }
-        //themeImageView.setImageResource(identifier);
-
-        themeImageView.setTag(selectedImageFileName);
+        mThemeImageView.setTag(mSelectedImageFileName);
     }
 
     private String getEntry(String value) {
-        String[] entries = resources.getStringArray(R.array.iconName);
-        String[] values = resources.getStringArray(R.array.iconFile);
+        String[] entries = mResources.getStringArray(R.array.iconName);
+        String[] values = mResources.getStringArray(R.array.iconFile);
         int index = Arrays.asList(values).indexOf(value);
         return entries[index];
     }
@@ -96,9 +92,9 @@ public class ThemePreference extends ListPreference {
         builder.getContext().setTheme(R.style.PreferenceThemeDialog);
         defineDialogButton(builder);
         getEntriesAndEntryValuesOfPreference();
-        String selectedIcon = preferences.getString(
-                resources.getString(R.string.custom_theme_key),
-                resources.getString(R.string.theme_default));
+        String selectedIcon = mPreferences.getString(
+                mResources.getString(R.string.custom_theme_key),
+                mResources.getString(R.string.theme_default));
         createListOfAllThemes(selectedIcon);
         defineAdapter(builder);
     }
@@ -109,10 +105,10 @@ public class ThemePreference extends ListPreference {
     }
 
     private void getEntriesAndEntryValuesOfPreference() {
-        themeImageNameCharArray = getEntries();
-        themeImageFileCharArray = getEntryValues();
-        if (themeImageNameCharArray == null || themeImageFileCharArray == null
-                || themeImageNameCharArray.length != themeImageFileCharArray.length) {
+        mThemeImageNameCharArray = getEntries();
+        mThemeImageFileCharArray = getEntryValues();
+        if (mThemeImageNameCharArray == null || mThemeImageFileCharArray == null
+                || mThemeImageNameCharArray.length != mThemeImageFileCharArray.length) {
             throw new IllegalStateException(
                     "ListPreference requires an entries array "
                             + "and an entryValues array which are both the same length");
@@ -120,28 +116,27 @@ public class ThemePreference extends ListPreference {
     }
 
     private void createListOfAllThemes(String selectedIcon) {
-        ThemeIcons = new ArrayList<ThemeItem>();
-        for (int i = 0; i < themeImageNameCharArray.length; i++) {
-            boolean isSelected = selectedIcon.equals(themeImageFileCharArray[i]);
-            ThemeItem item = new ThemeItem(themeImageNameCharArray[i], themeImageFileCharArray[i], isSelected);
-            ThemeIcons.add(item);
+        mThemeIcons = new ArrayList<ThemeItem>();
+        for (int i = 0; i < mThemeImageNameCharArray.length; i++) {
+            boolean isSelected = selectedIcon.equals(mThemeImageFileCharArray[i]);
+            ThemeItem item = new ThemeItem(mThemeImageNameCharArray[i], mThemeImageFileCharArray[i], isSelected);
+            mThemeIcons.add(item);
         }
     }
 
     private void defineAdapter(AlertDialog.Builder builder) {
         CustomListPreferenceAdapter customListPreferenceAdapter = new CustomListPreferenceAdapter(
-                context, R.layout.theme_item, ThemeIcons);
+                mContext, R.layout.theme_item, mThemeIcons);
         builder.setAdapter(customListPreferenceAdapter, null);
     }
-
 
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
-        if (ThemeIcons != null) {
-            for (int i = 0; i < themeImageNameCharArray.length; i++) {
-                ThemeItem item = ThemeIcons.get(i);
+        if (mThemeIcons != null) {
+            for (int i = 0; i < mThemeImageNameCharArray.length; i++) {
+                ThemeItem item = mThemeIcons.get(i);
                 if (item.isChecked) {
                     saveChangedDataInPreference(item);
                     updateViews(item);
@@ -152,22 +147,22 @@ public class ThemePreference extends ListPreference {
     }
 
     private void saveChangedDataInPreference(ThemeItem item) {
-        SharedPreferences.Editor editor = preferences.edit();
+        SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(
-                resources.getString(R.string.custom_theme_key),
+                mResources.getString(R.string.custom_theme_key),
                 item.file);
         editor.apply();
     }
 
     private void updateViews(ThemeItem item) {
-        selectedImageFileName = item.file;
+        mSelectedImageFileName = item.file;
         updateIcon();
-        summaryTextView.setText(item.name);
+        mSummaryTextView.setText(item.name);
     }
 
 
     /**
-     * Adapter for inflate themeImageView item
+     * Adapter for inflate mThemeImageView item
      */
     private class CustomListPreferenceAdapter extends ArrayAdapter<ThemeItem> {
         private Context context;
@@ -201,7 +196,7 @@ public class ThemePreference extends ListPreference {
     }
 
     private View inflateConvertView(View convertView, ViewGroup parent, int resource) {
-        LayoutInflater inflater = (LayoutInflater) context
+        LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(resource, parent, false);
         return convertView;
@@ -209,9 +204,9 @@ public class ThemePreference extends ListPreference {
 
     private void defineDialogViews(ViewHolder holder, List<ThemeItem> themeItems, int position) {
         holder.themeName.setText(themeItems.get(position).name);
-        int identifier = context.getResources().getIdentifier(
+        int identifier = mContext.getResources().getIdentifier(
                 themeItems.get(position).file, "drawable",
-                context.getPackageName());
+                mContext.getPackageName());
         holder.themeImage.setImageResource(identifier);
         holder.radioButton.setChecked(themeItems.get(position).isChecked);
     }

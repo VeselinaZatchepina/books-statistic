@@ -32,7 +32,7 @@ public class ColorationTextChar {
     /**
      * Method returns index of first vowel in title (for english languages)
      *
-     * @param text     current text
+     * @param text current text
      * @return index of first vowel
      */
     private static int getFirstVowelIndex(String text) {

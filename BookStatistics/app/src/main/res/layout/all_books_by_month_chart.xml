@@ -55,9 +55,9 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart_all_books"
-            android:layout_gravity="center"
             android:layout_width="@dimen/chart_width"
-            android:layout_height="@dimen/chart_height"/>
+            android:layout_height="@dimen/chart_height"
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -83,8 +83,8 @@
             <View
                 android:layout_width="@dimen/chart_year_spinner_width"
                 android:layout_height="@dimen/year_divider"
-                android:background="@android:color/black"
-                android:layout_marginBottom="@dimen/chart_margin_bottom"/>
+                android:layout_marginBottom="@dimen/chart_margin_bottom"
+                android:background="@android:color/black"/>
 
         </LinearLayout>
 

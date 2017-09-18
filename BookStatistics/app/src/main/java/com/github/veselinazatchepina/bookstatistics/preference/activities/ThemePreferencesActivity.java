@@ -37,8 +37,9 @@ public class ThemePreferencesActivity extends NavigationAbstractActivity {
     }
 
     private void setTitleToActivity() {
-        if (getIntent().getStringExtra(BOOK_SETTINGS_TITLE) != null) {
-            setTitle(getIntent().getStringExtra(BOOK_SETTINGS_TITLE));
+        String title = getIntent().getStringExtra(BOOK_SETTINGS_TITLE);
+        if (title != null) {
+            setTitle(title);
         }
     }
 

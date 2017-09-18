@@ -56,6 +56,9 @@
     <dimen name="text_input_layout_margin_bottom">8dp</dimen>
     <dimen name="divider_add_book">1dp</dimen>
     <dimen name="divider_add_book_margin_top">6dp</dimen>
+    <dimen name="add_fragment_card_view_margin_end">16dp</dimen>
+    <dimen name="add_fragment_card_view_margin_start">16dp</dimen>
+    <dimen name="add_fragment_card_view_margin_top">16dp</dimen>
     <dimen name="date_picker_clear_button_margin">16dp</dimen>
 
 
@@ -64,6 +67,7 @@
 
     <!-- BookSectionFragment -->
     <dimen name="section_vertical_margin">6dp</dimen>
+    <dimen name="section_tab_height">48dp</dimen>
     <dimen name="section_card_view_horizontal_margin">6dp</dimen>
     <dimen name="section_card_view_horizontal_margin_grade_swap">3dp</dimen>
     <dimen name="section_book_name_text_view_margin_bottom">3dp</dimen>
@@ -112,6 +116,10 @@
     <dimen name="theme_pref_image_background_height">108dp</dimen>
     <dimen name="theme_pref_image_margin_end">30dp</dimen>
     <dimen name="theme_pref_image_padding">1dp</dimen>
+    <dimen name="theme_pref_min_height">140dp</dimen>
+    <dimen name="theme_pref_rel_layout_margin">20dp</dimen>
+    <dimen name="theme_pref_title_margin_start">30dp</dimen>
+    <dimen name="theme_pref_summary_margin_top">30dp</dimen>
 
     <!-- Theme item -->
     <dimen name="theme_item_padding">10dp</dimen>
@@ -122,11 +130,14 @@
     <dimen name="edit_text_for_developer_height">200dp</dimen>
     <dimen name="edit_text_margin_bottom">16dp</dimen>
     <dimen name="edit_text_padding">15dp</dimen>
+    <dimen name="linear_layout_margin">16dp</dimen>
 
     <!-- Current book -->
     <dimen name="current_book_grid_margin_bottom">150dp</dimen>
     <dimen name="current_book_text_hint_size">14sp</dimen>
     <dimen name="current_book_padding">16dp</dimen>
+    <dimen name="current_book_name_margin_bottom">16dp</dimen>
+    <dimen name="current_book_author_margin_bottom">24dp</dimen>
 
     <!-- Preference dialog -->
     <dimen name="preference_dialog_subtitle_text_size">14sp</dimen>

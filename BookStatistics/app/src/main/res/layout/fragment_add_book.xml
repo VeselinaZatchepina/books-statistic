@@ -10,10 +10,10 @@
         android:id="@+id/add_book_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/cardview_margin_bottom_add_book"
+        android:layout_marginEnd="@dimen/add_fragment_card_view_margin_end"
+        android:layout_marginStart="@dimen/add_fragment_card_view_margin_start"
+        android:layout_marginTop="@dimen/add_fragment_card_view_margin_top"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="@dimen/corner_radius"
         card_view:cardElevation="@dimen/card_elevation"
@@ -143,9 +143,9 @@
                     android:id="@+id/date_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/hint_date_start"
-                    android:inputType="date"
-                    android:focusable="false"/>
+                    android:inputType="date"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -159,9 +159,9 @@
                     android:id="@+id/date_end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/hint_date_end"
-                    android:inputType="date"
-                    android:focusable="false"/>
+                    android:inputType="date"/>
 
             </android.support.design.widget.TextInputLayout>
 

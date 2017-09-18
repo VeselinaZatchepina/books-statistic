@@ -50,7 +50,7 @@ public class WriteToDeveloperFragment extends Fragment {
             public void onClick(View view) {
                 String inputText = mEditTextForInput.getText().toString();
                 if (!inputText.equals("")) {
-                    String mail= "mailto:veselinazatchepina@gmail.com" +
+                    String mail = "mailto:veselinazatchepina@gmail.com" +
                             "?subject=" + Uri.encode("Feedback") +
                             "&body=" + Uri.encode(inputText);
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
