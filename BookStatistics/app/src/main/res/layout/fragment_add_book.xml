@@ -27,6 +27,7 @@
             android:layout_marginEnd="@dimen/linear_layout_margin_end_add_book"
             android:layout_marginStart="@dimen/linear_layout_margin_start_add_book"
             android:layout_marginTop="@dimen/linear_layout_margin_top_add_book"
+            android:paddingBottom="@dimen/linear_layout_padding_bottom"
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout

@@ -21,6 +21,7 @@
     <dimen name="linear_layout_margin_end_add_book">40dp</dimen>
     <dimen name="linear_layout_margin_top_add_book">40dp</dimen>
     <dimen name="linear_layout_margin_bottom_add_book">160dp</dimen>
+    <dimen name="linear_layout_padding_bottom">0dp</dimen>
 
     <dimen name="margin_start">100dp</dimen>
     <dimen name="margin_end">100dp</dimen>

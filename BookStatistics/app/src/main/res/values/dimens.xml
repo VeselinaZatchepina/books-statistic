@@ -47,7 +47,7 @@
     <dimen name="cardview_margin_end_add_book">8dp</dimen>
     <dimen name="cardview_min_height">90dp</dimen>
 
-    <!-- AddQuoteFragment -->
+    <!-- AddBookFragment -->
     <dimen name="linear_layout_margin_start_add_book">16dp</dimen>
     <dimen name="linear_layout_margin_end_add_book">16dp</dimen>
     <dimen name="linear_layout_margin_top_add_book">16dp</dimen>
@@ -60,6 +60,7 @@
     <dimen name="add_fragment_card_view_margin_start">16dp</dimen>
     <dimen name="add_fragment_card_view_margin_top">16dp</dimen>
     <dimen name="date_picker_clear_button_margin">16dp</dimen>
+    <dimen name="linear_layout_padding_bottom">150dp</dimen>
 
 
     <!-- Add category dialog -->
