@@ -199,7 +199,9 @@ public class ChartFragment extends Fragment {
         ArrayList<IBarDataSet> barDataSets = new ArrayList<IBarDataSet>();
         barDataSets.add(barDataSet);
         BarData barData = new BarData(barDataSets);
+        barData.notifyDataChanged();
         mBarChartAllCategories.setData(barData);
+        mBarChartAllCategories.notifyDataSetChanged();
         mBarChartAllCategories.invalidate();
         mBarChartAllCategories.setFitBars(true);
         mBarChartAllCategories.animateY(1400, Easing.EasingOption.EaseInOutQuart);

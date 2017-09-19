@@ -1,5 +1,7 @@
 package com.github.veselinazatchepina.bookstatistics.chart.valueformatters;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.veselinazatchepina.bookstatistics.database.model.BookCategory;
@@ -15,9 +17,19 @@ public class XAxisBarChartValueFormatter implements IAxisValueFormatter {
         this.realmResults = realmResults;
     }
 
+    public int getRealmResultsSize() {
+        return realmResults.size();
+    }
+
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        BookCategory bookCategory = realmResults.get((int) value - 1).getCategory();
-        return bookCategory == null ? "No data" : bookCategory.getCategoryName();
+        Log.v("valueeeeee", String.valueOf((int) value));
+        int valueInt = ((int) value) - 1;
+        if (realmResults.size() > valueInt && valueInt >= 0) {
+            BookCategory bookCategory = realmResults.get(valueInt).getCategory();
+            return bookCategory == null ? "No data" : bookCategory.getCategoryName();
+        } else {
+            return "";
+        }
     }
 }
