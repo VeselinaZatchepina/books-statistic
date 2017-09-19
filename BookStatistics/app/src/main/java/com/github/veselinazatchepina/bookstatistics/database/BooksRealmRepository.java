@@ -623,6 +623,7 @@ public class BooksRealmRepository implements RealmRepository {
                 String oldCategory = currentBook.getBookCategory().getCategoryName();
                 String oldSection = currentBook.getSection().getSectionName();
                 saveOrUpdateMainBookFields(currentBook, mapOfBookProperties);
+                updateTablesForCharts(realm, oldDateStart, oldDateEnd, oldSection, oldCategory);
                 updateBookCategory(realm, currentBook, mapOfBookProperties);
                 updateBookSection(realm, currentBook, mapOfBookProperties);
                 updateBookRating(realm, currentBook, mapOfBookProperties);
@@ -634,7 +635,7 @@ public class BooksRealmRepository implements RealmRepository {
                         && currentBook.getSection().getSectionName().equals(BookSectionEnums.READ_BOOK)) {
                     saveBookInTablesForChart(realm, currentBook);
                 }
-                updateTablesForCharts(realm, oldDateStart, oldDateEnd, oldSection, oldCategory);
+
             }
         });
     }
@@ -873,6 +874,14 @@ public class BooksRealmRepository implements RealmRepository {
     @Override
     public RealmResults<Year> getAllYears() {
         return mRealm.where(Year.class).findAll();
+    }
+
+    public RealmResults<Book> getAllBooksCurrentCategory(String category) {
+        return mRealm.where(Book.class).equalTo("bookCategory.categoryName", category).findAll();
+    }
+
+    public RealmResults<Book> getAllBooks() {
+        return mRealm.where(Book.class).findAll();
     }
 
     @Override

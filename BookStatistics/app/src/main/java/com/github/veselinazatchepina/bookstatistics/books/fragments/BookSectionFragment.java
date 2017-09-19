@@ -57,6 +57,7 @@ public class BookSectionFragment extends Fragment {
     private String mCurrentCategory;
     private BooksRealmRepository mBooksRealmRepository;
     private RealmResults<Book> mBooksInCurrentSection;
+    private RealmResults<Book> mAllBooks;
     BookSectionRecyclerViewAdapter mBookSectionRecyclerViewAdapter;
     private CurrentBookCallbacks mCallbacks;
     private long mBookIdForDelete;
@@ -104,9 +105,19 @@ public class BookSectionFragment extends Fragment {
         mBooksRealmRepository = new BooksRealmRepository();
         if (mCurrentCategory != null) {
             mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSectionByCategory(mCurrentSectionType, mCurrentCategory);
+            mAllBooks = mBooksRealmRepository.getAllBooksCurrentCategory(mCurrentCategory);
         } else {
             mBooksInCurrentSection = mBooksRealmRepository.getAllBooksInCurrentSection(mCurrentSectionType);
+            mAllBooks = mBooksRealmRepository.getAllBooks();
         }
+        mAllBooks.addChangeListener(new RealmChangeListener<RealmResults<Book>>() {
+            @Override
+            public void onChange(RealmResults<Book> element) {
+                if (getActivity() != null && element.isEmpty()) {
+                    getActivity().finish();
+                }
+            }
+        });
     }
 
     @Nullable
