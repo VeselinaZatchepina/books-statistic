@@ -730,6 +730,12 @@ public class BooksRealmRepository implements RealmRepository {
                     changeCategoryIndex(realm, oldDateStart, index);
                 }
             }
+
+            RealmResults<AllBookMonthDivision> allBookMonthDivisions = realm.where(AllBookMonthDivision.class)
+                    .equalTo("year.yearNumber", getYearNumber(oldDateStart)).findAll();
+            if (getCountEmptyAllBookMonthDivision(allBookMonthDivisions) == allBookMonthDivisions.size()) {
+                allBookMonthDivisions.deleteAllFromRealm();
+            }
         }
     }
 
@@ -738,6 +744,19 @@ public class BooksRealmRepository implements RealmRepository {
         for (BookMonthDivision bookMonthDivision : realmResults) {
             bookMonthDivision.setCategoryIndex(bookMonthDivision.getCategoryIndex() - 1);
         }
+    }
+
+    private int getCountEmptyAllBookMonthDivision(RealmResults<AllBookMonthDivision> allBookMonthDivisions) {
+        int count = 0;
+        for (AllBookMonthDivision allBookMonthDivision : allBookMonthDivisions) {
+            if (allBookMonthDivision.getAllBookCountOneMonth() == 0 &&
+                    allBookMonthDivision.getAllBookCountThreeMonth() == 0 &&
+                    allBookMonthDivision.getAllBookCountSixMonth() == 0 &&
+                    allBookMonthDivision.getAllBookCountTwelveMonth() == 0) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private void deleteBookMonthDivision(BookMonthDivision bookMonthDivision) {
