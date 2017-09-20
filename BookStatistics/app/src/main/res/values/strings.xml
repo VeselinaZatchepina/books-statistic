@@ -1,0 +1,153 @@
+<resources>
+    <string name="app_name">Boost</string>
+
+    <!-- NavigationAbstractActivity -->
+    <string name="add_book_title">Add book</string>
+    <string name="book_categories_title">Book categories</string>
+    <string name="chart_title">Charts</string>
+    <string name="all_books_title">All books</string>
+    <string name="settings_title">Settings</string>
+    <string name="write_to_developer_title">Write to developer</string>
+
+    <!-- Navigation Drawer -->
+    <string name="title_book_categories">Book categories</string>
+    <string name="title_chart">Chart</string>
+    <string name="title_all_books">All books</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_group">Other</string>
+    <string name="settings">Settings</string>
+    <string name="write_to_developer">Write to developer</string>
+
+    <!-- BookCategory recycler view - empty view -->
+    <string name="title_empty_view">You have no books</string>
+    <string name="title_empty_view_push">Push</string>
+    <string name="title_empty_view_button">button</string>
+
+    <!-- Quote category recycler view item -->
+    <string name="image_content_description">Icon of current category</string>
+
+    <!-- AddBookActivity-->
+    <string name="toast_choose_category">Please choose category</string>
+    <string name="toast_end_date_more_start_date">End date must be longer than the start date</string>
+
+    <!-- AddBookFragment-->
+    <string name="hint_book_name">Book name</string>
+    <string name="hint_book_author">Book author</string>
+    <string name="hint_spinner_rating">Book rating</string>
+    <string name="hint_book_page">Book page</string>
+    <string name="hint_spinner_category">Book category</string>
+    <string name="hint_spinner_type">Book type</string>
+    <string name="hint_date_start">Date start</string>
+    <string name="hint_date_end">Date end</string>
+    <string name="title_spinner_category_add_category">+ add new category</string>
+    <string name="title_spinner_category">Select book category</string>
+    <string name="default_value"> - </string>
+    <string name="error_page_number">Page number cannot be negative</string>
+    <string name="error_date_start_value">Date start field cannot be empty</string>
+    <string name="error_date_end_value">Date end field cannot be empty</string>
+    <string name="error_category_spinner">Select book category</string>
+    <string name="date_picker_clear_button_text">Clear</string>
+
+    <!-- Add category dialog -->
+    <string name="dialog_add_category_title">Enter the category name</string>
+    <string name="dialog_add_category_ok">OK</string>
+    <string name="dialog_add_category_cancel">CANCEL</string>
+
+    <!-- BookSectionFragment -->
+    <string name="go_to_other_section_content_description">Go to other section</string>
+    <string name="set_rating_content_description">Set rating</string>
+    <string name="view_pager_exception">Catch the NullPointerException in FragmentPagerAdapter.finishUpdate</string>
+    <string name="sort_by_author_name_realm">authorName</string>
+    <string name="sort_by_book_name_realm">bookName</string>
+    <string name="sort_by_rating_realm">rating.starsCount</string>
+
+    <!-- CurrentBookFragment -->
+    <string name="current_book_name">Book name:</string>
+    <string name="current_book_author">Book author:</string>
+    <string name="current_book_rating">Book rating:</string>
+    <string name="current_book_pages">Book pages count:</string>
+    <string name="current_book_category">Book category:</string>
+    <string name="current_book_section">Book section type:</string>
+    <string name="current_book_start_date">Start date of reading:</string>
+    <string name="current_book_end_date">End date of reading:</string>
+    <string name="edit_book_title">Edit book</string>
+    <string name="current_book_title">Current book</string>
+    <string name="current_book_share_intent">Select conversation</string>
+    <string name="current_book_share_intent_theme">It is great Book!</string>
+
+    <!-- Delete category dialog -->
+    <string name="dialog_delete_category_title">Delete current category?</string>
+    <string name="dialog_delete_current_book_title">Delete current book?</string>
+    <string name="dialog_ok_button">DELETE</string>
+    <string name="dialog_cancel_button">CANCEL</string>
+
+    <!-- Snackbar -->
+    <string name="book_is_deleted">Book is deleted!</string>
+    <string name="book_category">"Book category "</string>
+    <string name="is_deleted">" is deleted!"</string>
+
+    <!-- Menu -->
+    <string name="share">Share</string>
+    <string name="delete_title">Delete book</string>
+    <string name="filter_book">Filter book</string>
+    <string name="search_book">Search book</string>
+
+    <!-- Popup menu -->
+    <string name="sort_by_book_name">Book name</string>
+    <string name="sort_by_book_author">Book author</string>
+    <string name="sort_by_rating">Rating</string>
+
+    <!-- Change rating dialog -->
+    <string name="title_change_rating">Change rating</string>
+    <string name="dialog_change_rating_ok_button">OK</string>
+
+    <!-- Change section dialog -->
+    <string name="title_change_section">Change section</string>
+    <string name="dialog_change_section_ok_button">OK</string>
+    <string name="dialog_change_section_error">You need to fill start and end date of reading</string>
+
+    <!-- Preference -->
+    <string name="theme_default">ic_first</string>
+    <string name="custom_theme_key">customThemeKey</string>
+    <string name="theme_label">Choose theme</string>
+    <string name="default_summary">Select an icon</string>
+    <string-array name="iconName">
+        <item>First theme</item>
+        <item>Second theme</item>
+        <item>Third theme</item>
+    </string-array>
+    <string-array name="iconFile">
+        <item>ic_first</item>
+        <item>ic_second</item>
+        <item>ic_third</item>
+    </string-array>
+
+    <!-- Theme preference -->
+    <string name="theme_image_description">Theme picture</string>
+
+    <!-- Theme item -->
+    <string name="theme_item_image_description">Theme picture for choose</string>
+
+    <!-- WriteToDeveloperFragment -->
+    <string name="write_to_developer_button_text">SEND</string>
+    <string name="write_to_developer_text_hint">Place your text here</string>
+
+    <!-- Chart fragment -->
+    <!-- All books by month chart -->
+    <string name="all_book_chart_title">All books by month</string>
+    <string name="chart_year_spinner_hint">Year</string>
+    <string name="chart_all_books_x_axis_name">Book count</string>
+    <string name="chart_month_spinner_hint">Month division</string>
+    <!-- All books by category chart -->
+    <string name="chart_all_books_by_month_title">All books by category</string>
+    <!-- All current category books by month -->
+    <string name="chart_current_category_title">All current category books by month</string>
+    <string name="chart_category_spinner_hint">Category</string>
+
+    <!-- Empty fields -->
+    <string name="empty_field">-</string>
+    <string name="empty_field_book_name">"\""No book name"\""</string>
+    <string name="empty_field_book_author">No book author</string>
+
+</resources>

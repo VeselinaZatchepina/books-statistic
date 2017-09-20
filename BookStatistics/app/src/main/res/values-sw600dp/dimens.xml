@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Book category recycler view item -->
+    <dimen name="card_view_margin_start">0dp</dimen>
+    <dimen name="card_view_margin_end">0dp</dimen>
+
+    <!-- BookSectionFragment -->
+    <dimen name="section_card_view_margin_start">100dp</dimen>
+    <dimen name="section_card_view_margin_end">100dp</dimen>
+
+    <!-- Current book -->
+    <dimen name="current_book_padding">80dp</dimen>
+    <dimen name="cardview_margin_top_add_book">16dp</dimen>
+    <dimen name="cardview_margin_bottom_add_book">80dp</dimen>
+    <dimen name="cardview_margin_start_add_book">60dp</dimen>
+    <dimen name="cardview_margin_end_add_book">60dp</dimen>
+
+    <!-- AddBookFragment -->
+    <dimen name="linear_layout_margin_start_add_book">40dp</dimen>
+    <dimen name="linear_layout_margin_end_add_book">40dp</dimen>
+    <dimen name="linear_layout_margin_top_add_book">40dp</dimen>
+    <dimen name="linear_layout_margin_bottom_add_book">160dp</dimen>
+    <dimen name="linear_layout_padding_bottom">0dp</dimen>
+
+    <dimen name="margin_start">100dp</dimen>
+    <dimen name="margin_end">100dp</dimen>
+
+</resources>

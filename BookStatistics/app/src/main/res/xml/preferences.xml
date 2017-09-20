@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:custom="http://schemas.android.com/apk/res/com.github.veselinazatchepina.bookstatistics">
+
+    <PreferenceCategory>
+        <com.github.veselinazatchepina.bookstatistics.preference.ThemePreference
+            android:entries="@array/iconName"
+            android:entryValues="@array/iconFile"
+            android:key="@string/custom_theme_key"
+            android:layout="@layout/theme_preference"
+            android:summary="Select an icon"
+            android:title="@string/theme_label"
+            custom:iconFile="@string/theme_default"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

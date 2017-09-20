@@ -1,0 +1,71 @@
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/status_bar_opacity</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <!-- Toolbar style -->
+    <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <!-- CurrentQuotePagerActivity text style -->
+    <style name="TextStyleBlack" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- Empty recycler view item style -->
+    <style name="TextStyleWhite" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Launch style -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
+    <!-- Custom theme -->
+    <style name="AppThemeGreen" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_green</item>
+    </style>
+
+    <style name="AppThemeBrown" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_brown</item>
+    </style>
+
+    <style name="AppThemeBlue" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_blue</item>
+    </style>
+
+    <style name="NavigationViewStyle">
+        <item name="android:textSize">14sp</item> <!-- menu item text size-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item><!-- menu item height-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/card_background</item>
+        <item name="android:listDivider">@color/card_background</item>
+    </style>
+
+    <!-- Preference dialog style -->
+    <style name="PreferenceThemeDialog" parent="AppTheme">
+        <item name="colorAccent">@color/card_background</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+</resources>

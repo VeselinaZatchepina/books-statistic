@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/section_vertical_margin"
+                                    android:layout_marginEnd="@dimen/section_card_view_margin_end"
+                                    android:layout_marginStart="@dimen/section_card_view_margin_start"
+                                    card_view:cardBackgroundColor="@color/card_background"
+                                    card_view:cardCornerRadius="@dimen/corner_radius"
+                                    card_view:cardElevation="@dimen/card_elevation"
+                                    card_view:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/section_linear_layout_margin"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/section_book_data_margin_end">
+
+            <TextView
+                android:id="@+id/book_name_in_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/section_book_name_text_view_margin_bottom"
+                android:textColor="@android:color/white"
+                tools:text="Book name"/>
+
+            <TextView
+                android:id="@+id/book_author_in_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/section_book_author_text_view_margin_top"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/section_book_autor_text_size"
+                tools:text="Book author"/>
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_horizontal|center_vertical"
+                      android:layout_margin="@dimen/section_card_view_horizontal_margin_grade_swap"
+                      android:layout_weight="1"
+                      android:gravity="center"
+                      android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/set_rating_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/section_book_grade_margin_bottom"
+                android:contentDescription="@string/go_to_other_section_content_description"
+                android:src="@drawable/ic_grade_white_24dp"/>
+
+            <ImageView
+                android:id="@+id/go_to_other_section_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/set_rating_content_description"
+                android:src="@drawable/ic_swap_horiz_white_24dp"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
