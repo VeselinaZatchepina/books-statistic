@@ -921,7 +921,7 @@ public class BooksRealmRepository implements RealmRepository {
 
     @Override
     public RealmResults<Year> getAllYears() {
-        return mRealm.where(Year.class).findAll();
+        return mRealm.where(Year.class).findAllSorted("yearNumber");
     }
 
     public RealmResults<Book> getAllBooksCurrentCategory(String category) {
