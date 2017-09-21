@@ -739,6 +739,7 @@ public class BooksRealmRepository implements RealmRepository {
             if (getCountEmptyAllBookMonthDivision(allBookMonthDivisions) == allBookMonthDivisions.size()) {
                 allBookMonthDivisions.deleteAllFromRealm();
             }
+            mMinusIndex = 0;
         }
     }
 
