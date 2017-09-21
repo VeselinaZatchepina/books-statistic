@@ -300,8 +300,11 @@ public class BooksRealmRepository implements RealmRepository {
         createAllBookMonthDivision(realm, date);
     }
 
-    private RealmResults<AllBookMonthDivision> getAllBookMonthDivisionByMonth(Realm realm, float index) {
-        return realm.where(AllBookMonthDivision.class).equalTo("month", index).findAll();
+    private RealmResults<AllBookMonthDivision> getAllBookMonthDivisionByMonth(Realm realm, float index, int year) {
+        return realm.where(AllBookMonthDivision.class)
+                .equalTo("month", index)
+                .equalTo("year.yearNumber", year)
+                .findAll();
     }
 
     private void setAllBookCount(AllBookMonthDivision currentMonth, String divisionType) {
@@ -663,7 +666,7 @@ public class BooksRealmRepository implements RealmRepository {
             float indexMonth = isContainsList(array, Division.oneMonthDivisionArrays);
             String divisionType = DivisionType.ONE;
             if (indexMonth != -1) {
-                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth);
+                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth, getYearNumber(oldDateStart));
                 AllBookMonthDivision currentMonth = allBookResults.first();
                 setAllBookCountMinus(currentMonth, divisionType);
 
@@ -679,7 +682,7 @@ public class BooksRealmRepository implements RealmRepository {
             indexMonth = isContainsList(array, Division.threeMonthDivisionArrays);
             divisionType = DivisionType.THREE;
             if (indexMonth != -1) {
-                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth);
+                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth, getYearNumber(oldDateStart));
                 AllBookMonthDivision currentMonth = allBookResults.first();
                 setAllBookCountMinus(currentMonth, divisionType);
 
@@ -697,7 +700,7 @@ public class BooksRealmRepository implements RealmRepository {
             indexMonth = isContainsList(array, Division.sixMonthDivisionArrays);
             divisionType = DivisionType.SIX;
             if (indexMonth != -1) {
-                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth);
+                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth, getYearNumber(oldDateStart));
                 AllBookMonthDivision currentMonth = allBookResults.first();
                 setAllBookCountMinus(currentMonth, divisionType);
 
@@ -715,7 +718,7 @@ public class BooksRealmRepository implements RealmRepository {
             indexMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
             divisionType = DivisionType.TWELVE;
             if (indexMonth != -1) {
-                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth);
+                RealmResults<AllBookMonthDivision> allBookResults = getAllBookMonthDivisionByMonth(realm, indexMonth, getYearNumber(oldDateStart));
                 AllBookMonthDivision currentMonth = allBookResults.first();
                 setAllBookCountMinus(currentMonth, divisionType);
 
