@@ -491,8 +491,13 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
             if (endYear < startYear) {
                 return false;
             } else if (endYear == startYear) {
-                if (endMonth < startMonth) return false;
-                if (endDay < startDay) return false;
+                if (endMonth < startMonth) {
+                    return false;
+                } else if (endMonth == startMonth) {
+                    if (endDay < startDay) {
+                        return false;
+                    }
+                }
             }
         }
         return true;
