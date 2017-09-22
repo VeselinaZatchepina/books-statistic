@@ -491,8 +491,13 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
             if (endYear < startYear) {
                 return false;
             } else if (endYear == startYear) {
-                if (endMonth < startMonth) return false;
-                if (endDay < startDay) return false;
+                if (endMonth < startMonth) {
+                    return false;
+                } else if (endMonth == startMonth) {
+                    if (endDay < startDay) {
+                        return false;
+                    }
+                }
             }
         }
         return true;
@@ -501,9 +506,18 @@ public class AddBookFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onPause() {
         super.onPause();
+        defineCategorySpinnerIfOnPause();
         if (mAlertDialog != null && mAlertDialog.isShowing()) {
             mAlertDialog.dismiss();
             mAlertDialog = null;
+        }
+    }
+
+    private void defineCategorySpinnerIfOnPause() {
+        createBookCategoryListForSpinner(mBookCategories);
+        createSpinnerAdapter();
+        if (mCurrentCategory != null) {
+            mCategorySpinner.setSelection(mAllCategories.indexOf(mCurrentCategory.toUpperCase()));
         }
     }
 

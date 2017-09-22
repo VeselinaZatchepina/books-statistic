@@ -83,16 +83,22 @@ public class BookSectionActivity extends AppCompatActivity implements BookSectio
         defineInputData();
         defineTitle();
         defineTabLayout();
-        defineNavigationDrawer();
+        defineActionbar();
+        if (mCurrentCategory == null) {
+            defineNavigationDrawer();
+        }
         defineViewPager();
         defineFab();
     }
 
-    private void defineNavigationDrawer() {
+    private void defineActionbar() {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void defineNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);

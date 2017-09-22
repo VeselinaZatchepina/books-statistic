@@ -16,6 +16,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -140,6 +141,10 @@ public class ChartFragment extends Fragment {
         dataSets.add(lineDataSet);
         LineData lineData = new LineData(dataSets);
         mLineChartAllBooks.setData(lineData);
+        mLineChartAllBooks.setVisibleYRangeMaximum(40, YAxis.AxisDependency.LEFT);
+        mLineChartAllBooks.setVisibleYRangeMaximum(40, YAxis.AxisDependency.RIGHT);
+        mLineChartAllBooks.setVisibleYRangeMinimum(1, YAxis.AxisDependency.RIGHT);
+        mLineChartAllBooks.setVisibleYRangeMinimum(1, YAxis.AxisDependency.LEFT);
         mLineChartAllBooks.invalidate();
         mLineChartAllBooks.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
@@ -201,10 +206,12 @@ public class ChartFragment extends Fragment {
         BarData barData = new BarData(barDataSets);
         barData.notifyDataChanged();
         mBarChartAllCategories.setData(barData);
+        mBarChartAllCategories.setVisibleXRangeMaximum(3);
         mBarChartAllCategories.notifyDataSetChanged();
         mBarChartAllCategories.invalidate();
         mBarChartAllCategories.setFitBars(true);
         mBarChartAllCategories.animateY(1400, Easing.EasingOption.EaseInOutQuart);
+
     }
 
     private void setBarChartStyle(BarChart barChart, RealmResults<BookMonthDivision> bookMonthDivisions) {
@@ -241,6 +248,10 @@ public class ChartFragment extends Fragment {
         dataSets.add(dataSet);
         LineData lineData = new LineData(dataSets);
         mLineChartBooksCurrentCategory.setData(lineData);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMaximum(40, YAxis.AxisDependency.LEFT);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMaximum(40, YAxis.AxisDependency.RIGHT);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMinimum(1, YAxis.AxisDependency.RIGHT);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMinimum(1, YAxis.AxisDependency.LEFT);
         mLineChartBooksCurrentCategory.invalidate();
         mLineChartBooksCurrentCategory.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
