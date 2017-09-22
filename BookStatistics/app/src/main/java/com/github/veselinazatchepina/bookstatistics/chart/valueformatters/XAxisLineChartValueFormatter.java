@@ -109,7 +109,7 @@ public class XAxisLineChartValueFormatter implements IAxisValueFormatter {
     }
 
     private String checkLabelTwelveMonth(float value) {
-        String currentMonth = String.valueOf((int) value);
+        String currentMonth = String.valueOf(0);
         switch ((int) value) {
             case MonthIndex.ZERO:
                 currentMonth = "Jan-Dec";

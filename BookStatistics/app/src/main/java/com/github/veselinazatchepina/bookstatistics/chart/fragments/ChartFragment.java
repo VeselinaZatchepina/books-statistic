@@ -145,7 +145,6 @@ public class ChartFragment extends Fragment {
         mLineChartAllBooks.setVisibleYRangeMaximum(40, YAxis.AxisDependency.RIGHT);
         mLineChartAllBooks.setVisibleYRangeMinimum(1, YAxis.AxisDependency.RIGHT);
         mLineChartAllBooks.setVisibleYRangeMinimum(1, YAxis.AxisDependency.LEFT);
-        mLineChartAllBooks.notifyDataSetChanged();
         mLineChartAllBooks.invalidate();
         mLineChartAllBooks.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
@@ -249,6 +248,10 @@ public class ChartFragment extends Fragment {
         dataSets.add(dataSet);
         LineData lineData = new LineData(dataSets);
         mLineChartBooksCurrentCategory.setData(lineData);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMaximum(40, YAxis.AxisDependency.LEFT);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMaximum(40, YAxis.AxisDependency.RIGHT);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMinimum(1, YAxis.AxisDependency.RIGHT);
+        mLineChartBooksCurrentCategory.setVisibleYRangeMinimum(1, YAxis.AxisDependency.LEFT);
         mLineChartBooksCurrentCategory.invalidate();
         mLineChartBooksCurrentCategory.animateY(1400, Easing.EasingOption.EaseInOutQuart);
     }
