@@ -676,8 +676,7 @@ public class BooksRealmRepository implements RealmRepository {
                 float index = bookMonthDivision.getCategoryIndex();
                 mMinusIndex = 1;
                 checkMonth((int) indexMonth, bookMonthDivision, divisionType);
-                deleteBookMonthDivision(bookMonthDivision);
-                changeCategoryIndex(realm, oldDateStart, index);
+                deleteBookMonthDivision(realm, bookMonthDivision, oldDateStart, index);
             }
             indexMonth = isContainsList(array, Division.threeMonthDivisionArrays);
             divisionType = DivisionType.THREE;
@@ -693,8 +692,7 @@ public class BooksRealmRepository implements RealmRepository {
                     float index = bookMonthDivision.getCategoryIndex();
                     mMinusIndex = 1;
                     checkMonth((int) indexMonth, bookMonthDivision, divisionType);
-                    deleteBookMonthDivision(bookMonthDivision);
-                    changeCategoryIndex(realm, oldDateStart, index);
+                    deleteBookMonthDivision(realm, bookMonthDivision, oldDateStart, index);
                 }
             }
             indexMonth = isContainsList(array, Division.sixMonthDivisionArrays);
@@ -711,8 +709,7 @@ public class BooksRealmRepository implements RealmRepository {
                     float index = bookMonthDivision.getCategoryIndex();
                     mMinusIndex = 1;
                     checkMonth((int) indexMonth, bookMonthDivision, divisionType);
-                    deleteBookMonthDivision(bookMonthDivision);
-                    changeCategoryIndex(realm, oldDateStart, index);
+                    deleteBookMonthDivision(realm, bookMonthDivision, oldDateStart, index);
                 }
             }
             indexMonth = isContainsList(array, Division.twelveMonthDivisionArrays);
@@ -729,8 +726,7 @@ public class BooksRealmRepository implements RealmRepository {
                     float index = bookMonthDivision.getCategoryIndex();
                     mMinusIndex = 1;
                     checkMonth((int) indexMonth, bookMonthDivision, divisionType);
-                    deleteBookMonthDivision(bookMonthDivision);
-                    changeCategoryIndex(realm, oldDateStart, index);
+                    deleteBookMonthDivision(realm, bookMonthDivision, oldDateStart, index);
                 }
             }
 
@@ -763,7 +759,8 @@ public class BooksRealmRepository implements RealmRepository {
         return count;
     }
 
-    private void deleteBookMonthDivision(BookMonthDivision bookMonthDivision) {
+    private void deleteBookMonthDivision(Realm realm, BookMonthDivision bookMonthDivision,
+                                         String oldDateStart, float index) {
         if (bookMonthDivision.getJanuary() == 0 &&
                 bookMonthDivision.getFebruary() == 0 &&
                 bookMonthDivision.getMarch() == 0 &&
@@ -775,7 +772,9 @@ public class BooksRealmRepository implements RealmRepository {
                 bookMonthDivision.getOctober() == 0 &&
                 bookMonthDivision.getNovember() == 0 &&
                 bookMonthDivision.getDecember() == 0) {
+            changeCategoryIndex(realm, oldDateStart, index);
             bookMonthDivision.deleteFromRealm();
+
         }
     }
 
