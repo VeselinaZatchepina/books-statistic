@@ -34,8 +34,6 @@
   4. MPAndroidChart;
   5. Realm;
   6. MaterialDateTimePicker;
-  5. Robolectric; 
-  6. Espresso; 
   <h1></h1>
   
 <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/ic_launcher.png" width="100px" hspace="15"/>
