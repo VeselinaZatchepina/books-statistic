@@ -1,8 +1,6 @@
 <h1>Boost</h1>
 <h3>Books statistics</h3>
 
-Refactoring...
-
 <p> Приложение предназначено для тех, кто любит статистику :]. Функциональность позволяет вести статистику книг, причем как планируемых на чтение, так и прочтенных, а также тех книг, которые пользователь уже читает. Данные можно просмотреть как в разделе с делением на категории, так и в общем списке. Название категории вводится в соответствующем поле экрана "Add book". </p>
 
 <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/book_categories.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/navigation_drawer.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/book_section.png" width="250px" hspace="15"/>
