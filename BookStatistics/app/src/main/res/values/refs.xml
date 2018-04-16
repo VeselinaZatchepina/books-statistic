@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="activity_current_single_fragment" type="layout">@layout/activity_single_fragment
-    </item>
-</resources>
