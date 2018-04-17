@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Books</string>
+
+    <!-- LogInFragment -->
+    <string name="greeting_text">Hello my friend!\n You can login or continue as a guest</string>
+    <string name="greeting_login_button_text">Log in</string>
+    <string name="greeting_guest_button_text">Guest</string>
+
+</resources>

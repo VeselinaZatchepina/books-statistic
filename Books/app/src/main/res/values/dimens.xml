@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- LogInFragment -->
+    <dimen name="greeting_margin_top">200dp</dimen>
+    <dimen name="greeting_text_size">18sp</dimen>
+    <dimen name="greeting_linear_layout_margin_top">26dp</dimen>
+    <dimen name="greeting_login_button_margin_end">50dp</dimen>
+</resources>
