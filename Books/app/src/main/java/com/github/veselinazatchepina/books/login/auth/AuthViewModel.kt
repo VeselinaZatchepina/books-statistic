@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.bemotivated.login.auth
+package com.github.veselinazatchepina.books.login.auth
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

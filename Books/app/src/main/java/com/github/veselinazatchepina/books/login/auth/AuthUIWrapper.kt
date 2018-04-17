@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.bemotivated.login.auth
+package com.github.veselinazatchepina.books.login.auth
 
 import android.content.Intent
 import com.firebase.ui.auth.AuthUI

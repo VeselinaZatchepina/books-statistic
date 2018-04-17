@@ -9,9 +9,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.veselinazatchepina.bemotivated.login.auth.AnonymouslyLoginState
-import com.github.veselinazatchepina.bemotivated.login.auth.AuthViewModel
 import com.github.veselinazatchepina.books.R
+import com.github.veselinazatchepina.books.login.auth.AnonymouslyLoginState
+import com.github.veselinazatchepina.books.login.auth.AuthViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.jetbrains.anko.support.v4.toast
 
