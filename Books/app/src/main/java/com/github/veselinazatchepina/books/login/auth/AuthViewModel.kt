@@ -3,11 +3,11 @@ package com.github.veselinazatchepina.books.login.auth
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Intent
+import android.util.Log
 import com.github.veselinazatchepina.books.data.BooksRepository
 import com.github.veselinazatchepina.books.data.remote.BooksRemoteDataSource
 import com.github.veselinazatchepina.books.login.UserExistenceState
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 
 
 class AuthViewModel : ViewModel() {
@@ -29,23 +29,29 @@ class AuthViewModel : ViewModel() {
     fun signInAnonymously() {
         liveIntent.postValue(AnonymouslyLoginState.AnonymouslyLoad())
         compositeDisposable.add(booksDataSource.signInAnonymously()
-                .subscribe(Consumer {
+                .subscribe({
                     if (it != null && it) {
                         liveIntent.postValue(AnonymouslyLoginState.AnonymouslySuccess())
                     } else {
                         liveIntent.postValue(AnonymouslyLoginState.AnonymouslyError("Please try again!"))
                     }
+                }, {
+                    liveIntent.postValue(AnonymouslyLoginState.AnonymouslyError("Please try again!"))
+                    Log.d("ANONYMOUSLY_LOGIN_STATE", it.message)
                 }))
+
     }
 
     fun isUserExists() {
         liveIsUserExists.postValue(UserExistenceState.UserExistenceLoad())
-        compositeDisposable.add(booksDataSource.isUserExists().subscribe(Consumer {
+        compositeDisposable.add(booksDataSource.isUserExists().subscribe({
             if (it != null && it) {
                 liveIsUserExists.postValue(UserExistenceState.UserExistenceSuccess())
             } else {
                 liveIsUserExists.postValue(UserExistenceState.UserExistenceError())
             }
+        }, {
+            liveIsUserExists.postValue(UserExistenceState.UserExistenceError())
         }))
     }
 

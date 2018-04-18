@@ -36,6 +36,8 @@ class BooksRemoteDataSource : BooksDataSource {
         val intentObservable = PublishSubject.create<Boolean?>()
         firebaseAuth.signInAnonymously().addOnCompleteListener {
             intentObservable.onNext(it.isSuccessful)
+        }.addOnFailureListener {
+            intentObservable.onNext(false)
         }
         return intentObservable
     }
@@ -56,6 +58,8 @@ class BooksRemoteDataSource : BooksDataSource {
                 } else {
                     isUserExistObservable.onNext(false)
                 }
+            }.addOnFailureListener {
+                isUserExistObservable.onNext(false)
             }
         } else {
             isUserExistObservable.onNext(false)

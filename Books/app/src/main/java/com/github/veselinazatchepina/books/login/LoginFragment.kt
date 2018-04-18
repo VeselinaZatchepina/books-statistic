@@ -5,10 +5,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.firebase.ui.auth.IdpResponse
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.login.auth.AnonymouslyLoginState
 import com.github.veselinazatchepina.books.login.auth.AuthViewModel
@@ -76,7 +79,7 @@ class LoginFragment : Fragment() {
             is AnonymouslyLoginState.AnonymouslyError -> {
                 if (this.isAdded) {
                     anonymProgressBar.visibility = View.GONE
-                    toast(state.errorText)
+                    defineLoginErrorSnackbar("Please try again!")
                 }
             }
             is AnonymouslyLoginState.AnonymouslyLoad -> {
@@ -111,14 +114,34 @@ class LoginFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
+            val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                authViewModel.isUserExists()
-                authViewModel.liveIsUserExists.observe(this, Observer {
-                    defineLoginAction(it)
-                })
+                checkIfUserAlreadyHasProfile()
             } else {
-                toast("Please try again!")
+                checkError(response)
             }
         }
+    }
+
+    private fun checkIfUserAlreadyHasProfile() {
+        authViewModel.isUserExists()
+        authViewModel.liveIsUserExists.observe(this, Observer {
+            defineLoginAction(it)
+        })
+    }
+
+    private fun checkError(response: IdpResponse?) {
+        if (response == null) {
+            Log.e("LOGIN", "Login canceled by User")
+            return;
+        }
+        Log.e("LOGIN", "Unknown login response")
+        defineLoginErrorSnackbar("Please try again!")
+    }
+
+    private fun defineLoginErrorSnackbar(errorText: String) {
+        val snackbar = Snackbar
+                .make(loginScrollView, errorText, Snackbar.LENGTH_LONG);
+        snackbar.show()
     }
 }
