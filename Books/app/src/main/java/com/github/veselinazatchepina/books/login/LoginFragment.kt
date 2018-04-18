@@ -13,10 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.firebase.ui.auth.IdpResponse
 import com.github.veselinazatchepina.books.R
+import com.github.veselinazatchepina.books.categories.BookCategoriesActivity
 import com.github.veselinazatchepina.books.login.auth.AnonymouslyLoginState
 import com.github.veselinazatchepina.books.login.auth.AuthViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
-import org.jetbrains.anko.support.v4.toast
 
 
 class LoginFragment : Fragment() {
@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
 
     private fun checkIfUserAuthenticated() {
         if (authViewModel.isUserAuthenticated()) {
-            toast("Authenticated!")
+            startActivity(BookCategoriesActivity.newIntent(activity!!))
         }
     }
 
@@ -95,12 +95,14 @@ class LoginFragment : Fragment() {
             is UserExistenceState.UserExistenceSuccess -> {
                 if (this.isAdded) {
                     anonymProgressBar.visibility = View.GONE
+                    startActivity(BookCategoriesActivity.newIntent(activity!!))
                 }
             }
             is UserExistenceState.UserExistenceError -> {
                 if (this.isAdded) {
                     anonymProgressBar.visibility = View.GONE
                     authViewModel.saveUser()
+                    startActivity(BookCategoriesActivity.newIntent(activity!!))
                 }
             }
             is UserExistenceState.UserExistenceLoad -> {

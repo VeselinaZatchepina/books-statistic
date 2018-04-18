@@ -6,4 +6,25 @@
     <string name="greeting_login_button_text">Log in</string>
     <string name="greeting_guest_button_text">Guest</string>
 
+    <!-- AddLinkDialog -->
+    <string name="add_link_email_hint">Email</string>
+    <string name="add_link_password_hint">Password</string>
+    <string name="add_link_password_again">Password again</string>
+    <string name="add_link_cancel_text">CANCEL</string>
+    <string name="add_link_text">LINK</string>
+    <string name="add_account_title">Add account</string>
+
+    <!-- NavDrawerHeader -->
+    <string name="nav_header_login_btn_text">Login</string>
+    <string name="nav_header_logout_btn_text">Logout</string>
+    <string name="nav_header_link_btn_text">Link</string>
+    <string name="title_book_categories">Book categories</string>
+    <string name="title_chart">Chart</string>
+    <string name="title_all_books">All books</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_group">Other</string>
+    <string name="settings">Settings</string>
+    <string name="write_to_developer">Write to developer</string>
+
 </resources>

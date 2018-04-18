@@ -12,4 +12,10 @@ interface BooksDataSource {
     fun isUserExists(): Observable<Boolean?>
 
     fun saveUserId()
+
+    fun logout()
+
+    fun isUserSignInAnonymously(): Boolean
+
+    fun linkUserWithEmailAuth(email: String, password: String)
 }

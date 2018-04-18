@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.books.data.remote
 
 import com.github.veselinazatchepina.books.data.BooksDataSource
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Observable
@@ -48,15 +49,18 @@ class BooksRemoteDataSource : BooksDataSource {
         if (userId != null) {
             val docRef = cloudFirestore.collection("users").document(userId!!)
             docRef.get().addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val document = it.result
-                    if (document != null && document.exists()) {
-                        isUserExistObservable.onNext(true)
-                    } else {
+                when (it.isSuccessful) {
+                    true -> {
+                        val document = it.result
+                        if (document != null && document.exists()) {
+                            isUserExistObservable.onNext(true)
+                        } else {
+                            isUserExistObservable.onNext(false)
+                        }
+                    }
+                    else -> {
                         isUserExistObservable.onNext(false)
                     }
-                } else {
-                    isUserExistObservable.onNext(false)
                 }
             }.addOnFailureListener {
                 isUserExistObservable.onNext(false)
@@ -73,6 +77,20 @@ class BooksRemoteDataSource : BooksDataSource {
         cloudFirestore.collection("users")
                 .document(userId!!)
                 .set(user)
+    }
+
+    override fun logout() {
+        userId = null
+        firebaseAuth.signOut()
+    }
+
+    override fun isUserSignInAnonymously(): Boolean {
+        return firebaseAuth.currentUser?.isAnonymous ?: false
+    }
+
+    override fun linkUserWithEmailAuth(email: String, password: String) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+        firebaseAuth.currentUser?.linkWithCredential(credential)
     }
 
 }

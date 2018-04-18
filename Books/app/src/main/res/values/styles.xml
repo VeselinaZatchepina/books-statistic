@@ -8,4 +8,18 @@
         <item name="android:windowBackground">@drawable/background</item>
     </style>
 
+    <!-- Toolbar style -->
+    <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="NavigationViewStyle">
+        <item name="android:textSize">14sp</item> <!-- menu item text size-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item><!-- menu item height-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/colorNavDivider</item>
+        <item name="android:listDivider">@color/colorNavDivider</item>
+    </style>
+
 </resources>

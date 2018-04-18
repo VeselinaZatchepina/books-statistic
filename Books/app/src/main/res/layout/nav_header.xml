@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:gravity="bottom"
+    tools:layout_editor_absoluteY="81dp">
+
+    <ImageView
+        android:id="@+id/userImageNavHeader"
+        android:layout_width="@dimen/nav_header_icon_width"
+        android:layout_height="@dimen/nav_header_icon_height"
+        android:layout_marginBottom="@dimen/nav_header_icon_margin_bottom"
+        android:layout_marginStart="@dimen/nav_header_icon_margin_start"
+        android:paddingTop="@dimen/nav_header_icon_padding_top"
+        app:layout_constraintBottom_toTopOf="@+id/loginBtnNavHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_account_circle_black_24dp"/>
+
+    <Button
+        android:id="@+id/loginBtnNavHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/nav_header_login_btn_height"
+        android:layout_marginBottom="@dimen/nav_header_login_btn_margin_bottom"
+        android:layout_marginStart="@dimen/nav_header_login_btn_margin_start"
+        android:background="@android:color/transparent"
+        android:text="@string/nav_header_logout_btn_text"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+        android:id="@+id/linkBtnNavHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/nav_header_link_height"
+        android:layout_marginBottom="@dimen/nav_header_link_margin_bottom"
+        android:layout_marginStart="@dimen/nav_header_link_margin_start"
+        android:background="@android:color/transparent"
+        android:text="@string/nav_header_link_btn_text"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loginBtnNavHeader"/>
+
+</android.support.constraint.ConstraintLayout>

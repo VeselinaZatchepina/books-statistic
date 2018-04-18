@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- LogInFragment -->
+    <!-- LoginFragment -->
     <dimen name="greeting_margin_top">200dp</dimen>
     <dimen name="greeting_text_size">18sp</dimen>
     <dimen name="greeting_linear_layout_margin_top">26dp</dimen>
     <dimen name="greeting_login_button_margin_end">50dp</dimen>
+
+    <!-- SingleFragmentAbstractActivity -->
+    <dimen name="abstract_toolbar_height">247dp</dimen>
+    <dimen name="abstract_expanded_title_margin_bottom">24dp</dimen>
+    <dimen name="abstract_expanded_title_margin_start">69dp</dimen>
+    <dimen name="abstract_container_margin_start">2dp</dimen>
+    <dimen name="abstract_container_margin_end">2dp</dimen>
+    <dimen name="abstract_fab_margin">16dp</dimen>
+
+    <!-- AddLinkDialog -->
+    <dimen name="add_link_linear_margin">16dp</dimen>
+    <dimen name="add_link_linear_padding">16dp</dimen>
+    <dimen name="add_link_linear_button_margin_top">16dp</dimen>
+    <dimen name="add_link_cancel_margin_end">16dp</dimen>
+
+    <!-- NavigationDrawerAbstractActivity -->
+    <dimen name="nav_header_height">176dp</dimen>
+
+    <!-- NavDrawerHeader -->
+    <dimen name="nav_header_icon_width">70dp</dimen>
+    <dimen name="nav_header_icon_height">70dp</dimen>
+    <dimen name="nav_header_icon_margin_bottom">8dp</dimen>
+    <dimen name="nav_header_icon_margin_start">12dp</dimen>
+    <dimen name="nav_header_login_btn_height">32dp</dimen>
+    <dimen name="nav_header_login_btn_margin_bottom">8dp</dimen>
+    <dimen name="nav_header_login_btn_margin_start">4dp</dimen>
+    <dimen name="nav_header_link_height">32dp</dimen>
+    <dimen name="nav_header_link_margin_bottom">8dp</dimen>
+    <dimen name="nav_header_link_margin_start">8dp</dimen>
+    <dimen name="nav_header_icon_padding_top">8dp</dimen>
+
+
+
+
 </resources>
