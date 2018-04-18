@@ -1,9 +1,11 @@
-package com.github.veselinazatchepina.books
+package com.github.veselinazatchepina.books.utils
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import com.github.veselinazatchepina.books.R
 import java.util.*
 import java.util.regex.Pattern
 
@@ -17,7 +19,7 @@ fun String.setFirstVowelColor(context: Context): Spannable {
         val index = getFirstVowelIndex(this)
         newText = SpannableString(this)
         if (index != -1) {
-            newText.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.colorAccent)),
+            newText.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.cardBackground)),
                     index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         return newText

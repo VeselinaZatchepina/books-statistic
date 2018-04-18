@@ -12,6 +12,7 @@ import com.github.veselinazatchepina.bemotivated.abstracts.navdrawer.AddLinkDial
 import com.github.veselinazatchepina.bemotivated.abstracts.navdrawer.NavDrawerViewModel
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.abstracts.SingleFragmentAbstractActivity
+import com.github.veselinazatchepina.books.categories.BookCategoriesActivity
 import com.github.veselinazatchepina.books.login.LoginMainActivity
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
 import kotlinx.android.synthetic.main.activity_single_fragment.*
@@ -76,10 +77,9 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var intent: Intent? = null
         when (item.itemId) {
-            R.id.menu_book_categories -> intent = null
-            R.id.menu_chart -> intent = null
-            R.id.menu_all_books -> intent = null
-            R.id.settings -> intent = null
+            R.id.all_books -> intent = null
+            R.id.book_categories -> intent = BookCategoriesActivity.newIntent(this)
+            R.id.chart -> intent = null
             R.id.write_to_developer -> intent = null
         }
         if (intent != null) {

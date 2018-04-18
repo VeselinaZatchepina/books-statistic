@@ -3,29 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/menu_book_categories"
+            android:id="@+id/all_books"
+            android:icon="@drawable/ic_dashboard_white_24dp"
+            android:title="@string/title_all_books"/>
+
+        <item
+            android:id="@+id/book_categories"
             android:icon="@drawable/ic_format_list_bulleted_black_24dp"
             android:title="@string/title_book_categories"/>
 
         <item
-            android:id="@+id/menu_chart"
+            android:id="@+id/chart"
             android:icon="@drawable/ic_show_chart_white_24dp"
             android:title="@string/title_chart"/>
-
-        <item
-            android:id="@+id/menu_all_books"
-            android:icon="@drawable/ic_dashboard_white_24dp"
-            android:title="@string/title_all_books"/>
     </group>
 
     <item
         android:id="@+id/other"
         android:title="@string/title_group">
         <menu>
-            <item
-                android:id="@+id/settings"
-                android:icon="@drawable/ic_build_white_24dp"
-                android:title="@string/settings"/>
             <item
                 android:id="@+id/write_to_developer"
                 android:icon="@drawable/ic_chat_bubble_outline_white_24dp"

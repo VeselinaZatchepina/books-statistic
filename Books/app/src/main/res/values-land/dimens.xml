@@ -2,4 +2,7 @@
 <resources>
     <!-- LogInFragment -->
     <dimen name="greeting_margin_top">120dp</dimen>
+
+    <!-- SingleFragmentAbstractActivity -->
+    <dimen name="abstract_toolbar_height">72dp</dimen>
 </resources>

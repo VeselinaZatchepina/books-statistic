@@ -8,5 +8,9 @@
     <color name="toolbarStartColor">#33000000</color>
     <color name="toolbarEndColor">#43FFFFFF</color>
 
-    <color name="colorNavDivider">@color/colorAccent</color>
+    <color name="colorNavDivider">@color/cardBackground</color>
+
+    <!-- BookCategoriesFragment colors -->
+    <color name="cardBackground">#339064</color>
+
 </resources>

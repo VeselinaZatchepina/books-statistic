@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
+        android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/abstract_toolbar_height"
         android:background="@drawable/toolbar_gradient"
@@ -17,7 +17,7 @@
         app:theme="@style/TransparentToolbar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout"
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
