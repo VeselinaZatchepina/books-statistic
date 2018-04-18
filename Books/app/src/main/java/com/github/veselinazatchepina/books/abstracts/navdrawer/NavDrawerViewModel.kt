@@ -1,8 +1,7 @@
-package com.github.veselinazatchepina.bemotivated.abstracts.navdrawer
+package com.github.veselinazatchepina.books.abstracts.navdrawer
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.github.veselinazatchepina.books.abstracts.navdrawer.UserProfileLinkState
 import com.github.veselinazatchepina.books.data.BooksRepository
 import com.github.veselinazatchepina.books.data.remote.BooksRemoteDataSource
 import io.reactivex.disposables.CompositeDisposable

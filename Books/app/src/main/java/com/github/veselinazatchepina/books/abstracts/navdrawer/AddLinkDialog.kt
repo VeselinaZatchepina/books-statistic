@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.bemotivated.abstracts.navdrawer
+package com.github.veselinazatchepina.books.abstracts.navdrawer
 
 import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders

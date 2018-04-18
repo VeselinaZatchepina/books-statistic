@@ -21,12 +21,6 @@ class BooksRepository(private val booksRemoteDataSource: BooksRemoteDataSource) 
 
     override fun signInAnonymously() = booksRemoteDataSource.signInAnonymously()
 
-    override fun isUserExists() = booksRemoteDataSource.isUserExists()
-
-    override fun saveUserId() {
-        booksRemoteDataSource.saveUserId()
-    }
-
     override fun logout() {
         booksRemoteDataSource.logout()
     }

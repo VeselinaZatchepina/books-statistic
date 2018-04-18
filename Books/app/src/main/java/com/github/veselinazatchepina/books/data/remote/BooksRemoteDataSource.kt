@@ -44,55 +44,12 @@ class BooksRemoteDataSource : BooksDataSource {
         return intentObservable
     }
 
-    override fun isUserExists(): Observable<Boolean?> {
-        val isUserExistObservable = PublishSubject.create<Boolean?>()
-        userId = firebaseAuth.currentUser?.uid
-        if (userId != null) {
-            val docRef = cloudFirestore.collection("users").document(userId!!)
-            docRef.get()
-                    .addOnCompleteListener {
-                        when (it.isSuccessful) {
-                            true -> {
-                                val document = it.result
-                                if (document != null && document.exists()) {
-                                    isUserExistObservable.onNext(true)
-                                } else {
-                                    isUserExistObservable.onNext(false)
-                                }
-                            }
-                            else -> {
-                                isUserExistObservable.onNext(false)
-                            }
-                        }
-                    }.addOnFailureListener {
-                        isUserExistObservable.onNext(false)
-                    }
-        } else {
-            isUserExistObservable.onNext(false)
-        }
-        return isUserExistObservable
-    }
-
-    override fun saveUserId() {
-        val user = HashMap<String, Any>()
-        user["id"] = userId!!
-        cloudFirestore.collection("users")
-                .document(userId!!)
-                .set(user).addOnCompleteListener {
-
-                }.addOnFailureListener {
-
-                }
-    }
-
     override fun logout() {
         userId = null
         firebaseAuth.signOut()
     }
 
-    override fun isUserSignInAnonymously(): Boolean {
-        return firebaseAuth.currentUser?.isAnonymous ?: false
-    }
+    override fun isUserSignInAnonymously() = firebaseAuth.currentUser?.isAnonymous ?: false
 
     override fun linkUserWithEmailAuth(email: String, password: String): Observable<Boolean?> {
         val isUserProfileLinkedObservable = PublishSubject.create<Boolean?>()

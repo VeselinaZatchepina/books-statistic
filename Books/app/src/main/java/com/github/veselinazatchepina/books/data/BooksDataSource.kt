@@ -9,10 +9,6 @@ interface BooksDataSource {
 
     fun signInAnonymously(): Observable<Boolean?>
 
-    fun isUserExists(): Observable<Boolean?>
-
-    fun saveUserId()
-
     fun logout()
 
     fun isUserSignInAnonymously(): Boolean

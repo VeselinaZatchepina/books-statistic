@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.books.login.auth
+package com.github.veselinazatchepina.books.login.state
 
 
 sealed class AnonymouslyLoginState {

@@ -14,8 +14,7 @@ import android.view.ViewGroup
 import com.firebase.ui.auth.IdpResponse
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.categories.BookCategoriesActivity
-import com.github.veselinazatchepina.books.login.auth.AnonymouslyLoginState
-import com.github.veselinazatchepina.books.login.auth.AuthViewModel
+import com.github.veselinazatchepina.books.login.state.AnonymouslyLoginState
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
@@ -23,8 +22,8 @@ class LoginFragment : Fragment() {
 
     private val RC_SIGN_IN = 123
     private var rootView: View? = null
-    private val authViewModel: AuthViewModel by lazy {
-        ViewModelProviders.of(this).get(AuthViewModel::class.java)
+    private val authViewModel: LoginViewModel by lazy {
+        ViewModelProviders.of(this).get(LoginViewModel::class.java)
     }
 
     companion object {
@@ -60,7 +59,7 @@ class LoginFragment : Fragment() {
     private fun defineGuestButton() {
         guestButton.setOnClickListener {
             authViewModel.signInAnonymously()
-            authViewModel.liveIntent.observe(this, Observer {
+            authViewModel.liveIsUserLogin.observe(this, Observer {
                 defineAnonymouslyAction(it)
             })
         }
@@ -70,10 +69,7 @@ class LoginFragment : Fragment() {
         when (state) {
             is AnonymouslyLoginState.AnonymouslySuccess -> {
                 if (this.isAdded) {
-                    authViewModel.isUserExists()
-                    authViewModel.liveIsUserExists.observe(this, Observer {
-                        defineLoginAction(it)
-                    })
+                    startActivity(BookCategoriesActivity.newIntent(activity!!))
                 }
             }
             is AnonymouslyLoginState.AnonymouslyError -> {
@@ -90,46 +86,16 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun defineLoginAction(state: UserExistenceState?) {
-        when (state) {
-            is UserExistenceState.UserExistenceSuccess -> {
-                if (this.isAdded) {
-                    anonymProgressBar.visibility = View.GONE
-                    startActivity(BookCategoriesActivity.newIntent(activity!!))
-                }
-            }
-            is UserExistenceState.UserExistenceError -> {
-                if (this.isAdded) {
-                    anonymProgressBar.visibility = View.GONE
-                    authViewModel.saveUser()
-                    startActivity(BookCategoriesActivity.newIntent(activity!!))
-                }
-            }
-            is UserExistenceState.UserExistenceLoad -> {
-                if (this.isAdded) {
-                    anonymProgressBar.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                checkIfUserAlreadyHasProfile()
+                startActivity(BookCategoriesActivity.newIntent(activity!!))
             } else {
                 checkError(response)
             }
         }
-    }
-
-    private fun checkIfUserAlreadyHasProfile() {
-        authViewModel.isUserExists()
-        authViewModel.liveIsUserExists.observe(this, Observer {
-            defineLoginAction(it)
-        })
     }
 
     private fun checkError(response: IdpResponse?) {

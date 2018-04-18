@@ -9,8 +9,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.view.View
-import com.github.veselinazatchepina.bemotivated.abstracts.navdrawer.AddLinkDialog
-import com.github.veselinazatchepina.bemotivated.abstracts.navdrawer.NavDrawerViewModel
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.abstracts.SingleFragmentAbstractActivity
 import com.github.veselinazatchepina.books.categories.BookCategoriesActivity
