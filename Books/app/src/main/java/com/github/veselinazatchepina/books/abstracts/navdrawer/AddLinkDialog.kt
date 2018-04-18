@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.dialog_add_link.view.*
 class AddLinkDialog : DialogFragment() {
 
     private val navDrawerViewModel: NavDrawerViewModel by lazy {
-        ViewModelProviders.of(this).get(NavDrawerViewModel::class.java)
+        ViewModelProviders.of(activity!!).get(NavDrawerViewModel::class.java)
     }
 
     companion object {

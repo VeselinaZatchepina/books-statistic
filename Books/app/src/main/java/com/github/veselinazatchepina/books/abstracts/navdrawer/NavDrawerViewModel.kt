@@ -2,6 +2,7 @@ package com.github.veselinazatchepina.bemotivated.abstracts.navdrawer
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.github.veselinazatchepina.books.abstracts.navdrawer.UserProfileLinkState
 import com.github.veselinazatchepina.books.data.BooksRepository
 import com.github.veselinazatchepina.books.data.remote.BooksRemoteDataSource
 import io.reactivex.disposables.CompositeDisposable
@@ -15,6 +16,7 @@ class NavDrawerViewModel : ViewModel() {
     }
 
     val liveIsUserSignInAnonymously = MutableLiveData<Boolean>()
+    val liveUserProfileLinkState = MutableLiveData<UserProfileLinkState>()
 
     fun logout() {
         booksDataSource.logout()
@@ -25,7 +27,16 @@ class NavDrawerViewModel : ViewModel() {
     }
 
     fun linkUserWithEmailAuth(email: String, password: String) {
-        booksDataSource.linkUserWithEmailAuth(email, password)
+        compositeDisposable.add(booksDataSource.linkUserWithEmailAuth(email, password)
+                .subscribe({
+                    if (it != null && it) {
+                        liveUserProfileLinkState.postValue(UserProfileLinkState.UserProfileLinkSuccess())
+                    } else {
+                        liveUserProfileLinkState.postValue(UserProfileLinkState.UserProfileLinkError())
+                    }
+                }, {
+                    liveUserProfileLinkState.postValue(UserProfileLinkState.UserProfileLinkError())
+                }))
     }
 
     override fun onCleared() {

@@ -35,11 +35,12 @@ class BooksRemoteDataSource : BooksDataSource {
 
     override fun signInAnonymously(): Observable<Boolean?> {
         val intentObservable = PublishSubject.create<Boolean?>()
-        firebaseAuth.signInAnonymously().addOnCompleteListener {
-            intentObservable.onNext(it.isSuccessful)
-        }.addOnFailureListener {
-            intentObservable.onNext(false)
-        }
+        firebaseAuth.signInAnonymously()
+                .addOnCompleteListener {
+                    intentObservable.onNext(it.isSuccessful)
+                }.addOnFailureListener {
+                    intentObservable.onNext(false)
+                }
         return intentObservable
     }
 
@@ -48,23 +49,24 @@ class BooksRemoteDataSource : BooksDataSource {
         userId = firebaseAuth.currentUser?.uid
         if (userId != null) {
             val docRef = cloudFirestore.collection("users").document(userId!!)
-            docRef.get().addOnCompleteListener {
-                when (it.isSuccessful) {
-                    true -> {
-                        val document = it.result
-                        if (document != null && document.exists()) {
-                            isUserExistObservable.onNext(true)
-                        } else {
-                            isUserExistObservable.onNext(false)
+            docRef.get()
+                    .addOnCompleteListener {
+                        when (it.isSuccessful) {
+                            true -> {
+                                val document = it.result
+                                if (document != null && document.exists()) {
+                                    isUserExistObservable.onNext(true)
+                                } else {
+                                    isUserExistObservable.onNext(false)
+                                }
+                            }
+                            else -> {
+                                isUserExistObservable.onNext(false)
+                            }
                         }
-                    }
-                    else -> {
+                    }.addOnFailureListener {
                         isUserExistObservable.onNext(false)
                     }
-                }
-            }.addOnFailureListener {
-                isUserExistObservable.onNext(false)
-            }
         } else {
             isUserExistObservable.onNext(false)
         }
@@ -76,7 +78,11 @@ class BooksRemoteDataSource : BooksDataSource {
         user["id"] = userId!!
         cloudFirestore.collection("users")
                 .document(userId!!)
-                .set(user)
+                .set(user).addOnCompleteListener {
+
+                }.addOnFailureListener {
+
+                }
     }
 
     override fun logout() {
@@ -88,9 +94,16 @@ class BooksRemoteDataSource : BooksDataSource {
         return firebaseAuth.currentUser?.isAnonymous ?: false
     }
 
-    override fun linkUserWithEmailAuth(email: String, password: String) {
+    override fun linkUserWithEmailAuth(email: String, password: String): Observable<Boolean?> {
+        val isUserProfileLinkedObservable = PublishSubject.create<Boolean?>()
         val credential = EmailAuthProvider.getCredential(email, password)
         firebaseAuth.currentUser?.linkWithCredential(credential)
+                ?.addOnCompleteListener {
+                    isUserProfileLinkedObservable.onNext(it.isSuccessful)
+                }?.addOnFailureListener {
+                    isUserProfileLinkedObservable.onNext(false)
+                }
+        return isUserProfileLinkedObservable
     }
 
 }

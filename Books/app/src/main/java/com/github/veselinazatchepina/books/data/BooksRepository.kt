@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.books.data
 
 import com.github.veselinazatchepina.books.data.remote.BooksRemoteDataSource
+import io.reactivex.Observable
 
 
 class BooksRepository(private val booksRemoteDataSource: BooksRemoteDataSource) : BooksDataSource {
@@ -33,7 +34,7 @@ class BooksRepository(private val booksRemoteDataSource: BooksRemoteDataSource) 
     override fun isUserSignInAnonymously() = booksRemoteDataSource.isUserSignInAnonymously()
 
 
-    override fun linkUserWithEmailAuth(email: String, password: String) {
-        booksRemoteDataSource.linkUserWithEmailAuth(email, password)
-    }
+    override fun linkUserWithEmailAuth(email: String, password: String): Observable<Boolean?> =
+            booksRemoteDataSource.linkUserWithEmailAuth(email, password)
+
 }

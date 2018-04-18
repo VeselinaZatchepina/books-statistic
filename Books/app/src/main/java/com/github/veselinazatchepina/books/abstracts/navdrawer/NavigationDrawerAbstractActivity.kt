@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -59,11 +60,22 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
             if (it == true) {
                 headerView.linkBtnNavHeader.setOnClickListener {
                     AddLinkDialog.newInstance().show(supportFragmentManager, TAG_ADD_LINK_DIALOG)
+                    navDrawerViewModel.liveUserProfileLinkState.observe(this, Observer {
+                        if (it != null && it is UserProfileLinkState.UserProfileLinkError) {
+                            defineErrorSnackbar("Please try again!")
+                        }
+                    })
                 }
             } else {
                 headerView.linkBtnNavHeader.visibility = View.GONE
             }
         })
+    }
+
+    private fun defineErrorSnackbar(errorText: String) {
+        val snackbar = Snackbar
+                .make(drawerLayout, errorText, Snackbar.LENGTH_LONG);
+        snackbar.show()
     }
 
     override fun onBackPressed() {

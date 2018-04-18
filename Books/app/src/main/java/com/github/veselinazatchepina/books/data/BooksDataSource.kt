@@ -17,5 +17,5 @@ interface BooksDataSource {
 
     fun isUserSignInAnonymously(): Boolean
 
-    fun linkUserWithEmailAuth(email: String, password: String)
+    fun linkUserWithEmailAuth(email: String, password: String): Observable<Boolean?>
 }
