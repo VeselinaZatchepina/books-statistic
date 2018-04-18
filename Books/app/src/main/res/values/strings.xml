@@ -13,6 +13,8 @@
     <string name="add_link_cancel_text">CANCEL</string>
     <string name="add_link_text">LINK</string>
     <string name="add_account_title">Add account</string>
+    <string name="add_link_error_passwords">Passwords don\'t match</string>
+    <string name="add_link_error_empty_fields">This field couldn\'t be empty</string>
 
     <!-- NavDrawerHeader -->
     <string name="nav_header_login_btn_text">Login</string>
@@ -25,5 +27,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_group">Other</string>
     <string name="write_to_developer">Write to developer</string>
+    <string name="nav_header_error_snackbar_text">Please try again!</string>
+    <string name="nav_header_correct_snackbar_text">You are linked!</string>
 
 </resources>

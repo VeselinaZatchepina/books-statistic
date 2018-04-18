@@ -15,6 +15,7 @@ import com.github.veselinazatchepina.books.categories.BookCategoriesActivity
 import com.github.veselinazatchepina.books.login.LoginMainActivity
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
 import kotlinx.android.synthetic.main.activity_single_fragment.*
+import kotlinx.android.synthetic.main.nav_header.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 
@@ -53,24 +54,44 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
 
     private fun defineLinkButton() {
         navDrawerViewModel.isUserSignInAnonymously()
-        navDrawerViewModel.liveIsUserSignInAnonymously.observe(this, Observer {
+        navDrawerViewModel.liveIsUserSignInAnonymously.observe(this, Observer { isAnonym ->
             val headerView = navView.getHeaderView(0)
-            if (it == true) {
-                headerView.linkBtnNavHeader.setOnClickListener {
-                    AddLinkDialog.newInstance().show(supportFragmentManager, TAG_ADD_LINK_DIALOG)
-                    navDrawerViewModel.liveUserProfileLinkState.observe(this, Observer {
-                        if (it != null && it is UserProfileLinkState.UserProfileLinkError) {
-                            defineErrorSnackbar("Please try again!")
-                        }
-                    })
-                }
+            if (isAnonym != null && isAnonym) {
+                defineLinkButton(headerView)
             } else {
                 headerView.linkBtnNavHeader.visibility = View.GONE
             }
         })
     }
 
-    private fun defineErrorSnackbar(errorText: String) {
+    private fun defineLinkButton(headerView: View) {
+        headerView.linkBtnNavHeader.setOnClickListener {
+            AddLinkDialog.newInstance().show(supportFragmentManager, TAG_ADD_LINK_DIALOG)
+            listenUserProfileLinkState(headerView)
+        }
+    }
+
+    private fun listenUserProfileLinkState(headerView: View) {
+        navDrawerViewModel.liveUserProfileLinkState.observe(this, Observer {
+            if (it != null) {
+                when (it) {
+                    is UserProfileLinkState.UserProfileLinkError -> {
+                        linkProgressBar.visibility = View.GONE
+                        defineSnackbar(resources.getString(R.string.nav_header_error_snackbar_text))
+                    }
+                    is UserProfileLinkState.UserProfileLinkSuccess -> {
+                        headerView.linkBtnNavHeader.visibility = View.GONE
+                        linkProgressBar.visibility = View.GONE
+                        defineSnackbar(resources.getString(R.string.nav_header_correct_snackbar_text))
+                    }
+                    is UserProfileLinkState.UserProfileLinkLoad ->
+                        linkProgressBar.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun defineSnackbar(errorText: String) {
         val snackbar = Snackbar
                 .make(drawerLayout, errorText, Snackbar.LENGTH_LONG);
         snackbar.show()

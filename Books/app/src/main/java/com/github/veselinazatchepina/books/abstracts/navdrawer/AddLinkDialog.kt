@@ -38,17 +38,25 @@ class AddLinkDialog : DialogFragment() {
 
     private fun defineSaveDialogButton(dialogView: View) {
         dialogView.saveLinkButton.setOnClickListener {
-            if (!isFieldEmpty(dialogView.addEmailText, dialogView.addEmailTextInputLayout) &&
-                    !isFieldEmpty(dialogView.addPasswordText, dialogView.addPasswordTextInputLayout) &&
-                    !isFieldEmpty(dialogView.addPasswordAgainText, dialogView.addPasswordAgainTextInputLayout)) {
-                if (dialogView.addPasswordText.text.toString() == dialogView.addPasswordAgainText.text.toString()) {
-                    navDrawerViewModel.linkUserWithEmailAuth(dialogView.addEmailText.text.toString(),
-                            dialogView.addPasswordText.text.toString())
-                    dismiss()
-                } else {
-                    dialogView.addPasswordTextInputLayout.error = "Passwords don't match"
-                }
+            if (isEmailAndPasswordsFieldNotEmpty(dialogView)) {
+                //TODO check @mail and password length
+                checkIfPasswordsTheSame(dialogView)
             }
+        }
+    }
+
+    private fun isEmailAndPasswordsFieldNotEmpty(dialogView: View) = !isFieldEmpty(dialogView.addEmailText, dialogView.addEmailTextInputLayout) &&
+            !isFieldEmpty(dialogView.addPasswordText, dialogView.addPasswordTextInputLayout) &&
+            !isFieldEmpty(dialogView.addPasswordAgainText, dialogView.addPasswordAgainTextInputLayout)
+
+    private fun checkIfPasswordsTheSame(dialogView: View) {
+        if (dialogView.addPasswordText.text.toString() == dialogView.addPasswordAgainText.text.toString()) {
+            navDrawerViewModel.linkUserWithEmailAuth(dialogView.addEmailText.text.toString(),
+                    dialogView.addPasswordText.text.toString())
+            dismiss()
+        } else {
+            dialogView.addPasswordTextInputLayout.error =
+                    activity!!.resources.getString(R.string.add_link_error_passwords)
         }
     }
 
@@ -68,7 +76,8 @@ class AddLinkDialog : DialogFragment() {
 
     private fun isFieldEmpty(editText: EditText, textInputLayout: TextInputLayout) =
             if (TextUtils.isEmpty(editText.text)) {
-                textInputLayout.error = "This field couldn't be empty"
+                textInputLayout.error =
+                        activity!!.resources.getString(R.string.add_link_error_empty_fields)
                 true
             } else {
                 false

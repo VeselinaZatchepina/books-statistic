@@ -45,4 +45,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/loginBtnNavHeader"/>
 
+    <ProgressBar
+        android:id="@+id/linkProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loginBtnNavHeader"/>
+
 </android.support.constraint.ConstraintLayout>

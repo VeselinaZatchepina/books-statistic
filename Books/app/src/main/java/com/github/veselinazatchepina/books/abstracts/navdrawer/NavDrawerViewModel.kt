@@ -26,9 +26,10 @@ class NavDrawerViewModel : ViewModel() {
     }
 
     fun linkUserWithEmailAuth(email: String, password: String) {
+        liveUserProfileLinkState.value = UserProfileLinkState.UserProfileLinkLoad()
         compositeDisposable.add(booksDataSource.linkUserWithEmailAuth(email, password)
-                .subscribe({
-                    if (it != null && it) {
+                .subscribe({ isLinked ->
+                    if (isLinked != null && isLinked) {
                         liveUserProfileLinkState.postValue(UserProfileLinkState.UserProfileLinkSuccess())
                     } else {
                         liveUserProfileLinkState.postValue(UserProfileLinkState.UserProfileLinkError())

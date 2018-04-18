@@ -101,7 +101,7 @@ class LoginFragment : Fragment() {
     private fun checkError(response: IdpResponse?) {
         if (response == null) {
             Log.e("LOGIN", "Login canceled by User")
-            return;
+            return
         }
         Log.e("LOGIN", "Unknown login response")
         defineLoginErrorSnackbar("Please try again!")
