@@ -20,6 +20,11 @@ class AddBookFragment : Fragment() {
     private val addBookViewModel: AddBookViewModel by lazy {
         ViewModelProviders.of(activity!!).get(AddBookViewModel::class.java)
     }
+    private val bookCategoriesAdapter by lazy {
+        ArrayAdapter<String>(activity,
+                android.R.layout.simple_spinner_dropdown_item,
+                arrayListOf())
+    }
 
     companion object {
         fun createInstance(): AddBookFragment {
@@ -36,20 +41,21 @@ class AddBookFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         defineBookCategoriesSpinner()
         defineBookSectionsSpinner()
+        defineAddCategoryButton()
     }
 
     private fun defineBookCategoriesSpinner() {
-        val bookCategoriesAdapter = ArrayAdapter<String>(activity,
-                android.R.layout.simple_spinner_dropdown_item,
-                arrayListOf())
         bookCategoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        getAllBookCategories(bookCategoriesAdapter)
+        addCategorySpinner.adapter = bookCategoriesAdapter
+        getAllBookCategories()
     }
 
-    private fun getAllBookCategories(bookCategoriesAdapter: ArrayAdapter<String>) {
+    private fun getAllBookCategories() {
         addBookViewModel.getAllBookCategories()
         addBookViewModel.liveBookCategories.observe(this, android.arch.lifecycle.Observer {
-            bookCategoriesAdapter.addAll(it?.map { it.categoryName })
+            bookCategoriesAdapter.clear()
+            bookCategoriesAdapter.addAll(it?.map { it.categoryName.toUpperCase() })
+            bookCategoriesAdapter.notifyDataSetChanged()
         })
     }
 
@@ -60,6 +66,17 @@ class AddBookFragment : Fragment() {
                 resources.getString(BookSection.READ.resource))
         bookSectionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         addSectionSpinner.adapter = bookSectionAdapter
+    }
+
+    private fun defineAddCategoryButton() {
+        addCategoryButton.setOnClickListener {
+            val newCategory = addCategory.text.toString().toUpperCase()
+            if (newCategory.isNotEmpty()) {
+                bookCategoriesAdapter.add(newCategory)
+                bookCategoriesAdapter.notifyDataSetChanged()
+                addCategorySpinner.setSelection(bookCategoriesAdapter.getPosition(newCategory))
+            }
+        }
     }
 
     fun saveBook() {
