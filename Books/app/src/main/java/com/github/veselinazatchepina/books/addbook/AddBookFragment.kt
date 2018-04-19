@@ -2,13 +2,18 @@ package com.github.veselinazatchepina.books.addbook
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.LinearLayout
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.enums.BookSection
+import icepick.Icepick
+import icepick.State
 import kotlinx.android.synthetic.main.add_book_category_part.*
 import kotlinx.android.synthetic.main.add_book_main_part.*
 import java.util.*
@@ -25,6 +30,13 @@ class AddBookFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item,
                 arrayListOf())
     }
+    private val authorFieldIds by lazy {
+        arrayListOf<Int>()
+    }
+    @JvmField
+    @State
+    var authorFieldText = arrayListOf<String>()
+
 
     companion object {
         fun createInstance(): AddBookFragment {
@@ -33,6 +45,7 @@ class AddBookFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Icepick.restoreInstanceState(this, savedInstanceState)
         rootView = inflater.inflate(R.layout.fragment_add_book, container, false)
         return rootView
     }
@@ -42,6 +55,11 @@ class AddBookFragment : Fragment() {
         defineBookCategoriesSpinner()
         defineBookSectionsSpinner()
         defineAddCategoryButton()
+        defineAuthorFields()
+        if (savedInstanceState != null) {
+            defineAuthorFieldLayoutWhenConfigChanged()
+        }
+
     }
 
     private fun defineBookCategoriesSpinner() {
@@ -79,6 +97,74 @@ class AddBookFragment : Fragment() {
         }
     }
 
+    private fun defineAuthorFields() {
+        addAuthorFieldsBtn.setOnClickListener {
+            val hints = createAuthorFieldsHintList()
+            for (i in 0 until hints.count()) {
+                addAuthorFieldsLinearLayout.addView(createTextInputLayout(hints[i]))
+            }
+        }
+    }
+
+    private fun createAuthorFieldsHintList(): List<String> {
+        return listOf(getString(R.string.add_book_main_part_author_first_hint),
+                getString(R.string.add_book_main_part_author_second_hint),
+                getString(R.string.add_book_main_part_author_patronymic_hint))
+    }
+
+    private fun createTextInputLayout(hint: String): TextInputLayout {
+        val newFieldInputLayout = TextInputLayout(activity)
+        newFieldInputLayout.layoutParams = createLayoutParamsForInputLayout()
+        newFieldInputLayout.addView(createEditText(hint))
+        return newFieldInputLayout
+    }
+
+    private fun createLayoutParamsForInputLayout(): LinearLayout.LayoutParams {
+        val layoutParamsInputLayout = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        layoutParamsInputLayout.topMargin = resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt()
+        layoutParamsInputLayout.bottomMargin = resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt()
+        return layoutParamsInputLayout
+    }
+
+    private fun createEditText(hint: String): EditText {
+        val newFieldEditText = EditText(activity)
+        newFieldEditText.layoutParams = createLayoutParamsForEditText()
+        newFieldEditText.hint = hint
+        newFieldEditText.id = View.generateViewId()
+        authorFieldIds.add(newFieldEditText.id)
+        return newFieldEditText
+    }
+
+    private fun createLayoutParamsForEditText(): LinearLayout.LayoutParams {
+        return LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun createAuthorsList(): List<String> {
+        val authorsText = ArrayList<String>()
+        authorsText.add(addAuthorFirstName.text.toString())
+        authorsText.add(addAuthorSecondName.text.toString())
+        authorsText.add(addAuthorPatronymic.text.toString())
+        authorFieldIds
+                .map { rootView?.findViewById<EditText>(it) }
+                .mapTo(authorsText) { it?.text.toString() }
+        return authorsText
+    }
+
+    private fun defineAuthorFieldLayoutWhenConfigChanged() {
+        val hints = createAuthorFieldsHintList()
+        if (authorFieldText.isNotEmpty()) {
+            for (j in 3 until (authorFieldText.size) step 3) {
+                for (i in 0 until hints.count()) {
+                    val currentInputLayout = createTextInputLayout(hints[i])
+                    addAuthorFieldsLinearLayout.addView(currentInputLayout)
+                    currentInputLayout.editText!!.setText(authorFieldText[j + i])
+                }
+            }
+        }
+    }
+
     fun saveBook() {
         val bookId = UUID.randomUUID().toString()
         val bookName = addBookName.text.toString()
@@ -92,6 +178,13 @@ class AddBookFragment : Fragment() {
         val bookRating = 0
 
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        authorFieldText.clear()
+        authorFieldText.addAll(createAuthorsList())
+        Icepick.saveInstanceState(this, outState)
     }
 
 

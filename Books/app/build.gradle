@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -55,6 +57,10 @@ dependencies {
 
     //FireStore
     implementation 'com.google.firebase:firebase-firestore:15.0.0'
+
+    //IcePick
+    implementation "frankiesardo:icepick:3.2.0"
+    kapt "frankiesardo:icepick-processor:3.2.0"
 
 
 
