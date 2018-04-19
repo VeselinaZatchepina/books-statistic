@@ -32,6 +32,10 @@
 
 
     <!-- AddBookFragment -->
+    <string name="add_book_section_for_read">FOR READ</string>
+    <string name="add_book_section_reading">READING</string>
+    <string name="add_book_section_read">READ</string>
+
     <!-- add_book_main_part -->
     <string name="add_book_main_part_book_name_hint">Book name</string>
     <string name="add_book_main_part_author_first_hint">Author first name</string>

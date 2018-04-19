@@ -31,4 +31,5 @@ class BooksRepository(private val booksRemoteDataSource: BooksRemoteDataSource) 
     override fun linkUserWithEmailAuth(email: String, password: String): Observable<Boolean?> =
             booksRemoteDataSource.linkUserWithEmailAuth(email, password)
 
+    override fun getAllBookCategories() = booksRemoteDataSource.getAllBookCategories()
 }

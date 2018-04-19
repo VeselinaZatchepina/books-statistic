@@ -23,7 +23,7 @@ class LoginFragment : Fragment() {
     private val RC_SIGN_IN = 123
     private var rootView: View? = null
     private val authViewModel: LoginViewModel by lazy {
-        ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
     }
 
     companion object {

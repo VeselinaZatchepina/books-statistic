@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.books.data.remote
 
 import com.github.veselinazatchepina.books.data.BooksDataSource
+import com.github.veselinazatchepina.books.poko.BookCategory
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -63,4 +64,20 @@ class BooksRemoteDataSource : BooksDataSource {
         return isUserProfileLinkedObservable
     }
 
+    override fun getAllBookCategories(): Observable<List<BookCategory>> {
+        val bookCategoriesObservable = PublishSubject.create<List<BookCategory>>()
+        val bookCategoriesRef = cloudFirestore.collection("users")
+                .document(userId!!)
+                .collection("book_categories")
+
+        bookCategoriesRef.get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        bookCategoriesObservable.onNext(it.result.toObjects(BookCategory::class.java))
+                    }
+                }.addOnFailureListener {
+                    bookCategoriesObservable.onNext(emptyList())
+                }
+        return bookCategoriesObservable
+    }
 }
