@@ -2,7 +2,6 @@ package com.github.veselinazatchepina.books.categories
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.Fragment
 import com.github.veselinazatchepina.books.abstracts.navdrawer.NavigationDrawerAbstractActivity
 
 
@@ -14,7 +13,5 @@ class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
         }
     }
 
-    override fun createFragment(): Fragment {
-        return BookCategoriesFragment.createInstance()
-    }
+    override fun createFragment() = BookCategoriesFragment.createInstance()
 }

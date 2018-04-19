@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".categories.BookCategoriesActivity"/>
+        <activity android:name=".addbook.AddBookActivity"/>
     </application>
 
 </manifest>

@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.github.veselinazatchepina.books.R
+import com.github.veselinazatchepina.books.addbook.AddBookActivity
 import com.github.veselinazatchepina.books.utils.AppBarLayoutExpanded
 import com.github.veselinazatchepina.books.utils.setFirstVowelColor
 import kotlinx.android.synthetic.main.activity_single_fragment.*
-import org.jetbrains.anko.toast
 
 
 abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
@@ -63,7 +63,7 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     open fun setFabImageResId(): Int = R.drawable.ic_add_white_24dp
 
     open fun defineActionWhenFabIsPressed() {
-        toast("Launching...")
+        startActivity(AddBookActivity.newIntent(this))
     }
 
     open fun setNewTitleStyle(title: String) {
