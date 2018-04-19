@@ -20,7 +20,7 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         setContentView(getLayoutResId())
         defineInputData()
         defineToolbar()
-        setAppBarNotExpandable()
+        defineExpandableAppBar()
         defineNavigationDrawer()
         defineFab()
         if (title != null) {
@@ -40,14 +40,18 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setAppBarNotExpandable() {
+    open fun defineExpandableAppBar() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            AppBarLayoutExpanded.setAppBarLayoutExpended(this,
-                    appbarLayout,
-                    appbarLayout.layoutParams as CoordinatorLayout.LayoutParams,
-                    collapsingToolbarLayout,
-                    resources.configuration)
+            setAppBarNotExpandable()
         }
+    }
+
+    fun setAppBarNotExpandable() {
+        AppBarLayoutExpanded.setAppBarLayoutExpended(this,
+                appbarLayout,
+                appbarLayout.layoutParams as CoordinatorLayout.LayoutParams,
+                collapsingToolbarLayout,
+                resources.configuration)
     }
 
     open fun defineNavigationDrawer() {}

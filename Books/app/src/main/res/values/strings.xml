@@ -30,4 +30,28 @@
     <string name="nav_header_error_snackbar_text">Please try again!</string>
     <string name="nav_header_correct_snackbar_text">You are linked!</string>
 
+
+    <!-- AddBookFragment -->
+    <!-- add_book_main_part -->
+    <string name="add_book_main_part_book_name_hint">Book name</string>
+    <string name="add_book_main_part_author_first_hint">Author first name</string>
+    <string name="add_book_main_part_author_second_hint">Author second name</string>
+    <string name="add_book_main_part_author_patronymic_hint">Author patronymic</string>
+    <string name="add_book_main_part_add_author_btn_text">Add author</string>
+
+    <!-- add_book_category_part -->
+    <string name="add_book_category_part_category_hint">Category</string>
+    <string name="add_book_category_part_btn_text">Add</string>
+    <string name="add_book_category_part_spinner_title_text">Category</string>
+    <string name="add_book_category_part_divider_margin_spinner_section_text">Section</string>
+
+    <!-- add_book_date_part -->
+    <string name="add_book_date_part_start_date_hint">Start date</string>
+    <string name="add_book_date_part_end_date_hint">End date</string>
+
+    <!-- add_book_other_part -->
+    <string name="add_book_other_part_page_count_hint">Page count</string>
+    <string name="add_book_other_part_repeat_count_hint">Repeat count</string>
+
+
 </resources>

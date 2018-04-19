@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/add_book_category_part_card_margin_bottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/add_book_category_part_linear_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_book_category_part_linear_btn_margin_top"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/addCategoryTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/add_book_category_part_category_input_margin_bottom"
+                android:layout_weight="3">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/addCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_book_category_part_category_hint"
+                    android:inputType="textMultiLine"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/addCategoryButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/button_circle_border_accent_enable"
+                android:text="@string/add_book_category_part_btn_text"
+                android:textColor="@color/colorAccent"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/add_book_category_part_spinner_title_margin"
+            android:text="@string/add_book_category_part_spinner_title_text"/>
+
+        <Spinner
+            android:id="@+id/addCategorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_book_category_part_divider_height"
+            android:layout_marginBottom="@dimen/add_book_category_part_divider_margin_bottom"
+            android:layout_marginEnd="@dimen/add_book_category_part_divider_margin_end"
+            android:layout_marginStart="@dimen/add_book_category_part_divider_margin_start"
+            android:layout_marginTop="@dimen/add_book_category_part_divider_margin_top"
+            android:background="@android:color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/add_book_category_part_spinner_section_title"
+            android:text="@string/add_book_category_part_divider_margin_spinner_section_text"/>
+
+        <Spinner
+            android:id="@+id/addSectionSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_book_category_part_divider_height"
+            android:layout_marginBottom="@dimen/add_book_category_part_divider_big_margin_bottom"
+            android:layout_marginEnd="@dimen/add_book_category_part_divider_margin_end"
+            android:layout_marginStart="@dimen/add_book_category_part_divider_margin_start"
+            android:layout_marginTop="@dimen/add_book_category_part_divider_margin_top"
+            android:background="@android:color/black"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

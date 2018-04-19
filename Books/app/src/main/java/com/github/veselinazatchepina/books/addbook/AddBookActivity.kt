@@ -15,5 +15,7 @@ class AddBookActivity : SingleFragmentAbstractActivity() {
 
     override fun createFragment() = AddBookFragment.createInstance()
 
-
+    override fun defineExpandableAppBar() {
+        setAppBarNotExpandable()
+    }
 }

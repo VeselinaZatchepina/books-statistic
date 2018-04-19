@@ -19,7 +19,7 @@ class AddBookFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_book_categories, container, false)
+        rootView = inflater.inflate(R.layout.fragment_add_book, container, false)
         return rootView
     }
 

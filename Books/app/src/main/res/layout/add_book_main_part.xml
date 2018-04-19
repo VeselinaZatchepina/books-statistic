@@ -1,0 +1,96 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/add_book_main_part_card_margin_bottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/add_book_main_part_linear_margin"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/addBookNameInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/addBookName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_book_main_part_book_name_hint"
+                android:inputType="textMultiLine"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/addAuthorFieldsLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/add_book_main_part_authors_linear_margin_bottom"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_book_main_part_input_layout_margin"
+                android:layout_marginTop="@dimen/add_book_main_part_input_layout_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/addAuthorFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_book_main_part_author_first_hint"
+                    android:inputType="textMultiLine"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_book_main_part_input_layout_margin"
+                android:layout_marginTop="@dimen/add_book_main_part_input_layout_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/addAuthorSecondName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_book_main_part_author_second_hint"
+                    android:inputType="textMultiLine"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_book_main_part_input_layout_margin"
+                android:layout_marginTop="@dimen/add_book_main_part_input_layout_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/addAuthorPatronymic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_book_main_part_author_patronymic_hint"
+                    android:inputType="textMultiLine"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addAuthorFieldsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/add_book_main_part_add_author_btn_margin_bottom"
+            android:layout_marginEnd="@dimen/add_book_main_part_add_author_btn_margin_end"
+            android:layout_marginStart="@dimen/add_book_main_part_add_author_btn_margin_start"
+            android:background="@drawable/button_circle_border_accent_enable"
+            android:text="@string/add_book_main_part_add_author_btn_text"
+            android:textColor="@color/colorAccent"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

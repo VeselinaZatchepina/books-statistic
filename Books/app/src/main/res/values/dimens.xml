@@ -14,7 +14,6 @@
     <dimen name="abstract_container_margin_end">2dp</dimen>
     <dimen name="abstract_fab_margin">16dp</dimen>
 
-
     <!-- AddLinkDialog -->
     <dimen name="add_link_linear_margin">16dp</dimen>
     <dimen name="add_link_linear_padding">16dp</dimen>
@@ -37,7 +36,43 @@
     <dimen name="nav_header_link_margin_start">8dp</dimen>
     <dimen name="nav_header_icon_padding_top">8dp</dimen>
 
+    <!-- AddBookFragment -->
+    <!-- add_book_main_part -->
+    <dimen name="add_book_scroll_margin">8dp</dimen>
+    <dimen name="add_book_linear_padding_bottom">250dp</dimen>
+    <dimen name="add_book_main_part_card_margin_bottom">16dp</dimen>
+    <dimen name="add_book_main_part_linear_margin">16dp</dimen>
+    <dimen name="add_book_main_part_authors_linear_margin_bottom">16dp</dimen>
+    <dimen name="add_book_main_part_add_author_btn_margin_bottom">16dp</dimen>
+    <dimen name="add_book_main_part_add_author_btn_margin_end">40dp</dimen>
+    <dimen name="add_book_main_part_add_author_btn_margin_start">40dp</dimen>
+    <dimen name="add_book_main_part_input_layout_margin">4dp</dimen>
 
+    <!-- add_book_category_part -->
+    <dimen name="add_book_category_part_card_margin_bottom">16dp</dimen>
+    <dimen name="add_book_category_part_linear_margin">16dp</dimen>
+    <dimen name="add_book_category_part_linear_btn_margin_top">8dp</dimen>
+    <dimen name="add_book_category_part_spinner_title_margin">8dp</dimen>
+    <dimen name="add_book_category_part_divider_height">1dp</dimen>
+    <dimen name="add_book_category_part_divider_margin_bottom">16dp</dimen>
+    <dimen name="add_book_category_part_divider_margin_end">8dp</dimen>
+    <dimen name="add_book_category_part_divider_margin_start">8dp</dimen>
+    <dimen name="add_book_category_part_divider_margin_top">8dp</dimen>
+    <dimen name="add_book_category_part_spinner_section_title">8dp</dimen>
+    <dimen name="add_book_category_part_divider_big_margin_bottom">46dp</dimen>
+    <dimen name="add_book_category_part_category_input_margin_bottom">8dp</dimen>
 
+    <!-- add_book_date_part -->
+    <dimen name="add_book_date_part_card_margin_bottom">16dp</dimen>
+    <dimen name="add_book_date_part_linear_margin">16dp</dimen>
+    <dimen name="add_book_date_part_end_date_input_margin_bottom">36dp</dimen>
+    <dimen name="add_book_date_part_end_date_input_margin_top">8dp</dimen>
+
+    <!-- add_book_other_part -->
+    <dimen name="add_book_other_part_card_margin_bottom">16dp</dimen>
+    <dimen name="add_book_other_part_linear_margin">16dp</dimen>
+    <dimen name="add_book_other_part_rating_margin_top">16dp</dimen>
+    <dimen name="add_book_other_part_margin_bottom">36dp</dimen>
+    <dimen name="add_book_other_part_repeat_count_margin_top">8dp</dimen>
 
 </resources>
