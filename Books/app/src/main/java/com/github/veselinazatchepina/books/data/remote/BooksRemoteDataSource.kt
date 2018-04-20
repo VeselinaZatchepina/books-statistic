@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.books.data.remote
 
 import com.github.veselinazatchepina.books.data.BooksDataSource
+import com.github.veselinazatchepina.books.poko.Book
 import com.github.veselinazatchepina.books.poko.BookCategory
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -79,5 +80,13 @@ class BooksRemoteDataSource : BooksDataSource {
                     bookCategoriesObservable.onNext(emptyList())
                 }
         return bookCategoriesObservable
+    }
+
+    override fun saveBook(book: Book) {
+        val bookCategoriesRef = cloudFirestore.collection("users")
+                .document(userId!!)
+                .collection("books")
+                .document(book.id)
+        bookCategoriesRef.set(book)
     }
 }

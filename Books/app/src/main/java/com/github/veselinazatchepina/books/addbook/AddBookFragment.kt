@@ -203,21 +203,31 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
 
 
-    fun saveBook() {
-        if (isFieldNotEmpty(addBookName, addBookNameInputLayout)) {
-            val authorIds = getBookAuthors().map { it.id }
-            val currentBook = Book(UUID.randomUUID().toString(),
-                    addBookName.text.toString(),
-                    authorIds,
-                    addCategorySpinner.selectedItem?.toString()?.toLowerCase() ?: "",
-                    addSectionSpinner.selectedItem.toString(),
-                    addStartDate.text.toString(),
-                    addEndDate.text.toString(),
-                    Calendar.getInstance().get(Calendar.YEAR),
-                    Integer.parseInt(if (addPageCount.text.toString().isEmpty()) {"0"} else {addPageCount.text.toString()}),
-                    Integer.parseInt(if (addRepeatCount.text.toString().isEmpty()) {"0"} else {addRepeatCount.text.toString()}),
-                    addRatingBar.rating)
-        }
+    fun saveBook(): Boolean = if (isFieldNotEmpty(addBookName, addBookNameInputLayout)) {
+        val authorIds = getBookAuthors().map { it.id }
+        val currentBook = Book(UUID.randomUUID().toString(),
+                addBookName.text.toString(),
+                authorIds,
+                addCategorySpinner.selectedItem?.toString()?.toLowerCase() ?: "",
+                addSectionSpinner.selectedItem.toString(),
+                addStartDate.text.toString(),
+                addEndDate.text.toString(),
+                Calendar.getInstance().get(Calendar.YEAR),
+                Integer.parseInt(if (addPageCount.text.toString().isEmpty()) {
+                    "0"
+                } else {
+                    addPageCount.text.toString()
+                }),
+                Integer.parseInt(if (addRepeatCount.text.toString().isEmpty()) {
+                    "0"
+                } else {
+                    addRepeatCount.text.toString()
+                }),
+                addRatingBar.rating)
+        addBookViewModel.saveBook(currentBook)
+        true
+    } else {
+        false
     }
 
     private fun getBookAuthors(): List<BookAuthor> {

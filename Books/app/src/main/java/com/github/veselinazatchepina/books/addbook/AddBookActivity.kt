@@ -1,5 +1,6 @@
 package com.github.veselinazatchepina.books.addbook
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import com.github.veselinazatchepina.books.R
@@ -7,6 +8,10 @@ import com.github.veselinazatchepina.books.abstracts.SingleFragmentAbstractActiv
 
 
 class AddBookActivity : SingleFragmentAbstractActivity() {
+
+    private val addBookViewModel: AddBookViewModel by lazy {
+        ViewModelProviders.of(this).get(AddBookViewModel::class.java)
+    }
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -24,7 +29,8 @@ class AddBookActivity : SingleFragmentAbstractActivity() {
 
     override fun defineActionWhenFabIsPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as AddBookFragment
-        fragment.saveBook()
-        finish()
+        if (fragment.saveBook()) {
+            finish()
+        }
     }
 }

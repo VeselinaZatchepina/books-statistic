@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.books.data
 
 import com.github.veselinazatchepina.books.data.remote.BooksRemoteDataSource
+import com.github.veselinazatchepina.books.poko.Book
 import io.reactivex.Observable
 
 
@@ -32,4 +33,8 @@ class BooksRepository(private val booksRemoteDataSource: BooksRemoteDataSource) 
             booksRemoteDataSource.linkUserWithEmailAuth(email, password)
 
     override fun getAllBookCategories() = booksRemoteDataSource.getAllBookCategories()
+
+    override fun saveBook(book: Book) {
+        booksRemoteDataSource.saveBook(book)
+    }
 }
