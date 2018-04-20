@@ -9,7 +9,7 @@
 
 <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/current_book.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/edit_book.png" width="250px" hspace="15"/>
 
-<p>Наглдяно статистику (в виде графических зависимостей) можно просмотреть в разделе "Charts". В данной секции представлены три графика: первый -  описывает количество всех прочтенных книг с делением по месяцам; второй - описывает количество всех прочтенных книг по категориям с делением по месяцам; третий - описывает количество всех прочтенных книг по выбранной категории также с делением по месяцам.</p>
+<p>Наглядно статистику (в виде графических зависимостей) можно просмотреть в разделе "Charts". В данной секции представлены три графика: первый -  описывает количество всех прочтенных книг с делением по месяцам; второй - описывает количество всех прочтенных книг по категориям с делением по месяцам; третий - описывает количество всех прочтенных книг по выбранной категории также с делением по месяцам.</p>
 
 <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/all_books_chart.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/all_books_by%20categories_chart.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/books-statistic/blob/master/boost_screenshots/current_category_books_chart.png" width="250px" hspace="15"/>
 
