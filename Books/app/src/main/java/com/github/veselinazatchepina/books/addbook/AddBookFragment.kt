@@ -216,32 +216,37 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePickerDialog, yearValue: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val date = "${defineStringOfMonthDay(dayOfMonth)}.${defineStringOfMonth(monthOfYear)}.$yearValue"
-        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-        val d = dateFormat.parse(date)
-        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        val result = dateFormat2.format(d)
         if (view.tag == DATE_PICKER_START_DATE) {
-            addStartDate.setText(result)
+            addStartDate.setText(parseDate(yearValue, monthOfYear, dayOfMonth))
         } else {
-            addEndDate.setText(result)
+            addEndDate.setText(parseDate(yearValue, monthOfYear, dayOfMonth))
         }
+    }
+
+    private fun parseDate(yearValue: Int, monthOfYear: Int, dayOfMonth: Int): String {
+        val currentDate = "${defineStringOfMonthDay(dayOfMonth)}.${defineStringOfMonth(monthOfYear)}.$yearValue"
+        val currentDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val newDate = currentDateFormat.parse(currentDate)
+        val newDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        return newDateFormat.format(newDate)
     }
 
     private fun defineStringOfMonth(monthOfYear: Int): String {
-        var month = (monthOfYear + 1).toString()
-        if ((monthOfYear + 1) <= 10) {
-            month = "0$month"
+        val month = (monthOfYear + 1).toString()
+        return if ((monthOfYear + 1) <= 10) {
+            "0$month"
+        } else {
+            month
         }
-        return month
     }
 
     private fun defineStringOfMonthDay(dayOfMonth: Int): String {
-        var currentDay = dayOfMonth.toString()
-        if (dayOfMonth < 10) {
-            currentDay = "0$currentDay"
+        val currentDay = dayOfMonth.toString()
+        return if (dayOfMonth < 10) {
+            "0$currentDay"
+        } else {
+            currentDay
         }
-        return currentDay
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
