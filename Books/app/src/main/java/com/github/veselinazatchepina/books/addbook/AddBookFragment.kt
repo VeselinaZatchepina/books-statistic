@@ -30,9 +30,6 @@ class AddBookFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item,
                 arrayListOf())
     }
-    private val authorFieldIds by lazy {
-        arrayListOf<Int>()
-    }
     @JvmField
     @State
     var authorFieldText = arrayListOf<String>()
@@ -132,7 +129,6 @@ class AddBookFragment : Fragment() {
         newFieldEditText.layoutParams = createLayoutParamsForEditText()
         newFieldEditText.hint = hint
         newFieldEditText.id = View.generateViewId()
-        authorFieldIds.add(newFieldEditText.id)
         return newFieldEditText
     }
 
@@ -143,12 +139,14 @@ class AddBookFragment : Fragment() {
 
     private fun createAuthorsList(): List<String> {
         val authorsText = ArrayList<String>()
-        authorsText.add(addAuthorFirstName.text.toString())
-        authorsText.add(addAuthorSecondName.text.toString())
-        authorsText.add(addAuthorPatronymic.text.toString())
-        authorFieldIds
-                .map { rootView?.findViewById<EditText>(it) }
-                .mapTo(authorsText) { it?.text.toString() }
+        for (index in 0..addAuthorFieldsLinearLayout.childCount) {
+            if (addAuthorFieldsLinearLayout.getChildAt(index) is TextInputLayout) {
+                authorsText.add((addAuthorFieldsLinearLayout.getChildAt(index) as TextInputLayout)
+                        .editText
+                        ?.text
+                        .toString())
+            }
+        }
         return authorsText
     }
 
@@ -186,6 +184,4 @@ class AddBookFragment : Fragment() {
         authorFieldText.addAll(createAuthorsList())
         Icepick.saveInstanceState(this, outState)
     }
-
-
 }
