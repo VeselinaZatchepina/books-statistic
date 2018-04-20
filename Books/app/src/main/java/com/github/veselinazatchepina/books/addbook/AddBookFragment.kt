@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.enums.BookSection
+import com.github.veselinazatchepina.books.poko.Book
+import com.github.veselinazatchepina.books.poko.BookAuthor
 import com.github.veselinazatchepina.books.utils.ClearableDatePickerDialog
 import com.github.veselinazatchepina.books.utils.EditTextCreator
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
@@ -20,6 +23,7 @@ import icepick.State
 import kotlinx.android.synthetic.main.add_book_category_part.*
 import kotlinx.android.synthetic.main.add_book_date_part.*
 import kotlinx.android.synthetic.main.add_book_main_part.*
+import kotlinx.android.synthetic.main.add_book_other_part.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -201,19 +205,40 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     fun saveBook() {
         if (isFieldNotEmpty(addBookName, addBookNameInputLayout)) {
-
+            val authorIds = getBookAuthors().map { it.id }
+            val currentBook = Book(UUID.randomUUID().toString(),
+                    addBookName.text.toString(),
+                    authorIds,
+                    addCategorySpinner.selectedItem?.toString()?.toLowerCase() ?: "",
+                    addSectionSpinner.selectedItem.toString(),
+                    addStartDate.text.toString(),
+                    addEndDate.text.toString(),
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    Integer.parseInt(if (addPageCount.text.toString().isEmpty()) {"0"} else {addPageCount.text.toString()}),
+                    Integer.parseInt(if (addRepeatCount.text.toString().isEmpty()) {"0"} else {addRepeatCount.text.toString()}),
+                    addRatingBar.rating)
         }
-        val bookId = UUID.randomUUID().toString()
-        val bookName = addBookName.text.toString()
-        val bookCategory = ""
-        val bookSection = ""
-        val bookStartDate = ""
-        val bookEndDate = ""
-        val year: String = ""
-        val bookPageCount = 0
-        val bookRepeatCount = 0
-        val bookRating = 0
     }
+
+    private fun getBookAuthors(): List<BookAuthor> {
+        val authors = arrayListOf<BookAuthor>()
+        for (index in 0..addAuthorFieldsLinearLayout.childCount step 3) {
+            if (addAuthorFieldsLinearLayout.getChildAt(index) is TextInputLayout) {
+                authors.add(BookAuthor(UUID.randomUUID().toString(),
+                        getAuthorFieldValue(index),
+                        getAuthorFieldValue(index + 1),
+                        getAuthorFieldValue(index + 2)
+                ))
+            }
+        }
+        Log.d("AUTHORS_COUNT", "count: ${authors.size}")
+        return authors
+    }
+
+    private fun getAuthorFieldValue(index: Int) = (addAuthorFieldsLinearLayout.getChildAt(index) as TextInputLayout)
+            .editText
+            ?.text
+            .toString()
 
     override fun onDateSet(view: DatePickerDialog, yearValue: Int, monthOfYear: Int, dayOfMonth: Int) {
         if (view.tag == DATE_PICKER_START_DATE) {

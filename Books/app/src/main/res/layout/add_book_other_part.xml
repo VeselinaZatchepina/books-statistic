@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_book_other_part_page_count_hint"
-                android:inputType="textMultiLine"/>
+                android:inputType="number"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_book_other_part_repeat_count_hint"
-                android:inputType="textMultiLine"/>
+                android:inputType="number"/>
 
         </android.support.design.widget.TextInputLayout>
 
