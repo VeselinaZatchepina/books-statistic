@@ -22,6 +22,7 @@
                 android:id="@+id/addStartDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
                 android:hint="@string/add_book_date_part_start_date_hint"
                 android:inputType="textMultiLine"/>
 
@@ -38,6 +39,7 @@
                 android:id="@+id/addEndDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
                 android:hint="@string/add_book_date_part_end_date_hint"
                 android:inputType="textMultiLine"/>
 

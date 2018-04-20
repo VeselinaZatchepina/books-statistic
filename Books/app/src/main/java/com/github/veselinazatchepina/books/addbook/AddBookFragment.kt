@@ -4,21 +4,27 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.enums.BookSection
+import com.github.veselinazatchepina.books.utils.ClearableDatePickerDialog
 import com.github.veselinazatchepina.books.utils.EditTextCreator
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import icepick.Icepick
 import icepick.State
 import kotlinx.android.synthetic.main.add_book_category_part.*
+import kotlinx.android.synthetic.main.add_book_date_part.*
 import kotlinx.android.synthetic.main.add_book_main_part.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddBookFragment : Fragment() {
+class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var rootView: View? = null
     private val addBookViewModel: AddBookViewModel by lazy {
@@ -34,6 +40,9 @@ class AddBookFragment : Fragment() {
     var authorFieldText = arrayListOf<String>()
 
     companion object {
+        private const val DATE_PICKER_START_DATE = "start_date"
+        private const val DATE_PICKER_END_DATE = "end_date"
+
         fun createInstance(): AddBookFragment {
             return AddBookFragment()
         }
@@ -54,7 +63,8 @@ class AddBookFragment : Fragment() {
         if (savedInstanceState != null) {
             defineAuthorFieldLayoutWhenConfigChanged()
         }
-
+        defineStartDatePicker()
+        defineEndDatePicker()
     }
 
     private fun defineBookCategoriesSpinner() {
@@ -148,7 +158,51 @@ class AddBookFragment : Fragment() {
         }
     }
 
+    private fun defineStartDatePicker() {
+        addStartDate.setOnClickListener {
+            createDatePickerDialog().show(activity?.fragmentManager, DATE_PICKER_START_DATE)
+        }
+    }
+
+    private fun defineEndDatePicker() {
+        addEndDate.setOnClickListener {
+            createDatePickerDialog().show(activity?.fragmentManager, DATE_PICKER_END_DATE)
+        }
+    }
+
+    private fun createDatePickerDialog(): DatePickerDialog {
+        val currentTime = Calendar.getInstance()
+        return ClearableDatePickerDialog().apply {
+            initialize(this@AddBookFragment,
+                    currentTime.get(Calendar.YEAR),
+                    currentTime.get(Calendar.MONTH),
+                    currentTime.get(Calendar.DAY_OF_MONTH))
+            setVersion(DatePickerDialog.Version.VERSION_1)
+            onDateClearedListener = object : ClearableDatePickerDialog.OnDateClearedListener {
+                override fun onDateCleared(view: ClearableDatePickerDialog) {
+                    if (view.tag == DATE_PICKER_START_DATE) {
+                        this@AddBookFragment.addStartDate.setText("")
+                    } else {
+                        this@AddBookFragment.addEndDate.setText("")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun isFieldNotEmpty(editText: EditText, textInputLayout: TextInputLayout) =
+            if (TextUtils.isEmpty(editText.text)) {
+                textInputLayout.error = "This field couldn't be empty"
+                false
+            } else {
+                true
+            }
+
+
     fun saveBook() {
+        if (isFieldNotEmpty(addBookName, addBookNameInputLayout)) {
+
+        }
         val bookId = UUID.randomUUID().toString()
         val bookName = addBookName.text.toString()
         val bookCategory = ""
@@ -159,8 +213,35 @@ class AddBookFragment : Fragment() {
         val bookPageCount = 0
         val bookRepeatCount = 0
         val bookRating = 0
+    }
 
+    override fun onDateSet(view: DatePickerDialog, yearValue: Int, monthOfYear: Int, dayOfMonth: Int) {
+        val date = "${defineStringOfMonthDay(dayOfMonth)}.${defineStringOfMonth(monthOfYear)}.$yearValue"
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val d = dateFormat.parse(date)
+        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val result = dateFormat2.format(d)
+        if (view.tag == DATE_PICKER_START_DATE) {
+            addStartDate.setText(result)
+        } else {
+            addEndDate.setText(result)
+        }
+    }
 
+    private fun defineStringOfMonth(monthOfYear: Int): String {
+        var month = (monthOfYear + 1).toString()
+        if ((monthOfYear + 1) <= 10) {
+            month = "0$month"
+        }
+        return month
+    }
+
+    private fun defineStringOfMonthDay(dayOfMonth: Int): String {
+        var currentDay = dayOfMonth.toString()
+        if (dayOfMonth < 10) {
+            currentDay = "0$currentDay"
+        }
+        return currentDay
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

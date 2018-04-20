@@ -16,12 +16,12 @@ class EditTextCreator private constructor(val context: Context?,
                                           val startMargin: Int,
                                           val endMargin: Int) {
 
-    private constructor(builder: Builder) : this(builder.context, builder.hint,
+    private constructor(builder: Builder) : this(builder.context,
+            builder.hint,
             builder.topMargin,
             builder.bottomMargin,
             builder.startMargin,
-            builder.endMargin) {
-    }
+            builder.endMargin)
 
     fun createEditText() = createTextInputLayout(hint)
 

@@ -53,6 +53,7 @@
     <!-- add_book_date_part -->
     <string name="add_book_date_part_start_date_hint">Start date</string>
     <string name="add_book_date_part_end_date_hint">End date</string>
+    <string name="date_picker_clear_button_text">Clear</string>
 
     <!-- add_book_other_part -->
     <string name="add_book_other_part_page_count_hint">Page count</string>
