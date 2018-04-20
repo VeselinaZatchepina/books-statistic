@@ -8,10 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.LinearLayout
 import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.enums.BookSection
+import com.github.veselinazatchepina.books.utils.EditTextCreator
 import icepick.Icepick
 import icepick.State
 import kotlinx.android.synthetic.main.add_book_category_part.*
@@ -33,7 +32,6 @@ class AddBookFragment : Fragment() {
     @JvmField
     @State
     var authorFieldText = arrayListOf<String>()
-
 
     companion object {
         fun createInstance(): AddBookFragment {
@@ -94,11 +92,20 @@ class AddBookFragment : Fragment() {
         }
     }
 
+    /**
+     * Create new fields to add new author
+     */
     private fun defineAuthorFields() {
         addAuthorFieldsBtn.setOnClickListener {
             val hints = createAuthorFieldsHintList()
             for (i in 0 until hints.count()) {
-                addAuthorFieldsLinearLayout.addView(createTextInputLayout(hints[i]))
+                addAuthorFieldsLinearLayout.addView(
+                        EditTextCreator.Builder(activity!!)
+                                .setHints(hints[i])
+                                .setTopMargin(resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt())
+                                .setBottomMargin(resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt())
+                                .create()
+                                .createEditText())
             }
         }
     }
@@ -107,34 +114,6 @@ class AddBookFragment : Fragment() {
         return listOf(getString(R.string.add_book_main_part_author_first_hint),
                 getString(R.string.add_book_main_part_author_second_hint),
                 getString(R.string.add_book_main_part_author_patronymic_hint))
-    }
-
-    private fun createTextInputLayout(hint: String): TextInputLayout {
-        val newFieldInputLayout = TextInputLayout(activity)
-        newFieldInputLayout.layoutParams = createLayoutParamsForInputLayout()
-        newFieldInputLayout.addView(createEditText(hint))
-        return newFieldInputLayout
-    }
-
-    private fun createLayoutParamsForInputLayout(): LinearLayout.LayoutParams {
-        val layoutParamsInputLayout = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        layoutParamsInputLayout.topMargin = resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt()
-        layoutParamsInputLayout.bottomMargin = resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt()
-        return layoutParamsInputLayout
-    }
-
-    private fun createEditText(hint: String): EditText {
-        val newFieldEditText = EditText(activity)
-        newFieldEditText.layoutParams = createLayoutParamsForEditText()
-        newFieldEditText.hint = hint
-        newFieldEditText.id = View.generateViewId()
-        return newFieldEditText
-    }
-
-    private fun createLayoutParamsForEditText(): LinearLayout.LayoutParams {
-        return LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     private fun createAuthorsList(): List<String> {
@@ -155,7 +134,13 @@ class AddBookFragment : Fragment() {
         if (authorFieldText.isNotEmpty()) {
             for (j in 3 until (authorFieldText.size) step 3) {
                 for (i in 0 until hints.count()) {
-                    val currentInputLayout = createTextInputLayout(hints[i])
+                    val currentInputLayout =
+                            EditTextCreator.Builder(activity!!)
+                                    .setHints(hints[i])
+                                    .setTopMargin(resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt())
+                                    .setBottomMargin(resources.getDimension(R.dimen.add_book_main_part_input_layout_margin).toInt())
+                                    .create()
+                                    .createEditText()
                     addAuthorFieldsLinearLayout.addView(currentInputLayout)
                     currentInputLayout.editText!!.setText(authorFieldText[j + i])
                 }
