@@ -15,7 +15,6 @@ import com.github.veselinazatchepina.books.R
 import com.github.veselinazatchepina.books.enums.BookSection
 import com.github.veselinazatchepina.books.poko.Book
 import com.github.veselinazatchepina.books.poko.BookAuthor
-import com.github.veselinazatchepina.books.poko.BookCategory
 import com.github.veselinazatchepina.books.utils.ClearableDatePickerDialog
 import com.github.veselinazatchepina.books.utils.EditTextCreator
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
@@ -204,12 +203,10 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
 
     fun saveBook(): Boolean = if (isFieldNotEmpty(addBookName, addBookNameInputLayout)) {
-        val currentCategory = BookCategory(addCategorySpinner.selectedItem?.toString()?.toLowerCase()
-                ?: "NO CATEGORY")
         val currentBook = Book(UUID.randomUUID().toString(),
                 addBookName.text.toString(),
                 getBookAuthors(),
-                currentCategory.categoryName,
+                addCategorySpinner.selectedItem?.toString()?.toLowerCase() ?: "NO CATEGORY",
                 addSectionSpinner.selectedItem.toString(),
                 addStartDate.text.toString(),
                 addEndDate.text.toString(),
