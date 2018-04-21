@@ -235,11 +235,18 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val authors = arrayListOf<BookAuthor>()
         for (index in 0..addAuthorFieldsLinearLayout.childCount step 3) {
             if (addAuthorFieldsLinearLayout.getChildAt(index) is TextInputLayout) {
-                authors.add(BookAuthor(UUID.randomUUID().toString(),
-                        getAuthorFieldValue(index),
-                        getAuthorFieldValue(index + 1),
-                        getAuthorFieldValue(index + 2)
-                ))
+
+                val firstName = getAuthorFieldValue(index)
+                val secondName = getAuthorFieldValue(index + 1)
+                val patronymic = getAuthorFieldValue(index + 2)
+
+                if (firstName.isNotEmpty() && secondName.isNotEmpty() && patronymic.isNotEmpty()) {
+                    authors.add(BookAuthor(UUID.randomUUID().toString(),
+                            getAuthorFieldValue(index),
+                            getAuthorFieldValue(index + 1),
+                            getAuthorFieldValue(index + 2)
+                    ))
+                }
             }
         }
         Log.d("AUTHORS_COUNT", "count: ${authors.size}")
