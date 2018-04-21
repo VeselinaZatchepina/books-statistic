@@ -1,5 +1,6 @@
 package com.github.veselinazatchepina.books.data.remote
 
+import android.util.Log
 import com.github.veselinazatchepina.books.data.BooksDataSource
 import com.github.veselinazatchepina.books.poko.Book
 import com.github.veselinazatchepina.books.poko.BookCategory
@@ -83,10 +84,26 @@ class BooksRemoteDataSource : BooksDataSource {
     }
 
     override fun saveBook(book: Book) {
-        val bookCategoriesRef = cloudFirestore.collection("users")
+
+        val writeBatch = cloudFirestore.batch()
+
+        val bookRef = cloudFirestore.collection("users")
                 .document(userId!!)
                 .collection("books")
                 .document(book.id)
-        bookCategoriesRef.set(book)
+        writeBatch.set(bookRef, book)
+
+        val bookCategoryRef = cloudFirestore.collection("users")
+                .document(userId!!)
+                .collection("book_categories")
+                .document(book.category)
+        writeBatch.set(bookCategoryRef, BookCategory(book.category))
+
+        writeBatch.commit().addOnCompleteListener {
+            Log.d("SAVE_BOOK", "OK")
+        }.addOnFailureListener {
+            Log.d("SAVE_BOOK", "ERROR")
+            it.printStackTrace()
+        }
     }
 }

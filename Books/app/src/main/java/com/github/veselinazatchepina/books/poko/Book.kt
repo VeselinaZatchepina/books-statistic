@@ -3,7 +3,7 @@ package com.github.veselinazatchepina.books.poko
 
 data class Book(var id: String = "",
                 var bookName: String = "",
-                val authorsIds: List<String> = emptyList(),
+                val authors: List<BookAuthor> = emptyList(),
                 var category: String = "",
                 var section: String = "",
                 var startDate: String = "",

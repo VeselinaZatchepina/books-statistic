@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import com.github.veselinazatchepina.books.R
 
 
-class EditTextCreator private constructor(val context: Context?,
+class EditTextCreator private constructor(private val context: Context?,
                                           val hint: String,
                                           val topMargin: Int,
                                           val bottomMargin: Int,
@@ -55,11 +55,17 @@ class EditTextCreator private constructor(val context: Context?,
 
     class Builder private constructor() {
         var context: Context? = null
+            private set
         var hint: String = ""
+            private set
         var topMargin: Int = 0
+            private set
         var bottomMargin: Int = 0
+            private set
         var startMargin: Int = 0
+            private set
         var endMargin: Int = 0
+            private set
 
         constructor(context: Context) : this() {
             this.context = context
