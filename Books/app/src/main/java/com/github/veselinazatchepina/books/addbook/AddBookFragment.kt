@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.add_book_main_part.*
 import kotlinx.android.synthetic.main.add_book_other_part.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
@@ -80,7 +81,13 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun getAllBookCategories() {
         addBookViewModel.getAllBookCategories()
         addBookViewModel.liveBookCategories.observe(this, android.arch.lifecycle.Observer {
-            bookCategoriesAdapter.addAll(it?.map { it.categoryName.toUpperCase() })
+            bookCategoriesAdapter.clear()
+            bookCategoriesAdapter.addAll(
+                    it?.map { it.categoryName.toUpperCase() }
+                    .apply {
+                        (this as ArrayList<String>)
+                                .addAll(resources.getStringArray(R.array.default_book_categories).toList())
+                    }?.distinct())
             bookCategoriesAdapter.notifyDataSetChanged()
         })
     }
