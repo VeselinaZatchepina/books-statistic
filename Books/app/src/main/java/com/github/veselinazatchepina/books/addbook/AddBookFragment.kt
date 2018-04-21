@@ -38,7 +38,7 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val bookCategoriesAdapter by lazy {
         ArrayAdapter<String>(activity,
                 android.R.layout.simple_spinner_dropdown_item,
-                arrayListOf())
+                arrayListOf(*resources.getStringArray(R.array.default_book_categories)))
     }
     @JvmField
     @State
@@ -81,7 +81,6 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun getAllBookCategories() {
         addBookViewModel.getAllBookCategories()
         addBookViewModel.liveBookCategories.observe(this, android.arch.lifecycle.Observer {
-            bookCategoriesAdapter.clear()
             bookCategoriesAdapter.addAll(it?.map { it.categoryName.toUpperCase() })
             bookCategoriesAdapter.notifyDataSetChanged()
         })

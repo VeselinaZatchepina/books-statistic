@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="default_book_categories">
+        <item>SELF-DEVELOPMENT</item>
+        <item>CLASSIC</item>
+        <item>MODERN</item>
+    </string-array>
+</resources>
