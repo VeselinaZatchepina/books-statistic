@@ -66,6 +66,9 @@ dependencies {
     //Material DateTime Picker
     implementation 'com.wdullaer:materialdatetimepicker:3.2.2'
 
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
 
 
 }

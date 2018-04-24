@@ -7,6 +7,7 @@ import com.github.veselinazatchepina.books.poko.BookCategory
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
@@ -67,6 +68,7 @@ class BooksRemoteDataSource : BooksDataSource {
     }
 
     override fun getAllBookCategories(): Observable<List<BookCategory>> {
+        userId = firebaseAuth.currentUser?.uid
         val bookCategoriesObservable = PublishSubject.create<List<BookCategory>>()
         val bookCategoriesRef = cloudFirestore.collection("users")
                 .document(userId!!)
@@ -76,8 +78,12 @@ class BooksRemoteDataSource : BooksDataSource {
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         bookCategoriesObservable.onNext(it.result.toObjects(BookCategory::class.java))
+                        Log.d("GET_CATEGORIES", "OK")
                     }
+                    Log.d("GET_CATEGORIES", "FAIL")
                 }.addOnFailureListener {
+                    it.printStackTrace()
+                    Log.d("GET_CATEGORIES", "FAIL")
                     bookCategoriesObservable.onNext(emptyList())
                 }
         return bookCategoriesObservable
@@ -97,7 +103,7 @@ class BooksRemoteDataSource : BooksDataSource {
                 .document(userId!!)
                 .collection("book_categories")
                 .document(book.category)
-        writeBatch.set(bookCategoryRef, BookCategory(book.category))
+        writeBatch.set(bookCategoryRef, BookCategory(book.category), SetOptions.merge())
 
         writeBatch.commit().addOnCompleteListener {
             Log.d("SAVE_BOOK", "OK")

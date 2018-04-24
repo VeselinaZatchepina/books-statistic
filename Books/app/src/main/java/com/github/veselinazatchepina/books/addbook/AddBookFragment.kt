@@ -32,7 +32,7 @@ import kotlin.collections.ArrayList
 class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var rootView: View? = null
-    private val addBookViewModel: AddBookViewModel by lazy {
+    private val addBookViewModel by lazy {
         ViewModelProviders.of(activity!!).get(AddBookViewModel::class.java)
     }
     private val bookCategoriesAdapter by lazy {
@@ -84,10 +84,12 @@ class AddBookFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             bookCategoriesAdapter.clear()
             bookCategoriesAdapter.addAll(
                     it?.map { it.categoryName.toUpperCase() }
-                    .apply {
-                        (this as ArrayList<String>)
-                                .addAll(resources.getStringArray(R.array.default_book_categories).toList())
-                    }?.distinct())
+                            .apply {
+                                (this as ArrayList<String>)
+                                        .addAll(resources.getStringArray(R.array.default_book_categories).toList())
+                            }
+                            ?.distinct()
+                            ?.sortedDescending())
             bookCategoriesAdapter.notifyDataSetChanged()
         })
     }

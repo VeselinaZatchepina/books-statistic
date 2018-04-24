@@ -1,10 +1,14 @@
 package com.github.veselinazatchepina.books.utils
 
 import android.content.Context
+import android.support.annotation.LayoutRes
 import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.github.veselinazatchepina.books.R
 import java.util.*
 import java.util.regex.Pattern
@@ -56,4 +60,8 @@ private fun getIndex(patternString: String, text: String): Int {
     } else {
         -1
     }
+}
+
+infix fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View {
+    return LayoutInflater.from(context).inflate(layoutRes, this, false)
 }
